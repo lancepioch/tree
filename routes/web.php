@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/user/update', 'ProfileController@update');
+
+Route::post('/projects/', 'ProjectController@create');
