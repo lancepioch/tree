@@ -55,9 +55,9 @@ class SetupSite implements ShouldQueue
 
         // Environment
         $environment = $forge->siteEnvironmentFile($project->forge_server_id, $site->id);
-        $environment = preg_replace(/^DB_DATABASE=.*$/g, 'DB_DATABASE='.$sqlUsername, $environment);
-        $environment = preg_replace(/^DB_USERNAME=.*$/g, 'DB_USERNAME='.$sqlUsername, $environment);
-        $environment = preg_replace(/^DB_PASSWORD=.*$/g, 'DB_PASSWORD='.$sqlPassword, $environment);
+        $environment = preg_replace('/^DB_DATABASE=.*$/g', 'DB_DATABASE='.$sqlUsername, $environment);
+        $environment = preg_replace('/^DB_USERNAME=.*$/g', 'DB_USERNAME='.$sqlUsername, $environment);
+        $environment = preg_replace('/^DB_PASSWORD=.*$/g', 'DB_PASSWORD='.$sqlPassword, $environment);
         $forge->updateSiteEnvironmentFile($project->forge_server_id, $site->id, $environment);
 
         // Deployment
