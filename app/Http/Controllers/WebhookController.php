@@ -10,14 +10,18 @@ class WebhookController extends Controller
 {
     public function githubPullRequest(Request $request)
     {
-        $pullRequest = $request->input();
+        $input = $request->input();
+        switch ($input['action'] ?? 'other') {
+            case 'opened':
+                break;
+            default:
+                abort(200, 'Not Interested');
+        }
 
-        \Log::info($pullRequest);
-
-        $projects = Project::where('github_repo', $pullRequest->repository->full_name)->get();
+        $projects = Project::where('github_repo', $input['repository']['full_name'])->get();
 
         foreach ($projects as $project) {
-            dispatch(new SetupSite($project, $pullRequest));
+            dispatch(new SetupSite($project, $input['pull_request']));
         }
     }
 }
