@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SetupSite;
+use App\Project;
 use Illuminate\Http\Request;
 
 class WebhookController extends Controller
@@ -15,7 +17,7 @@ class WebhookController extends Controller
         $projects = Project::where('github_repo', $pullRequest->repository->full_name)->get();
 
         foreach ($projects as $project) {
-            dispatch(new App\Jobs\SetupSite($project, $pullRequest));
+            dispatch(new SetupSite($project, $pullRequest));
         }
     }
 }
