@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->text('forge_token')->nullable();
+            $table->text('github_token')->nullable();
         });
     }
 
