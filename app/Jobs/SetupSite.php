@@ -33,19 +33,19 @@ class SetupSite implements ShouldQueue
         ], true);
 
         $branch = Branch::create([
-            'issue_number' => $pullRequest->number,
+            'issue_number' => $pullRequest['number'],
             'forge_site_id' => $site->id,
         ]);
 
         // Repository
         $forge->installGitRepositoryOnSite($project->forge_server_id, $site->id, [
             'provider' => 'github',
-            'repository' => $project->github_repo,
-            'branch' => $pullRequest->default_branch,
+            'repository' => $pullRequest['head']['repo']['full_name'],
+            'branch' => $pullRequest['head']['ref'],
         ]);
 
         // MySQL
-        $sqlUsername = 'pullrequest' . $pullRequest->number;
+        $sqlUsername = 'pullrequest' . $pullRequest['number'];
         $sqlPassword = str_random(20);
         $mysql = $forge->createMysqlDatabase($project->forge_server_id, [
             'name' => $sqlUsername,
@@ -68,7 +68,7 @@ class SetupSite implements ShouldQueue
         // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
 
 
-        // $client->api('issue')->comments()->create('username', 'repository', $pullRequest->number, ['body' => 'Build URL: ' . $url]);
+        // $client->api('issue')->comments()->create('username', 'repository', $pullRequest['number'], ['body' => 'Build URL: ' . $url]);
     }
 
     /**
