@@ -25,7 +25,7 @@ class SetupSite implements ShouldQueue
         $forge = new Forge($project->user->forge_token);
 
         // Site
-        $url = str_replace('*', $pullRequest->number, $project->url);
+        $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
         $site = $forge->createSite($project->forge_server_id, [
             'domain' => $url,
             'project_type' => 'php',
