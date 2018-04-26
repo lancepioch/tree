@@ -15,6 +15,7 @@ class CreateBranchesTable extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('project_id');
             $table->integer('issue_number');
             $table->integer('forge_site_id');
             $table->timestamps();
