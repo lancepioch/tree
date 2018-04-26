@@ -22,7 +22,7 @@ class SetupSite implements ShouldQueue
      */
     public function __construct(Project $project, $pullRequest)
     {
-        $forge = new Forge(auth()->user()->forge_token);
+        $forge = new Forge($project->user->forge_token);
 
         // Site
         $url = str_replace('*', $pullRequest->number, $project->url);
