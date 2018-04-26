@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Project;
+use App\Branch;
+use App\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
