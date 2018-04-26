@@ -18,6 +18,8 @@ class CreateBranchesTable extends Migration
             $table->integer('project_id');
             $table->integer('issue_number');
             $table->integer('forge_site_id');
+            $table->integer('forge_mysql_user_id');
+            $table->integer('forge_mysql_database_id');
             $table->timestamps();
         });
     }
