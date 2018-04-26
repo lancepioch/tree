@@ -15,6 +15,7 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('forge_site_url');
             $table->integer('forge_server_id');
             $table->string('github_repo');
