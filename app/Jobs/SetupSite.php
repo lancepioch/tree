@@ -45,7 +45,7 @@ class SetupSite implements ShouldQueue
         ]);
 
         // MySQL
-        $sqlUsername = 'pullrequest' . $pullRequest['number'];
+        $sqlUsername = 'pull_request_' . $pullRequest['number'];
         $sqlPassword = str_random(20);
         $mysql = $forge->createMysqlDatabase($project->forge_server_id, [
             'name' => $sqlUsername,
