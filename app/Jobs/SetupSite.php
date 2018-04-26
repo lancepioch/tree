@@ -38,7 +38,7 @@ class SetupSite implements ShouldQueue
         ]);
 
         // Repository
-        $forge->installGitRepositoryOnSite($project->forge_server_id, $site->id, [
+        $site->installGitRepository([
             'provider' => 'github',
             'repository' => $pullRequest['head']['repo']['full_name'],
             'branch' => $pullRequest['head']['ref'],
@@ -63,8 +63,8 @@ class SetupSite implements ShouldQueue
         // Deployment
         // $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $site->id);
         // $forge->updateSiteDeploymentScript($project->forge_server_id, $site->id, $deploymentScript);
-        $forge->enableQuickDeploy($project->forge_server_id, $site->id);
-        $forge->deploySite($project->forge_server_id, $site->id);
+        $site->enableQuickDeploy();
+        $site->deploySite();
         // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
 
 
