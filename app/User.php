@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'forge_token', 'github_token',
+        'name', 'email', 'forge_token', 'github_token', 'github_id'
     ];
 
     /**
