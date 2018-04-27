@@ -78,7 +78,17 @@ class SetupSite implements ShouldQueue
         // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
 
 
-        // $client->api('issue')->comments()->create('username', 'repository', $pullRequest['number'], ['body' => 'Build URL: ' . $url]);
+        echo "<a href=\"http://$url\">http://$url</a>";
+
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+
+        $github = new \Github\Client();
+        $github->authenticate($project->user->github_token, null, \Github\Client::AUTH_HTTP_PASSWORD);
+        $github->api('issue')
+            ->comments()
+            ->create($githubUser, $githubRepo, $pullRequest['number'], [
+                'body' => 'Build URL: http://' . $url,
+            ]);
     }
 
     /**
