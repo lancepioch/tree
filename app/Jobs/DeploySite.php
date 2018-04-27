@@ -34,16 +34,16 @@ class DeploySite implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Client $github
      * @return void
      */
-    public function handle()
+    public function handle(Client $github)
     {
         $branch = $this->branch;
         $project = $branch->project;
         $pullRequest = $this->pullRequest;
 
         $forge = new Forge($project->user->forge_token);
-        $github = new Client();
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
