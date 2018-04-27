@@ -13,21 +13,22 @@ class WebhookController extends Controller
     public function githubPullRequest(Request $request)
     {
         $input = $request->input();
+        $pullRequest = $input['pull_request'];
         $projects = Project::where('github_repo', $input['repository']['full_name'])->with('branches')->get();
 
         switch ($input['action'] ?? 'other') {
             case 'opened':
             case 'reopened':
                 foreach ($projects as $project)
-                    SetupSite::dispatch($project, $input['pull_request']);
+                    SetupSite::dispatch($project, $pullRequest);
                 break;
             case 'closed':
                 foreach ($projects as $project)
-                    RemoveSite::dispatch($project, $input['pull_request']);
+                    RemoveSite::dispatch($project, $pullRequest);
                 break;
             case 'synchronize':
                 foreach ($projects as $project)
-                    DeploySite::dispatch($project->branches()->last(), $input['pull_request']);
+                    DeploySite::dispatch($project->branches()->last(), $pullRequest);
                 break;
             case 'assigned':
             case 'unassigned':
