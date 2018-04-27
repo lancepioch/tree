@@ -40,7 +40,7 @@ class SetupSite implements ShouldQueue
         $pullRequest = $this->pullRequest;
 
         $forge = new Forge($project->user->forge_token);
-        $github = new \Github\Client();
+        $github = new Client();
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
