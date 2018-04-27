@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Project;
+use Github\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,6 +23,18 @@ class SetupSite implements ShouldQueue
     public function __construct(Project $project, $pullRequest)
     {
         $forge = new Forge($project->user->forge_token);
+        $github = new \Github\Client();
+        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+
+        $status = $github
+            ->api('repo')
+            ->statuses()
+            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+                'state' => 'pending',
+                'description' => 'Deploying your branch via ' . config('app.name'),
+                'context' => config('app.name'),
+            ]);
 
         // Site
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
@@ -71,23 +84,39 @@ class SetupSite implements ShouldQueue
         }
 
         // Deployment
-        // $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $site->id);
-        // $forge->updateSiteDeploymentScript($project->forge_server_id, $site->id, $deploymentScript);
-        $site->enableQuickDeploy();
-        $site->deploySite();
-        // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
+        $deploymentScript = $site->getDeploymentScript();
+        $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
+        $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
+        $site->updateDeploymentScript($deploymentScript);
 
+        $site = $forge->site($project->forge_server_id, $site->id);
+
+        while ($site->repositoryStatus === 'installing') {
+            sleep(1);
+            $site = $forge->site($project->forge_server_id, $site->id);
+        }
+
+        $site->deploySite();
+
+        // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
+        // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
 
         echo "<a href=\"http://$url\">http://$url</a>";
 
-        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+        $status = $github
+            ->api('repo')
+            ->statuses()
+            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+                'state' => 'success',
+                'description' => 'Deploying your branch via ' . config('app.name'),
+                'context' => config('app.name'),
+                'target_url' => 'http://' . $url,
+            ]);
 
-        $github = new \Github\Client();
-        $github->authenticate($project->user->github_token, null, \Github\Client::AUTH_HTTP_PASSWORD);
         $github->api('issue')
             ->comments()
             ->create($githubUser, $githubRepo, $pullRequest['number'], [
-                'body' => 'Build URL: http://' . $url,
+                'body' => config('app.name') . ' Build URL: http://' . $url,
             ]);
     }
 
