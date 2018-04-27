@@ -29,17 +29,27 @@
                         <form method="POST" action="{{ action('ProfileController@update') }}">
                             @csrf
 
+                            @if (auth()->user()->forge_token !== null)
                             <div class="form-group row">
-                                <label for="forge_token" class="col-sm-4 col-form-label text-md-right">Forge Token:</label>
+                                <label for="forge_token" class="col-sm-4 col-form-label text-md-right">Current Forge Token:</label>
 
                                 <div class="col-md-6">
-                                    <input id="forge_token" type="text" class="form-control{{ $errors->has('forge_token') ? ' is-invalid' : '' }}" name="forge_token" value="{{ auth()->user()->forge_token }}" required autofocus>
+                                    <input type="text" class="form-control" readonly value="{{ substr(auth()->user()->forge_token, 0, 15) }}...{{ substr(auth()->user()->forge_token, -15, 15) }}">
+                                </div>
+                            </div>
+                            @endif
+
+                            <div class="form-group row">
+                                <label for="forge_token" class="col-sm-4 col-form-label text-md-right">New Forge Token:</label>
+
+                                <div class="col-md-6">
+                                    <input id="forge_token" type="text" class="form-control{{ $errors->has('forge_token') ? ' is-invalid' : '' }}" name="forge_token" required>
                                 </div>
                             </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Save Tokens</button>
+                                    <button type="submit" class="btn btn-primary">Save Token</button>
                                 </div>
                             </div>
                         </form>
