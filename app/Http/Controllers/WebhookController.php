@@ -19,15 +19,15 @@ class WebhookController extends Controller
             case 'opened':
             case 'reopened':
                 foreach ($projects as $project)
-                    dispatch(new SetupSite($project, $input['pull_request']));
+                    SetupSite::dispatch($project, $input['pull_request']);
                 break;
             case 'closed':
                 foreach ($projects as $project)
-                    dispatch(new RemoveSite($project, $input['pull_request']));
+                    RemoveSite::dispatch($project, $input['pull_request']);
                 break;
             case 'synchronize':
                 foreach ($projects as $project)
-                    dispatch(new DeploySite($project->branches()->last(), $input['pull_request']));
+                    DeploySite::dispatch($project->branches()->last(), $input['pull_request']);
                 break;
             case 'assigned':
             case 'unassigned':
