@@ -15,6 +15,9 @@ class SetupSite implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $project;
+    private $pullRequest;
+
     /**
      * Create a new job instance.
      *
@@ -22,6 +25,20 @@ class SetupSite implements ShouldQueue
      */
     public function __construct(Project $project, $pullRequest)
     {
+        $this->project = $project;
+        $this->pullRequest = $pullRequest;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $project = $this->project;
+        $pullRequest = $this->pullRequest;
+
         $forge = new Forge($project->user->forge_token);
         $github = new \Github\Client();
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
@@ -118,15 +135,5 @@ class SetupSite implements ShouldQueue
             ->create($githubUser, $githubRepo, $pullRequest['number'], [
                 'body' => config('app.name') . ' Build URL: http://' . $url,
             ]);
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        //
     }
 }
