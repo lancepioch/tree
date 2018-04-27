@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
 use App\Jobs\SetupSite;
 use App\Project;
@@ -12,7 +13,7 @@ class WebhookController extends Controller
     public function githubPullRequest(Request $request)
     {
         $input = $request->input();
-        $projects = Project::where('github_repo', $input['repository']['full_name'])->get();
+        $projects = Project::where('github_repo', $input['repository']['full_name'])->with('branches')->get();
 
         switch ($input['action'] ?? 'other') {
             case 'opened':
@@ -23,6 +24,10 @@ class WebhookController extends Controller
             case 'closed':
                 foreach ($projects as $project)
                     dispatch(new RemoveSite($project, $input['pull_request']));
+                break;
+            case 'synchronize':
+                foreach ($projects as $project)
+                    dispatch(new DeploySite($project->branches()->last(), $input['pull_request']));
                 break;
             case 'assigned':
             case 'unassigned':
