@@ -17,11 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
             $table->text('forge_token')->nullable();
             $table->text('github_token')->nullable();
+            $table->integer('github_id')->nullable();
         });
     }
 
