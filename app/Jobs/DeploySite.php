@@ -27,7 +27,7 @@ class DeploySite implements ShouldQueue
      */
     public function __construct(Branch $branch, $pullRequest)
     {
-        $this->project = $branch;
+        $this->branch = $branch;
         $this->pullRequest = $pullRequest;
     }
 
