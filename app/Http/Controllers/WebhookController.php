@@ -13,6 +13,10 @@ class WebhookController extends Controller
     public function githubPullRequest(Request $request)
     {
         $input = $request->input();
+
+        abort_unless(isset($input['pull_request']), 200, 'Not a Pull Request');
+        abort_unless(isset($input['repository']), 200, 'Not a Repository');
+
         $pullRequest = $input['pull_request'];
         $projects = Project::where('github_repo', $input['repository']['full_name'])->with('branches')->get();
 
