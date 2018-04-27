@@ -101,40 +101,6 @@ class SetupSite implements ShouldQueue
             $forge->updateSiteEnvironmentFile($project->forge_server_id, $site->id, $environment);
         }
 
-        // Deployment
-        $deploymentScript = $site->getDeploymentScript();
-        $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
-        $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
-        $site->updateDeploymentScript($deploymentScript);
-
-        $site = $forge->site($project->forge_server_id, $site->id);
-
-        while ($site->repositoryStatus === 'installing') {
-            sleep(1);
-            $site = $forge->site($project->forge_server_id, $site->id);
-        }
-
-        $site->deploySite();
-
-        // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
-        // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
-
-        echo "<a href=\"http://$url\">http://$url</a>";
-
-        $status = $github
-            ->api('repo')
-            ->statuses()
-            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
-                'state' => 'success',
-                'description' => 'Deploying your branch via ' . config('app.name'),
-                'context' => config('app.name'),
-                'target_url' => 'http://' . $url,
-            ]);
-
-        $github->api('issue')
-            ->comments()
-            ->create($githubUser, $githubRepo, $pullRequest['number'], [
-                'body' => config('app.name') . ' Build URL: http://' . $url,
-            ]);
+        dispatch(new DeploySite($branch, $pullRequest));
     }
 }
