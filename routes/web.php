@@ -22,3 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/user/update', 'ProfileController@update');
 
 Route::post('/projects/', 'ProjectController@create');
+
+Route::get('/login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/github/callback', 'Auth\LoginController@handleProviderCallback');
+
