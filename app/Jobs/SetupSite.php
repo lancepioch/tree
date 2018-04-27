@@ -29,12 +29,29 @@ class SetupSite implements ShouldQueue
             'domain' => $url,
             'project_type' => 'php',
             'directory' => '/public',
-        ], true);
+        ], false);
 
-        $branch = Branch::create([
+        // MySQL
+        $sqlUsername = 'pull_request_' . $pullRequest['number'];
+        $sqlPassword = str_random(20);
+        $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
+        $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
+            'name' => $sqlUsername,
+            'password' => $sqlPassword,
+            'databases' => [$mysqlDatabase->id],
+        ], false);
+
+        $branch = $project->branches()->create([
             'issue_number' => $pullRequest['number'],
             'forge_site_id' => $site->id,
+            'forge_mysql_database_id' => $mysqlDatabase->id,
+            'forge_mysql_user_id' => $mysqlUser->id,
         ]);
+
+        while ($site->status !== 'installed') {
+            sleep(1);
+            $site = $forge->site($project->forge_server_id, $site->id);
+        }
 
         // Repository
         $site->installGitRepository([
@@ -42,15 +59,6 @@ class SetupSite implements ShouldQueue
             'repository' => $pullRequest['head']['repo']['full_name'],
             'branch' => $pullRequest['head']['ref'],
         ]);
-
-        // MySQL
-        $sqlUsername = 'pull_request_' . $pullRequest['number'];
-        $sqlPassword = str_random(20);
-        $mysql = $forge->createMysqlDatabase($project->forge_server_id, [
-            'name' => $sqlUsername,
-            'user' => $sqlUsername,
-            'password' => $sqlPassword,
-        ], true);
 
         // Environment
         $environment = $forge->siteEnvironmentFile($project->forge_server_id, $site->id);
