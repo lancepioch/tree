@@ -22,7 +22,8 @@ class DeploySite implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Branch $branch
+     * @param $pullRequest
      */
     public function __construct(Branch $branch, $pullRequest)
     {
