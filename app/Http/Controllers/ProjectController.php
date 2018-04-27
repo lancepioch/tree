@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Github\Client;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -21,9 +22,24 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request, Client $github)
     {
-        auth()->user()->projects()->create($request->all());
+        $project = auth()->user()->projects()->create($request->all());
+
+        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+
+        $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
+            'name' => 'web',
+            'config' => [
+                'url' => action('WebhookController@githubPullRequest'),
+                'content_type' => 'json',
+                'secret' => $project->webhook_secret,
+                'insecure_ssl' => 0,
+            ],
+            'events' => ['pull_request'],
+            'active' => true,
+        ]);
 
         return redirect()->action('HomeController@index');
     }
