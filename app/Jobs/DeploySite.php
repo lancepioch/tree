@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Branch;
-use App\Project;
 use Github\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
