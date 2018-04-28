@@ -17,7 +17,7 @@ class WebhookController extends Controller
 
         abort_unless(isset($input['pull_request']), 200, 'Not a Pull Request');
         abort_unless(isset($input['repository']), 200, 'Not a Repository');
-        abort_if($signature === null, 200, 'Signature Required');
+        abort_if(is_null($signature), 200, 'Signature Required');
 
         $signature = str_replace('sha1=', '', $signature);
         $pullRequest = $input['pull_request'];
