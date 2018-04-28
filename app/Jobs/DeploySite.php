@@ -48,8 +48,7 @@ class DeploySite implements ShouldQueue
 
         $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
 
-        $status = $github
-            ->api('repo')
+        $github->api('repo')
             ->statuses()
             ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
                 'state' => 'pending',
@@ -77,12 +76,11 @@ class DeploySite implements ShouldQueue
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
         echo "<a href=\"http://$url\">http://$url</a>";
 
-        $status = $github
-            ->api('repo')
+        $github->api('repo')
             ->statuses()
             ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
                 'state' => 'success',
-                'description' => 'Deploying your branch via ' . config('app.name'),
+                'description' => 'Deployed your branch via ' . config('app.name'),
                 'context' => config('app.name'),
                 'target_url' => 'http://' . $url,
             ]);
