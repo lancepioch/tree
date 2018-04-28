@@ -27,7 +27,11 @@ class RemoveSite implements ShouldQueue
             ->branches()
             ->where('issue_number', $pullRequest['number'])
             ->orderBy('id', 'desc')
-            ->firstOrFail();
+            ->first();
+
+        if ($branch === null) {
+            return;
+        }
 
         $forge->deleteMysqlUser($project->forge_server_id, $branch->forge_mysql_user_id);
         $forge->deleteMysqlDatabase($project->forge_server_id, $branch->forge_mysql_database_id);
