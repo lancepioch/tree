@@ -23,34 +23,33 @@ class WebhookController extends Controller
         $pullRequest = $input['pull_request'];
         $projects = Project::where('github_repo', $input['repository']['full_name'])
             ->with('branches')
-            ->get()
-            ->filter(function ($project) use ($signature) {
-                return sha1($project->webhook_secret) === $signature;
-            });
+            ->get();
 
-        switch ($input['action'] ?? 'other') {
-            case 'opened':
-            case 'reopened':
-                foreach ($projects as $project)
+        foreach ($projects as $project) {
+            if (sha1($project->webhook_secret) !== $signature) {
+                continue;
+            }
+
+            switch ($input['action'] ?? 'other') {
+                case 'opened':
+                case 'reopened':
                     SetupSite::dispatch($project, $pullRequest);
-                break;
-            case 'closed':
-                foreach ($projects as $project)
+                    break;
+                case 'closed':
                     RemoveSite::dispatch($project, $pullRequest);
-                break;
-            case 'synchronize':
-                foreach ($projects as $project)
+                    break;
+                case 'synchronize':
                     DeploySite::dispatch($project->branches()->last(), $pullRequest);
-                break;
-            case 'assigned':
-            case 'unassigned':
-            case 'review_requested':
-            case 'review_request_removed':
-            case 'labeled':
-            case 'unlabeled':
-            case 'edited':
-            default:
-                abort(200, 'Not Interested');
+                    break;
+                case 'assigned':
+                case 'unassigned':
+                case 'review_requested':
+                case 'review_request_removed':
+                case 'labeled':
+                case 'unlabeled':
+                case 'edited':
+                default:
+            }
         }
 
         return response()->json(['action' => $input['action']]);
