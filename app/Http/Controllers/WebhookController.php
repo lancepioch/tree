@@ -44,5 +44,7 @@ class WebhookController extends Controller
             default:
                 abort(200, 'Not Interested');
         }
+
+        return response()->json(['action' => $input['action']]);
     }
 }
