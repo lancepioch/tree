@@ -18,7 +18,9 @@ class WebhookController extends Controller
         abort_unless(isset($input['repository']), 200, 'Not a Repository');
 
         $pullRequest = $input['pull_request'];
-        $projects = Project::where('github_repo', $input['repository']['full_name'])->with('branches')->get();
+        $projects = Project::where('github_repo', $input['repository']['full_name'])
+            ->with('branches')
+            ->get();
 
         switch ($input['action'] ?? 'other') {
             case 'opened':
