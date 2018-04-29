@@ -22,11 +22,19 @@ class WebhookController extends Controller
         $signature = str_replace('sha1=', '', $signature);
         $pullRequest = $input['pull_request'];
         $projects = Project::where('github_repo', $input['repository']['full_name'])
-            ->with('branches')
+            ->with(['branches', 'user'])
             ->get();
 
+        $errors = [];
+
         foreach ($projects as $project) {
+            // Signature Verification
             if (sha1($project->webhook_secret) !== $signature) {
+                $errors[] = [
+                    'user' => $project->user->email,
+                    'message' => 'Signature Verification Failed',
+                ];
+
                 continue;
             }
 
@@ -52,6 +60,12 @@ class WebhookController extends Controller
             }
         }
 
-        return response()->json(['action' => $input['action']]);
+        $response = ['action' => $input['action']];
+
+        if (!empty($errors)) {
+            $response['errors'] = $errors;
+        }
+
+        return response()->json();
     }
 }
