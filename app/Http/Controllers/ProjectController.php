@@ -20,6 +20,8 @@ class ProjectController extends Controller
     /**
      * Creates a new project.
      *
+     * @param Request $request
+     * @param Client $github
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request, Client $github)
