@@ -140,7 +140,7 @@
                                 <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">Deployment:</label>
 
                                 <div class="col-md-6">
-                                    <textarea name="forge_deployment" class="form-control" rows="5">php artisan db:seed</textarea>
+                                    <textarea name="forge_deployment" class="form-control" rows="5" placeholder="php artisan db:seed"></textarea>
                                 </div>
                             </div>
 
