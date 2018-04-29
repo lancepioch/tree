@@ -101,6 +101,11 @@ class SetupSite implements ShouldQueue
             $forge->updateSiteEnvironmentFile($project->forge_server_id, $site->id, $environment);
         }
 
+        $deploymentScript = $site->getDeploymentScript();
+        $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
+        $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
+        $site->updateDeploymentScript($deploymentScript);
+
         dispatch(new DeploySite($branch, $pullRequest));
     }
 }

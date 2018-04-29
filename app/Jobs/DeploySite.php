@@ -56,13 +56,6 @@ class DeploySite implements ShouldQueue
                 'context' => config('app.name'),
             ]);
 
-        // Deployment
-        $deploymentScript = $site->getDeploymentScript();
-        $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
-        $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
-        $site->updateDeploymentScript($deploymentScript);
-
-
         while ($site->repositoryStatus === 'installing') {
             sleep(1);
             $site = $forge->site($project->forge_server_id, $site->id);
