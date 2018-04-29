@@ -24,7 +24,8 @@ class ProjectController extends Controller
      */
     public function create(Request $request, Client $github)
     {
-        $project = auth()->user()->projects()->create($request->all());
+        $input = $request->all() + ['webhook_secret' => str_random(20)];
+        $project = auth()->user()->projects()->create($input);
 
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
