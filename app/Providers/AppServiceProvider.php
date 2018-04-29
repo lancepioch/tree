@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Schema::defaultStringLength(191);
+        \Horizon::auth(function ($request) {
+            return auth()->check() && auth()->user()->email === config('app.admin');
+        });
     }
 
     /**
