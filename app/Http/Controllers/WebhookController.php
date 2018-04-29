@@ -13,7 +13,7 @@ class WebhookController extends Controller
     public function githubPullRequest(Request $request)
     {
         $input = $request->input();
-        $signature = $request->header('x-hub-signature');
+        $signature = $request->header('X-Hub-Signature');
 
         abort_unless(isset($input['pull_request']), 200, 'Not a Pull Request');
         abort_unless(isset($input['repository']), 200, 'Not a Repository');
