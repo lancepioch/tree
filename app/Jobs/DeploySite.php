@@ -63,7 +63,32 @@ class DeploySite implements ShouldQueue
 
         $site->deploySite();
 
-        // $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
+        while ($site->deploymentStatus !== null) {
+            sleep(1);
+            $site = $forge->site($project->forge_server_id, $site->id);
+        }
+
+        $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
+        $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
+
+        if (!$deploymentSuccess) {
+            $github->api('repo')
+                ->statuses()
+                ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+                    'state' => 'failure',
+                    'description' => 'Failed to deployed your branch.',
+                    'context' => config('app.name'),
+                ]);
+
+            $github->api('issue')
+                ->comments()
+                ->create($githubUser, $githubRepo, $pullRequest['number'], [
+                    'body' => config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog,
+                ]);
+            
+            return;
+        }
+
         // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
 
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
