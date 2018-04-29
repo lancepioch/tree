@@ -92,7 +92,6 @@ class DeploySite implements ShouldQueue
         // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
 
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
-        echo "<a href=\"http://$url\">http://$url</a>";
 
         $github->api('repo')
             ->statuses()
