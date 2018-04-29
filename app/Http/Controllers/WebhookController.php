@@ -21,51 +21,36 @@ class WebhookController extends Controller
 
         [$algorithm, $signature] = explode('=', $signature, 2);
         $pullRequest = $input['pull_request'];
-        $projects = Project::where('github_repo', $input['repository']['full_name'])
-            ->with(['branches', 'user'])
-            ->get();
+        $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
 
-        $errors = [];
+        abort_if($project === null, 200, 'Project Not Found');
 
-        foreach ($projects as $project) {
-            // Signature Verification
-            if (hash_hmac($algorithm, $request->getContent(), $project->webhook_secret) !== $signature) {
-                $errors[] = [
-                    'user' => $project->user->email,
-                    'message' => 'Signature Verification Failed',
-                ];
-
-                continue;
-            }
-
-            switch ($input['action'] ?? 'other') {
-                case 'opened':
-                case 'reopened':
-                    SetupSite::dispatch($project, $pullRequest);
-                    break;
-                case 'closed':
-                    RemoveSite::dispatch($project, $pullRequest);
-                    break;
-                case 'synchronize':
-                    DeploySite::dispatch($project->branches()->last(), $pullRequest);
-                    break;
-                case 'assigned':
-                case 'unassigned':
-                case 'review_requested':
-                case 'review_request_removed':
-                case 'labeled':
-                case 'unlabeled':
-                case 'edited':
-                default:
-            }
+        // Signature Verification
+        if (hash_hmac($algorithm, $request->getContent(), $project->webhook_secret) !== $signature) {
+            return response()->json(['error' => 'Signature Verification Failed']);
         }
 
-        $response = ['action' => $input['action']];
-
-        if (!empty($errors)) {
-            $response['errors'] = $errors;
+        switch ($input['action'] ?? 'none') {
+            case 'opened':
+            case 'reopened':
+                SetupSite::dispatch($project, $pullRequest);
+                break;
+            case 'closed':
+                RemoveSite::dispatch($project, $pullRequest);
+                break;
+            case 'synchronize':
+                DeploySite::dispatch($project->branches()->last(), $pullRequest);
+                break;
+            case 'assigned':
+            case 'unassigned':
+            case 'review_requested':
+            case 'review_request_removed':
+            case 'labeled':
+            case 'unlabeled':
+            case 'edited':
+            default:
         }
 
-        return response()->json($response);
+        return response()->json(['action' => $input['action']]);
     }
 }
