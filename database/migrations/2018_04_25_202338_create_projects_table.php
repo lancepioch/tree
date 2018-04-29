@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('forge_site_url');
             $table->integer('forge_server_id');
             $table->string('github_repo')->unique();
+            $table->string('webhook_secret');
             $table->text('forge_deployment');
             $table->timestamps();
         });
