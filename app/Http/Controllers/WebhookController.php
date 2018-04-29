@@ -66,6 +66,6 @@ class WebhookController extends Controller
             $response['errors'] = $errors;
         }
 
-        return response()->json();
+        return response()->json($response);
     }
 }
