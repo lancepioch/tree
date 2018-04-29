@@ -19,7 +19,7 @@ class WebhookController extends Controller
         abort_unless(isset($input['repository']), 200, 'Not a Repository');
         abort_if(is_null($signature), 200, 'Signature Required');
 
-        $signature = str_replace('sha1=', '', $signature);
+        [$algorithm, $signature] = explode('=', $signature, 2);
         $pullRequest = $input['pull_request'];
         $projects = Project::where('github_repo', $input['repository']['full_name'])
             ->with(['branches', 'user'])
@@ -29,7 +29,7 @@ class WebhookController extends Controller
 
         foreach ($projects as $project) {
             // Signature Verification
-            if (sha1($project->webhook_secret) !== $signature) {
+            if (hash_hmac($algorithm, $request->getContent(), $project->webhook_secret) !== $signature) {
                 $errors[] = [
                     'user' => $project->user->email,
                     'message' => 'Signature Verification Failed',
