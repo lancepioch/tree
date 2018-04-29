@@ -26,7 +26,8 @@ class WebhookController extends Controller
         abort_if($project === null, 200, 'Project Not Found');
 
         // Signature Verification
-        if (hash_hmac($algorithm, $request->getContent(), $project->webhook_secret) !== $signature) {
+        $hash = hash_hmac($algorithm, $request->getContent(), $project->webhook_secret);
+        if ($hash !== $signature) {
             return response()->json(['error' => 'Signature Verification Failed']);
         }
 
