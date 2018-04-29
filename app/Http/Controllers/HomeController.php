@@ -46,6 +46,8 @@ class HomeController extends Controller
             $githubException = 'Your Github API Token is invalid.';
         }
 
+        $repositories = collect($repositories)->where('permissions.admin', true);
+
         return view('home')->with(compact('servers', 'repositories', 'forgeException', 'githubException'));
     }
 }
