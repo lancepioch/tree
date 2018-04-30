@@ -22,6 +22,7 @@ class CreateProjectsTable extends Migration
             $table->string('webhook_secret');
             $table->text('forge_deployment')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
