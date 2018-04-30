@@ -138,6 +138,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-8 mt-3">
+                <div class="card">
+                    <div class="card-header">Optional Survey</div>
+
+                    <div class="card-body">
+                        <div id="surveyhero-embed-1c71d8e3"></div>
+                        <script src="https://embed-cdn.surveyhero.com/js/user/embed.1c71d8e3.js" async></script>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
