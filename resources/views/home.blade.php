@@ -48,28 +48,30 @@
 
                     @if (auth()->user()->projects->count() > 0)
                         <div class="card-body">
-                            <form method="POST" action="">
-                                @csrf
+                            <div class="form-group row">
+                                <label for="project_id" class="col-sm-4 col-form-label text-md-right">Project:</label>
 
-                                <div class="form-group row">
-                                    <label for="forge_server_id" class="col-sm-4 col-form-label text-md-right">Project:</label>
-
-                                    <div class="col-md-6">
-                                        <select id="forge_server_id" name="forge_server_id" class="form-control">
-                                            @foreach (auth()->user()->projects as $project)
-                                                <option value="{{ $project->id }}">{{ $project->forge_site_url }} ({{ $project->github_repo }})</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="col-md-6">
+                                    <select id="project_id" name="forge_server_id" class="form-control" onchange="projectSelector()">
+                                        @foreach (auth()->user()->projects as $project)
+                                            <option value="{{ $project->id }}">{{ $project->forge_site_url }} ({{ $project->github_repo }})</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            </div>
 
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-info">Edit Project</button>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <a id="EditProject">
+                                        <button class="btn btn-info">Edit Project</button>
+                                    </a>
+                                    <form id="DeleteProject" style="display: inline-block;" method="post" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                                        @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete Project</button>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     @else
                         <div class="card-body">
@@ -151,4 +153,16 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function projectSelector() {
+            var select = document.querySelector('#project_id');
+            var projectId = select.options[select.selectedIndex].value;
+
+            document.querySelector('#EditProject').href = '{{ action("ProjectController@show", [""]) }}' + '/' + projectId;
+            document.querySelector('#DeleteProject').action = '{{ action("ProjectController@destroy", [""]) }}' + '/' + projectId;
+        }
+
+        projectSelector();
+    </script>
 @endsection
