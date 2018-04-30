@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::redirect('/login', '/login/github', 302);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
