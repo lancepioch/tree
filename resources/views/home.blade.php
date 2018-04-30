@@ -86,7 +86,7 @@
                     <div class="card-header">Create New Project</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ action('ProjectController@create') }}">
+                        <form method="POST" action="{{ action('ProjectController@store') }}">
                             @csrf
 
                             <div class="form-group row">
