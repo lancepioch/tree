@@ -26,11 +26,10 @@ class DeploySite implements ShouldQueue
      * @param $pullRequest
      * @param Client $github
      */
-    public function __construct(Branch $branch, $pullRequest, Client $github)
+    public function __construct(Branch $branch, $pullRequest)
     {
         $this->branch = $branch;
         $this->pullRequest = $pullRequest;
-        $this->github = $github;
     }
 
     /**
@@ -43,9 +42,9 @@ class DeploySite implements ShouldQueue
         $branch = $this->branch;
         $project = $branch->project;
         $pullRequest = $this->pullRequest;
-        $github = $this->github;
 
         $forge = new Forge($project->user->forge_token);
+        $github = new Client();
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
