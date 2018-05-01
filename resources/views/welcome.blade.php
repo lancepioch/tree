@@ -68,6 +68,12 @@
                 box-shadow: 1px 1px 5px #333;
                 cursor: pointer;
             }
+
+            .description {
+                max-width: 600px;
+                color: #000000;
+                font-weight: 600;
+            }
         </style>
     </head>
     <body>
@@ -86,10 +92,25 @@
                     <a href="https://github.com">GitHub</a>
                 </div>
 
-                <div>
+                <div class="m-b-md">
                     <a href="{{ action('Auth\LoginController@redirectToProvider') }}">
                         <button class="github-button">Login with GitHub</button>
                     </a>
+                </div>
+
+                <div class="description m-b-md">
+                    {{ config('app.name') }} connects your git repositories to your Laravel Forge servers
+                    by monitoring your pull requests and automatically building new sites
+                    for each new pull request or new commits to an existing pull request automatically.
+                </div>
+
+                <div class="description m-b-md">
+                    <span style="text-decoration: underline;">3 Easy Steps</span>
+                    <ol>
+                        <li>Login with GitHub and add your Forge API key</li>
+                        <li>Choose your repository, server, and a URL with a * wildcard</li>
+                        <li>{{ config('app.name') }} handles everything automatically afterwards</li>
+                    </ol>
                 </div>
             </div>
         </div>
