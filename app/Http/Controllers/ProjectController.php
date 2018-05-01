@@ -88,7 +88,7 @@ class ProjectController extends Controller
         $project->forge_deployment = $request->get('forge_deployment');
         $project->save();
 
-        return redirect()->action('ProjectController@show', [$project]);
+        return redirect()->action('ProjectController@index', [$project]);
     }
 
     public function destroy(Project $project, Client $github)
