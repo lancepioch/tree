@@ -31,7 +31,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">Save Project</button>
-                                    <a href="{{ action('ProjectController@index') }}"><span class="btn btn-warning">Cancel</span></a>
+                                    <a href="{{ action('ProjectController@index') }}"><span class="btn btn-default">Cancel</span></a>
                                 </div>
                             </div>
                         </form>

@@ -63,7 +63,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <a id="EditProject">
-                                        <button class="btn btn-info">Edit Project</button>
+                                        <button class="btn btn-primary">Edit Project</button>
                                     </a>
                                     <form id="DeleteProject" style="display: inline-block;" method="post" onsubmit="return confirm('Are you sure you want to delete this project?');">
                                         @csrf
