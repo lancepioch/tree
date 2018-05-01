@@ -61,22 +61,10 @@ class SetupSite implements ShouldQueue
             'directory' => '/public',
         ], false);
 
-        // MySQL
-        $sqlUsername = 'pull_request_' . $pullRequest['number'];
-        $sqlPassword = str_random(20);
-        $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
-        $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
-            'name' => $sqlUsername,
-            'password' => $sqlPassword,
-            'databases' => [$mysqlDatabase->id],
-        ], false);
-
         /** @var \App\Branch $branch */
         $branch = $project->branches()->create([
             'issue_number' => $pullRequest['number'],
             'forge_site_id' => $site->id,
-            'forge_mysql_database_id' => $mysqlDatabase->id,
-            'forge_mysql_user_id' => $mysqlUser->id,
         ]);
 
         while ($site->status !== 'installed') {
@@ -91,22 +79,12 @@ class SetupSite implements ShouldQueue
             'branch' => $pullRequest['head']['ref'],
         ]);
 
-        // Environment
-        $environment = $forge->siteEnvironmentFile($project->forge_server_id, $site->id);
-        $environment = preg_replace('/^DB_DATABASE=.*$/', 'DB_DATABASE='.$sqlUsername, $environment);
-        $environment = preg_replace('/^DB_USERNAME=.*$/', 'DB_USERNAME='.$sqlUsername, $environment);
-        $environment = preg_replace('/^DB_PASSWORD=.*$/', 'DB_PASSWORD='.$sqlPassword, $environment);
-
-        if (strlen($environment) > 0) {
-            $forge->updateSiteEnvironmentFile($project->forge_server_id, $site->id, $environment);
-        }
-
         $deploymentScript = $site->getDeploymentScript();
         $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
         $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
         $deploymentScript .= "\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
-        dispatch(new DeploySite($branch, $pullRequest));
+        DeploySite::withChain([new SetupSql($branch)])->dispatch($branch, $pullRequest);
     }
 }
