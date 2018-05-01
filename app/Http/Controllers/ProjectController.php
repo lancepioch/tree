@@ -50,8 +50,6 @@ class ProjectController extends Controller
             $project->restore();
         }
 
-        $project = auth()->user()->projects()->save($project);
-
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
@@ -66,6 +64,10 @@ class ProjectController extends Controller
             'events' => ['pull_request'],
             'active' => true,
         ]);
+
+        $project->webhook_id = $hook['id'];
+
+        auth()->user()->projects()->save($project);
 
         return redirect()->action('HomeController@index');
     }

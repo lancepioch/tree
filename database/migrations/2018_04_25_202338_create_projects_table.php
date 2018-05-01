@@ -20,6 +20,7 @@ class CreateProjectsTable extends Migration
             $table->integer('forge_server_id');
             $table->string('github_repo')->unique();
             $table->string('webhook_secret');
+            $table->integer('webhook_id');
             $table->text('forge_deployment')->nullable();
             $table->timestamps();
             $table->softDeletes();
