@@ -63,20 +63,18 @@
             .m-b-md {
                 margin-bottom: 25px;
             }
+
+            .github-button {
+                background-color: #699943;
+                color: #ffffff;
+                border: 0;
+                padding: 25px;
+                font-size: 25px;
+            }
         </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ action('Auth\LoginController@redirectToProvider') }}">Login / Register</a>
-                    @endauth
-                </div>
-            @endif
-
             <div class="content">
                 <div class="title m-b-md">
                     <img src="/img/trees.svg">
@@ -90,6 +88,11 @@
                     <a href="https://reddit.com/r/laravel">Reddit</a>
                     <a href="https://github.com">GitHub</a>
                 </div>
+
+                <div>
+                    <a href="{{ action('Auth\LoginController@redirectToProvider') }}">
+                        <button class="github-button">Login with GitHub</button>
+                    </a>
                 </div>
             </div>
         </div>
