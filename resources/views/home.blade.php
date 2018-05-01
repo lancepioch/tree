@@ -141,6 +141,7 @@
                 </div>
             </div>
 
+            @if (config('app.survey'))
             <div class="col-md-8 mt-3">
                 <div class="card">
                     <div class="card-header">Optional Survey</div>
@@ -151,6 +152,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
