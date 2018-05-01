@@ -85,6 +85,6 @@ class SetupSite implements ShouldQueue
         $deploymentScript .= "\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
-        DeploySite::withChain([new SetupSql($branch)])->dispatch($branch, $pullRequest);
+        SetupSql::withChain([new DeploySite($branch, $pullRequest)])->dispatch($branch);
     }
 }
