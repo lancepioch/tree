@@ -49,7 +49,7 @@ class SetupSite implements ShouldQueue
             ->statuses()
             ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
                 'state' => 'pending',
-                'description' => 'Deploying your branch via ' . config('app.name'),
+                'description' => 'Setting up your branch to be deployed via ' . config('app.name'),
                 'context' => config('app.name'),
             ]);
 
