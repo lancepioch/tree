@@ -80,7 +80,7 @@ class SetupSite implements ShouldQueue
         ]);
 
         while ($site->status !== 'installed') {
-            sleep(1);
+            sleep(5);
             $site = $forge->site($project->forge_server_id, $site->id);
         }
 

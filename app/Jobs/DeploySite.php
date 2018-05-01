@@ -57,14 +57,14 @@ class DeploySite implements ShouldQueue
             ]);
 
         while ($site->repositoryStatus === 'installing') {
-            sleep(1);
+            sleep(5);
             $site = $forge->site($project->forge_server_id, $site->id);
         }
 
         $site->deploySite();
 
         while ($site->deploymentStatus !== null) {
-            sleep(1);
+            sleep(5);
             $site = $forge->site($project->forge_server_id, $site->id);
         }
 
