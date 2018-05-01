@@ -91,8 +91,13 @@ class ProjectController extends Controller
         return redirect()->action('ProjectController@show', [$project]);
     }
 
-    public function destroy(Project $project)
+    public function destroy(Project $project, Client $github)
     {
+        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+
+        $github->api('repo')->hooks()->delete($githubUser, $githubRepo, $project->webhook_id);
+
         $project->delete();
 
         return redirect()->action('ProjectController@index');
