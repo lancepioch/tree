@@ -78,8 +78,8 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{ config('app.name') }}
                     <img src="/img/trees.svg">
+                    {{ config('app.name') }}
                 </div>
 
                 <div class="links m-b-md">
