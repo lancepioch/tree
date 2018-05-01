@@ -22,6 +22,8 @@
             }
 
             .full-height {
+                box-sizing: border-box;
+                padding-top: 25px;
                 height: 100vh;
             }
 
