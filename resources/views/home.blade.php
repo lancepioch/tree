@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 mt-3">
+            <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Tokens</div>
 
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="col-md-8 mt-3">
+            <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Projects</div>
 
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="col-md-8 mt-3">
+            <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Create New Project</div>
 
@@ -142,7 +142,7 @@
             </div>
 
             @if (config('app.survey'))
-            <div class="col-md-8 mt-3">
+            <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Optional Survey</div>
 
