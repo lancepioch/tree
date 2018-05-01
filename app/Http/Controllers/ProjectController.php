@@ -50,7 +50,7 @@ class ProjectController extends Controller
             $project->restore();
         }
 
-        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        $github->authenticate(auth()->user()->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
