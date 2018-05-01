@@ -82,12 +82,13 @@
                     <img src="/img/trees.svg">
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
+                <div class="links m-b-md">
+                    <a href="https://bouncefirst.com">Bouncefirst</a>
+                    <a href="https://laravel.com">Laravel</a>
                     <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://reddit.com/r/laravel">Reddit</a>
+                    <a href="https://github.com">GitHub</a>
+                </div>
                 </div>
             </div>
         </div>
