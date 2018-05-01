@@ -96,7 +96,7 @@ class ProjectController extends Controller
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $github->api('repo')->hooks()->delete($githubUser, $githubRepo, $project->webhook_id);
+        $github->api('repo')->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
 
         $project->delete();
 
