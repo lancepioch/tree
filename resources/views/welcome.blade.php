@@ -65,6 +65,8 @@
                 border: 0;
                 padding: 25px;
                 font-size: 25px;
+                box-shadow: 1px 1px 5px #333;
+                cursor: pointer;
             }
         </style>
     </head>
