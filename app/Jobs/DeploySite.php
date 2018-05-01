@@ -110,24 +110,4 @@ class DeploySite implements ShouldQueue
                 'body' => config('app.name') . ' Build URL: http://' . $url,
             ]);
     }
-
-    /**
-     * The job failed to process.
-     *
-     * @param  \Exception  $exception
-     * @return void
-     */
-    public function failed(\Exception $exception)
-    {
-        $this->github->authenticate($this->branch->project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
-        [$githubUser, $githubRepo] = explode('/', $this->branch->project->github_repo);
-
-        $this->github->api('repo')
-            ->statuses()
-            ->create($githubUser, $githubRepo, $this->pullRequest['head']['sha'], [
-                'state' => 'failure',
-                'description' => 'There was an exception with your deployment, please report the curren time to ' . config('app.name') . ' for assistance, thank you!',
-                'context' => config('app.name'),
-            ]);
-    }
 }
