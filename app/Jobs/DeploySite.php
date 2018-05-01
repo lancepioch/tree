@@ -17,30 +17,33 @@ class DeploySite implements ShouldQueue
 
     private $branch;
     private $pullRequest;
+    private $github;
 
     /**
      * Create a new job instance.
      *
      * @param Branch $branch
      * @param $pullRequest
+     * @param Client $github
      */
-    public function __construct(Branch $branch, $pullRequest)
+    public function __construct(Branch $branch, $pullRequest, Client $github)
     {
         $this->branch = $branch;
         $this->pullRequest = $pullRequest;
+        $this->github = $github;
     }
 
     /**
      * Execute the job.
      *
-     * @param Client $github
      * @return void
      */
-    public function handle(Client $github)
+    public function handle()
     {
         $branch = $this->branch;
         $project = $branch->project;
         $pullRequest = $this->pullRequest;
+        $github = $this->github;
 
         $forge = new Forge($project->user->forge_token);
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
