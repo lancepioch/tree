@@ -22,6 +22,7 @@ class WebhookController extends Controller
         [$algorithm, $signature] = explode('=', $signature, 2);
         $pullRequest = $input['pull_request'];
         $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
+        $branch = $project->branches()->where('issue_number', $pullRequest['number'])->first();
 
         abort_if($project === null, 200, 'Project Not Found');
 
@@ -41,10 +42,10 @@ class WebhookController extends Controller
                 SetupSite::dispatch($project, $pullRequest);
                 break;
             case 'closed':
-                RemoveSite::dispatch($project, $pullRequest);
+                RemoveSite::dispatch($branch);
                 break;
             case 'synchronize':
-                DeploySite::dispatch($project->branches->last(), $pullRequest);
+                DeploySite::dispatch($branch, $pullRequest);
                 break;
             case 'assigned':
             case 'unassigned':
