@@ -21,7 +21,8 @@ class SetupSite implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Project $project
+     * @param $pullRequest
      */
     public function __construct(Project $project, $pullRequest)
     {
