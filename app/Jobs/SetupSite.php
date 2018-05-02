@@ -63,7 +63,7 @@ class SetupSite implements ShouldQueue
         ], false);
 
         $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']]);
-        $branch->forge_site_id  = $site->id;
+        $branch->forge_site_id = $site->id;
         $branch->save();
 
         while ($site->status !== 'installed') {
