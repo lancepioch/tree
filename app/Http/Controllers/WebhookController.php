@@ -21,10 +21,10 @@ class WebhookController extends Controller
 
         [$algorithm, $signature] = explode('=', $signature, 2);
         $pullRequest = $input['pull_request'];
-        $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
-        $branch = $project->branches()->where('issue_number', $pullRequest['number'])->first();
 
+        $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
         abort_if($project === null, 200, 'Project Not Found');
+        $branch = $project->branches()->where('issue_number', $pullRequest['number'])->first();
 
         // Signature Verification
         $hash = hash_hmac($algorithm, $request->getContent(), $project->webhook_secret);
