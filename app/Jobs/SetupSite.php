@@ -82,7 +82,8 @@ class SetupSite implements ShouldQueue
         $deploymentScript = $site->getDeploymentScript();
         $deploymentScript .= "\n\nif [ -f composer.json ]; then composer install --no-interaction --prefer-dist --optimize-autoloader; fi";
         $deploymentScript .= "\nif [ -f artisan ]; then php artisan key:generate; fi";
-        $deploymentScript .= "\necho 'successful-deployment-{$site->id}'";
+        $deploymentScript .= "\n" . $project->forge_deployment ?? '# No Custom Deployment';
+        $deploymentScript .= "\n\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
         while ($site->repositoryStatus === 'installing') {
