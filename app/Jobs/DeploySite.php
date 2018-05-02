@@ -63,8 +63,12 @@ class DeploySite implements ShouldQueue
             $site = $forge->site($project->forge_server_id, $site->id);
         }
 
-        $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
-        $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
+        try {
+            $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
+            $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
+        } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
+            $this->release(3);
+        }
 
         if (!$deploymentSuccess) {
             $github->api('repo')
