@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Branch;
-use Github\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,9 +37,6 @@ class DeploySite implements ShouldQueue
         $project = $branch->project;
 
         $forge = new Forge($project->user->forge_token);
-        $github = new Client();
-        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
-        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $branch->githubStatus('pending', 'Deploying your branch.');
 
@@ -61,24 +57,14 @@ class DeploySite implements ShouldQueue
 
         if (!$deploymentSuccess) {
             $branch->githubStatus('failure', 'Failed to deployed your branch.');
+            $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog);
 
-            $github->api('issue')
-                ->comments()
-                ->create($githubUser, $githubRepo, $branch->issue_number, [
-                    'body' => config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog,
-                ]);
-            
             return;
         }
 
         $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
 
         $branch->githubStatus('success', 'Deployed your branch.', 'http://' . $url);
-
-        $github->api('issue')
-            ->comments()
-            ->create($githubUser, $githubRepo, $branch->issue_number, [
-                'body' => config('app.name') . ' Build URL: http://' . $url,
-            ]);
+        $branch->githubComment(config('app.name') . ' Build URL: http://' . $url);
     }
 }

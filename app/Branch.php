@@ -36,4 +36,19 @@ class Branch extends Model
 
         $github->api('repo')->statuses()->create($githubUser, $githubRepo, $this->commit_hash, $status);
     }
+
+    public function githubComment($body)
+    {
+        $project = $this->project;
+
+        $github = new Client();
+        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+
+        $github->api('issue')
+            ->comments()
+            ->create($githubUser, $githubRepo, $this->issue_number, [
+                'body' => $body,
+            ]);
+    }
 }
