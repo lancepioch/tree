@@ -77,7 +77,7 @@ class DeploySite implements ShouldQueue
 
             $github->api('issue')
                 ->comments()
-                ->create($githubUser, $githubRepo, $pullRequest['number'], [
+                ->create($githubUser, $githubRepo, $branch->issue_number, [
                     'body' => config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog,
                 ]);
             
@@ -86,7 +86,7 @@ class DeploySite implements ShouldQueue
 
         // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
 
-        $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
+        $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
 
         $github->api('repo')
             ->statuses()
@@ -99,7 +99,7 @@ class DeploySite implements ShouldQueue
 
         $github->api('issue')
             ->comments()
-            ->create($githubUser, $githubRepo, $pullRequest['number'], [
+            ->create($githubUser, $githubRepo, $branch->issue_number, [
                 'body' => config('app.name') . ' Build URL: http://' . $url,
             ]);
     }
