@@ -127,7 +127,10 @@
                                 <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">Deployment:</label>
 
                                 <div class="col-md-6">
-                                    <textarea name="forge_deployment" class="form-control" rows="5" placeholder="php artisan db:seed"></textarea>
+                                    <textarea style="white-space: nowrap;" name="forge_deployment" class="form-control" rows="5" placeholder="php artisan db:seed">composer install --no-interaction --prefer-dist
+php artisan key:generate
+php artisan migrate --force
+</textarea>
                                 </div>
                             </div>
 
