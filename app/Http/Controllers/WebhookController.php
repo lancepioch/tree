@@ -24,7 +24,7 @@ class WebhookController extends Controller
 
         $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
         abort_if($project === null, 200, 'Project Not Found');
-        $branch = $project->branches()->where('issue_number', $pullRequest['number'])->last();
+        $branch = $project->branches()->where('issue_number', $pullRequest['number'])->orderBy('id', 'desc')->first();
 
         // Signature Verification
         $hash = hash_hmac($algorithm, $request->getContent(), $project->webhook_secret);
