@@ -14,13 +14,31 @@ class RemoveSite implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $project;
+    private $pullRequest;
+
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Project $project
+     * @param $pullRequest
      */
     public function __construct(Project $project, $pullRequest)
     {
+        $this->project = $project;
+        $this->pullRequest = $pullRequest;
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $project = $this->project;
+        $pullRequest = $this->pullRequest;
+
         $forge = new Forge($project->user->forge_token);
 
         $branch = $project
@@ -42,15 +60,5 @@ class RemoveSite implements ShouldQueue
         }
 
         $forge->deleteSite($project->forge_server_id, $branch->forge_site_id);
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        //
     }
 }
