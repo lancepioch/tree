@@ -20,7 +20,6 @@ class RemoveSite implements ShouldQueue
      * Create a new job instance.
      *
      * @param Branch $branch
-     * @param $pullRequest
      */
     public function __construct(Branch $branch)
     {

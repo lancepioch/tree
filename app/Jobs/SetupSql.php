@@ -19,7 +19,7 @@ class SetupSql implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param Branch $branch
      */
     public function __construct(Branch $branch)
     {
