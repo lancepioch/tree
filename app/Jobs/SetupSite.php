@@ -62,8 +62,10 @@ class SetupSite implements ShouldQueue
             'directory' => '/public',
         ], false);
 
+        /** @var \App\Branch $branch */
         $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']]);
         $branch->forge_site_id = $site->id;
+        $branch->commit_hash = $pullRequest['head']['sha'];
         $branch->save();
 
         while ($site->status !== 'installed') {

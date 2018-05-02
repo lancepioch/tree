@@ -45,7 +45,7 @@ class WebhookController extends Controller
                 RemoveSite::dispatch($branch);
                 break;
             case 'synchronize':
-                DeploySite::dispatch($branch, $pullRequest);
+                DeploySite::dispatch($branch);
                 break;
             case 'assigned':
             case 'unassigned':

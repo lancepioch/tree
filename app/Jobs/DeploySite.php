@@ -16,18 +16,15 @@ class DeploySite implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $branch;
-    private $pullRequest;
 
     /**
      * Create a new job instance.
      *
      * @param Branch $branch
-     * @param $pullRequest
      */
-    public function __construct(Branch $branch, $pullRequest)
+    public function __construct(Branch $branch)
     {
         $this->branch = $branch;
-        $this->pullRequest = $pullRequest;
     }
 
     /**
@@ -39,7 +36,6 @@ class DeploySite implements ShouldQueue
     {
         $branch = $this->branch;
         $project = $branch->project;
-        $pullRequest = $this->pullRequest;
 
         $forge = new Forge($project->user->forge_token);
         $github = new Client();
@@ -50,7 +46,7 @@ class DeploySite implements ShouldQueue
 
         $github->api('repo')
             ->statuses()
-            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+            ->create($githubUser, $githubRepo, $branch->commit_hash, [
                 'state' => 'pending',
                 'description' => 'Deploying your branch via ' . config('app.name'),
                 'context' => config('app.name'),
@@ -73,7 +69,7 @@ class DeploySite implements ShouldQueue
         if (!$deploymentSuccess) {
             $github->api('repo')
                 ->statuses()
-                ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+                ->create($githubUser, $githubRepo, $branch->commit_hash, [
                     'state' => 'failure',
                     'description' => 'Failed to deployed your branch.',
                     'context' => config('app.name'),
@@ -94,7 +90,7 @@ class DeploySite implements ShouldQueue
 
         $github->api('repo')
             ->statuses()
-            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
+            ->create($githubUser, $githubRepo, $branch->commit_hash, [
                 'state' => 'success',
                 'description' => 'Deployed your branch via ' . config('app.name'),
                 'context' => config('app.name'),
