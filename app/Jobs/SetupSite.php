@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Branch;
 use App\Project;
 use Github\Client;
 use Illuminate\Bus\Queueable;
@@ -41,18 +42,13 @@ class SetupSite implements ShouldQueue
         $pullRequest = $this->pullRequest;
 
         $forge = new Forge($project->user->forge_token);
-        $github = new Client();
-        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
-        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $status = $github
-            ->api('repo')
-            ->statuses()
-            ->create($githubUser, $githubRepo, $pullRequest['head']['sha'], [
-                'state' => 'pending',
-                'description' => 'Setting up your branch to be deployed via ' . config('app.name'),
-                'context' => config('app.name'),
-            ]);
+        /** @var \App\Branch $branch */
+        $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']]);
+        $branch->issue_number = $pullRequest['number'];
+        $branch->commit_hash = $pullRequest['head']['sha'];
+
+        $branch->githubStatus('pending', 'Setting up your branch to be deployed.');
 
         // Site
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
@@ -62,10 +58,7 @@ class SetupSite implements ShouldQueue
             'directory' => '/public',
         ], false);
 
-        /** @var \App\Branch $branch */
-        $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']]);
         $branch->forge_site_id = $site->id;
-        $branch->commit_hash = $pullRequest['head']['sha'];
         $branch->save();
 
         while ($site->status !== 'installed') {

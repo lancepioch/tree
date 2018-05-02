@@ -42,16 +42,9 @@ class DeploySite implements ShouldQueue
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
+        $branch->githubStatus('pending', 'Deploying your branch.');
+
         $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
-
-        $github->api('repo')
-            ->statuses()
-            ->create($githubUser, $githubRepo, $branch->commit_hash, [
-                'state' => 'pending',
-                'description' => 'Deploying your branch via ' . config('app.name'),
-                'context' => config('app.name'),
-            ]);
-
         $site->deploySite();
 
         while ($site->deploymentStatus !== null) {
@@ -67,13 +60,7 @@ class DeploySite implements ShouldQueue
         }
 
         if (!$deploymentSuccess) {
-            $github->api('repo')
-                ->statuses()
-                ->create($githubUser, $githubRepo, $branch->commit_hash, [
-                    'state' => 'failure',
-                    'description' => 'Failed to deployed your branch.',
-                    'context' => config('app.name'),
-                ]);
+            $branch->githubStatus('failure', 'Failed to deployed your branch.');
 
             $github->api('issue')
                 ->comments()
@@ -88,14 +75,7 @@ class DeploySite implements ShouldQueue
 
         $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
 
-        $github->api('repo')
-            ->statuses()
-            ->create($githubUser, $githubRepo, $branch->commit_hash, [
-                'state' => 'success',
-                'description' => 'Deployed your branch via ' . config('app.name'),
-                'context' => config('app.name'),
-                'target_url' => 'http://' . $url,
-            ]);
+        $branch->githubStatus('success', 'Deployed your branch.', 'http://' . $url);
 
         $github->api('issue')
             ->comments()
