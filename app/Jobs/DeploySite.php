@@ -24,7 +24,6 @@ class DeploySite implements ShouldQueue
      *
      * @param Branch $branch
      * @param $pullRequest
-     * @param Client $github
      */
     public function __construct(Branch $branch, $pullRequest)
     {
