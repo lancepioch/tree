@@ -93,6 +93,6 @@ class SetupSite implements ShouldQueue
 
         sleep(10);
 
-        SetupSql::withChain([new DeploySite($branch, $pullRequest)])->dispatch($branch);
+        SetupSql::withChain([new DeploySite($branch)])->dispatch($branch);
     }
 }
