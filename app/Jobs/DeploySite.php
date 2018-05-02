@@ -17,7 +17,6 @@ class DeploySite implements ShouldQueue
 
     private $branch;
     private $pullRequest;
-    private $github;
 
     /**
      * Create a new job instance.
