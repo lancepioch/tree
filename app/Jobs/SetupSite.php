@@ -85,6 +85,11 @@ class SetupSite implements ShouldQueue
         $deploymentScript .= "\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
+        while ($site->repositoryStatus === 'installing') {
+            sleep(5);
+            $site = $forge->site($project->forge_server_id, $site->id);
+        }
+
         SetupSql::withChain([new DeploySite($branch, $pullRequest)])->dispatch($branch);
     }
 }
