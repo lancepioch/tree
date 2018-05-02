@@ -92,6 +92,8 @@ class SetupSite implements ShouldQueue
             $site = $forge->site($project->forge_server_id, $site->id);
         }
 
+        sleep(5);
+
         SetupSql::withChain([new DeploySite($branch, $pullRequest)])->dispatch($branch);
     }
 }
