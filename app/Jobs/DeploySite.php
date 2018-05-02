@@ -71,8 +71,6 @@ class DeploySite implements ShouldQueue
             return;
         }
 
-        // $forge->obtainLetsEncryptCertificate($project->forge_server_id, $site->id, ['domains' => [$url]]);
-
         $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
 
         $branch->githubStatus('success', 'Deployed your branch.', 'http://' . $url);
