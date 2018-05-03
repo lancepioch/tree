@@ -43,7 +43,6 @@ class SetupSite implements ShouldQueue
 
         /** @var \App\Branch $branch */
         $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']], [
-            'issue_number' => $pullRequest['number'],
             'commit_hash' => $pullRequest['head']['sha'],
         ]);
 
