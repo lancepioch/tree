@@ -42,11 +42,10 @@
                 </div>
             </div>
 
+            @if (auth()->user()->projects->count() > 0)
             <div class="col-md-10 mt-3">
                 <div class="card">
-                    <div class="card-header">Projects</div>
-
-                    @if (auth()->user()->projects->count() > 0)
+                    <div class="card-header">Active Projects</div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="project_id" class="col-sm-4 col-form-label text-md-right">Project:</label>
@@ -73,15 +72,9 @@
                                 </div>
                             </div>
                         </div>
-                    @else
-                        <div class="card-body">
-                            <div class="col-md-8 offset-md-4">
-                                You haven't created any projects yet!
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
+            @endif
 
             <div class="col-md-10 mt-3">
                 <div class="card">
