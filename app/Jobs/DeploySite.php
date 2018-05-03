@@ -39,16 +39,13 @@ class DeploySite implements ShouldQueue
         $forge = new Forge($project->user->forge_token);
 
         $branch->githubStatus('pending', 'Deploying your branch.');
-
+        $forge->deploySite($project->forge_server_id, $branch->forge_site_id);
         $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
-        $site->deploySite();
 
         while ($site->deploymentStatus !== null) {
             sleep(5);
             $site = $forge->site($project->forge_server_id, $site->id);
         }
-
-        sleep(15);
 
         try {
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
