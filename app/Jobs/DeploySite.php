@@ -55,6 +55,8 @@ class DeploySite implements ShouldQueue
             $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
         } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
             $this->release(5);
+            
+            return;
         }
 
         if (!$deploymentSuccess) {
