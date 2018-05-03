@@ -89,7 +89,7 @@
                     <a href="https://laravel.com">Laravel</a>
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://reddit.com/r/laravel">Reddit</a>
-                    <a href="https://github.com">GitHub</a>
+                    <a href="https://github.com/lancepioch/tree">GitHub</a>
                 </div>
 
                 <div class="m-b-md">
