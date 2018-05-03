@@ -42,9 +42,10 @@ class SetupSite implements ShouldQueue
         $forge = new Forge($project->user->forge_token);
 
         /** @var \App\Branch $branch */
-        $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']]);
-        $branch->issue_number = $pullRequest['number'];
-        $branch->commit_hash = $pullRequest['head']['sha'];
+        $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']], [
+            'issue_number' => $pullRequest['number'],
+            'commit_hash' => $pullRequest['head']['sha'],
+        ]);
 
         $branch->githubStatus('pending', 'Setting up your branch to be deployed.');
 
