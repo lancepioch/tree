@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Branch;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Themsaid\Forge\Forge;
 
 class SetupSql implements ShouldQueue
 {
@@ -38,7 +38,7 @@ class SetupSql implements ShouldQueue
         $forge = new Forge($project->user->forge_token);
 
         // MySQL
-        $sqlUsername = 'pull_request_'.$branch->issue_number;
+        $sqlUsername = 'pull_request_' . $branch->issue_number;
         $sqlPassword = str_random(20);
         $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
         $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
@@ -53,9 +53,9 @@ class SetupSql implements ShouldQueue
 
         // Environment
         $environment = $forge->siteEnvironmentFile($project->forge_server_id, $branch->forge_site_id);
-        $environment = preg_replace('/^DB_DATABASE=.*$/m', 'DB_DATABASE='.$sqlUsername, $environment);
-        $environment = preg_replace('/^DB_USERNAME=.*$/m', 'DB_USERNAME='.$sqlUsername, $environment);
-        $environment = preg_replace('/^DB_PASSWORD=.*$/m', 'DB_PASSWORD='.$sqlPassword, $environment);
+        $environment = preg_replace('/^DB_DATABASE=.*$/m', 'DB_DATABASE=' . $sqlUsername, $environment);
+        $environment = preg_replace('/^DB_USERNAME=.*$/m', 'DB_USERNAME=' . $sqlUsername, $environment);
+        $environment = preg_replace('/^DB_PASSWORD=.*$/m', 'DB_PASSWORD=' . $sqlPassword, $environment);
 
         if (strlen($environment) > 0) {
             $forge->updateSiteEnvironmentFile($project->forge_server_id, $branch->forge_site_id, $environment);

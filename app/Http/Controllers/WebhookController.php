@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Project;
+use App\Jobs\SetupSite;
 use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
-use App\Jobs\SetupSite;
-use App\Project;
 use Illuminate\Http\Request;
 
 class WebhookController extends Controller

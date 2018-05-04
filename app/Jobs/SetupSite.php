@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Project;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Themsaid\Forge\Forge;
 
 class SetupSite implements ShouldQueue
 {
@@ -74,7 +74,7 @@ class SetupSite implements ShouldQueue
         $deploymentScript = $site->getDeploymentScript();
         $deploymentScript .= "\n\n# Begin " . config('app.name') . " Configuration\n";
         $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
-        $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . " # End Initial Deployment";
+        $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . ' # End Initial Deployment';
         $deploymentScript .= "\n\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
