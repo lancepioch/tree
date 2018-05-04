@@ -33,7 +33,8 @@ class ProjectController extends Controller
      * Creates a new project.
      *
      * @param Request $request
-     * @param Client $github
+     * @param Client  $github
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Client $github)
@@ -54,11 +55,11 @@ class ProjectController extends Controller
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
-            'name' => 'web',
+            'name'   => 'web',
             'config' => [
-                'url' => action('WebhookController@githubPullRequest'),
+                'url'          => action('WebhookController@githubPullRequest'),
                 'content_type' => 'json',
-                'secret' => $project->webhook_secret,
+                'secret'       => $project->webhook_secret,
                 'insecure_ssl' => 0,
             ],
             'events' => ['pull_request'],

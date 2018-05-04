@@ -4,10 +4,10 @@ namespace App\Jobs;
 
 use App\Branch;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Themsaid\Forge\Forge;
 
 class SetupSql implements ShouldQueue
@@ -38,12 +38,12 @@ class SetupSql implements ShouldQueue
         $forge = new Forge($project->user->forge_token);
 
         // MySQL
-        $sqlUsername = 'pull_request_' . $branch->issue_number;
+        $sqlUsername = 'pull_request_'.$branch->issue_number;
         $sqlPassword = str_random(20);
         $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
         $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
-            'name' => $sqlUsername,
-            'password' => $sqlPassword,
+            'name'      => $sqlUsername,
+            'password'  => $sqlPassword,
             'databases' => [$mysqlDatabase->id],
         ], false);
 

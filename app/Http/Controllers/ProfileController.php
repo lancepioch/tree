@@ -20,6 +20,7 @@ class ProfileController extends Controller
      * Updates the current user.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)

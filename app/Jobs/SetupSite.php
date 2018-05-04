@@ -4,10 +4,10 @@ namespace App\Jobs;
 
 use App\Project;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Themsaid\Forge\Forge;
 
 class SetupSite implements ShouldQueue
@@ -51,9 +51,9 @@ class SetupSite implements ShouldQueue
         // Site
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
         $site = $forge->createSite($project->forge_server_id, [
-            'domain' => $url,
+            'domain'       => $url,
             'project_type' => 'php',
-            'directory' => '/public',
+            'directory'    => '/public',
         ], false);
 
         $branch->forge_site_id = $site->id;
@@ -66,9 +66,9 @@ class SetupSite implements ShouldQueue
 
         // Repository
         $site->installGitRepository([
-            'provider' => 'github',
+            'provider'   => 'github',
             'repository' => $pullRequest['head']['repo']['full_name'],
-            'branch' => $pullRequest['head']['ref'],
+            'branch'     => $pullRequest['head']['ref'],
         ]);
 
         $deploymentScript = $site->getDeploymentScript();

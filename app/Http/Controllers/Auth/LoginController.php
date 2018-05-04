@@ -64,9 +64,9 @@ class LoginController extends Controller
         $user = User::query()->firstOrNew(['github_id' => $social->id]);
 
         $user->fill([
-            'name' => $social->getName(),
-            'email' => $social->getEmail(),
-            'github_id' => $social->getId(),
+            'name'         => $social->getName(),
+            'email'        => $social->getEmail(),
+            'github_id'    => $social->getId(),
             'github_token' => $social->token,
         ]);
 

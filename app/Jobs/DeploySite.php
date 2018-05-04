@@ -4,10 +4,10 @@ namespace App\Jobs;
 
 use App\Branch;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Themsaid\Forge\Forge;
 
 class DeploySite implements ShouldQueue
@@ -52,7 +52,7 @@ class DeploySite implements ShouldQueue
             $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
         } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
             $this->release(5);
-            
+
             return;
         }
 

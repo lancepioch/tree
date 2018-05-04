@@ -25,9 +25,9 @@ class Branch extends Model
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $status = [
-            'state' => $state,
+            'state'       => $state,
             'description' => $description,
-            'context' => config('app.name'),
+            'context'     => config('app.name'),
         ];
 
         if ($url !== null) {

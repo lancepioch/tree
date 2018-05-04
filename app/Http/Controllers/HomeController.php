@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Exception;
 use Github\Client;
 use Github\ResultPager;
-use Illuminate\Http\Request;
 use Themsaid\Forge\Forge;
 
 class HomeController extends Controller
