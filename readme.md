@@ -5,6 +5,14 @@
 ## Description
 Connect your Github Repository to your Laravel Forge Server and Laravel Forest automatically deploys any new pull requests for you.
 
+## Installation
+
+1. Git Clone: `git clone git@github.com:lancepioch/tree.git`
+2. Composer Install `composer install`
+3. Environment Setup: `cp .env.example .env && vim .env`
+4. Artisan Migrate: `php artisan migrate`
+5. Daemonize Horizon: `php artisan horizon`
+
 ## License
 ```
 MIT License
