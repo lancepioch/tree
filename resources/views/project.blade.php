@@ -24,7 +24,15 @@
                                 <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">Deployment:</label>
 
                                 <div class="col-md-6">
-                                    <textarea name="forge_deployment" class="form-control" rows="5" placeholder="php artisan db:seed">{{ $project->forge_deployment }}</textarea>
+                                    <textarea style="white-space: nowrap;" name="forge_deployment" class="form-control" rows="5" placeholder="php artisan migrate --force">{{ $project->forge_deployment }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">Initial Deployment:</label>
+
+                                <div class="col-md-6">
+                                    <textarea style="white-space: nowrap;" name="forge_deployment_initial" class="form-control" rows="5" placeholder="php artisan db:seed">{{ $project->forge_deployment_initial }}</textarea>
                                 </div>
                             </div>
 
