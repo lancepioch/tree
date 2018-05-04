@@ -1,6 +1,6 @@
 # Laravel Forest
 
-![Trees](public/img/trees.svg)
+![Trees](public/img/trees.png)
 
 ## Description
 Connect your Github Repository to your Laravel Forge Server and Laravel Forest automatically deploys any new pull requests for you.
