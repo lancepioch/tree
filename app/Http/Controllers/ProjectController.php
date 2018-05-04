@@ -84,8 +84,7 @@ class ProjectController extends Controller
 
     public function update(Project $project, Request $request)
     {
-        $project->forge_site_url = $request->get('forge_site_url');
-        $project->forge_deployment = $request->get('forge_deployment');
+        $project->fill($request->except(['forge_server_id', 'github_repo', 'webhook_secret']));
         $project->save();
 
         return redirect()->action('ProjectController@index', [$project]);
