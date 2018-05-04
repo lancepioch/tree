@@ -74,7 +74,7 @@ class SetupSite implements ShouldQueue
         $deploymentScript = $site->getDeploymentScript();
         $deploymentScript .= "\n\n# Begin " . config('app.name') . " Configuration\n";
         $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
-        $deploymentScript .= "# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . "\n# End Initial Deployment";
+        $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . " # End Initial Deployment";
         $deploymentScript .= "\n\necho 'successful-deployment-{$site->id}'";
         $site->updateDeploymentScript($deploymentScript);
 
