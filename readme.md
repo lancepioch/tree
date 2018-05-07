@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/lancepioch/tree.svg?branch=master)](https://travis-ci.org/lancepioch/tree)
+[![codecov](https://codecov.io/gh/lancepioch/tree/branch/master/graph/badge.svg)](https://codecov.io/gh/lancepioch/tree)
+
 # Laravel Forest
 
 ![Trees](public/img/trees.png)
