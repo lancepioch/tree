@@ -3,15 +3,15 @@
 namespace Tests\Feature;
 
 use App\Branch;
-use App\Jobs\DeploySite;
-use App\Jobs\RemoveInitialDeployment;
-use App\Jobs\RemoveSite;
-use App\Jobs\SetupSite;
-use App\Jobs\SetupSql;
 use App\Project;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
+use App\Jobs\SetupSql;
+use App\Jobs\SetupSite;
+use App\Jobs\DeploySite;
+use App\Jobs\RemoveSite;
+use Illuminate\Support\Facades\Bus;
+use App\Jobs\RemoveInitialDeployment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class WebhookTest extends TestCase
 {
