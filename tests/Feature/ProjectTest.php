@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Project;
 use App\User;
-use Illuminate\Support\Facades\Gate;
+use App\Project;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectTest extends TestCase
