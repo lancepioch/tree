@@ -54,7 +54,6 @@ class WebhookController extends Controller
             case 'labeled':
             case 'unlabeled':
             case 'edited':
-            default:
         }
 
         return response()->json(['action' => $input['action']]);
