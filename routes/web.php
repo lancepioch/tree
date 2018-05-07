@@ -11,14 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@welcome');
+Route::get('/home', 'HomeController@index');
 
 Auth::routes();
 Route::redirect('/login', '/login/github', 302);
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/user/update', 'ProfileController@update');
 

@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('welcome');
     }
 
     /**
@@ -48,5 +48,10 @@ class HomeController extends Controller
         $repositories = collect($repositories)->where('permissions.admin', true);
 
         return view('home')->with(compact('servers', 'repositories', 'forgeException', 'githubException'));
+    }
+
+    public function welcome()
+    {
+        return view('welcome');
     }
 }
