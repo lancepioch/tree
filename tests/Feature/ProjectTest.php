@@ -38,7 +38,6 @@ class ProjectTest extends TestCase
         $response->assertDontSee($project->forge_site_url);
         $response->assertDontSee($project->forge_deployment);
         $response->assertDontSee($project->forge_deployment_initial);
-
     }
 
     public function testProjectCreate()
