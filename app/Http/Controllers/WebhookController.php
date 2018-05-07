@@ -42,9 +42,11 @@ class WebhookController extends Controller
                 SetupSite::dispatch($project, $pullRequest);
                 break;
             case 'closed':
+                abort_if(is_null($branch), 400, 'Branch Not Found');
                 RemoveSite::dispatch($branch);
                 break;
             case 'synchronize':
+                abort_if(is_null($branch), 400, 'Branch Not Found');
                 DeploySite::dispatch($branch);
                 break;
             case 'assigned':
