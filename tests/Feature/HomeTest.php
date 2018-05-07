@@ -29,26 +29,25 @@ class HomeTest extends TestCase
         config(['app.admin' => $user->email]);
 
         $response = $this->actingAs($user)
-            ->get("/horizon");
+            ->get('/horizon');
 
         $response->assertStatus(200);
 
         $response = $this->actingAs($anotherUser)
-            ->get("/horizon");
+            ->get('/horizon');
 
         $response->assertStatus(403);
     }
 
     public function testLoginRedirect()
     {
-        $response = $this->get("/home");
+        $response = $this->get('/home');
         $response->assertRedirect('/login');
 
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)
-            ->get("/home");
+            ->get('/home');
         $response->assertStatus(200);
-
     }
 }
