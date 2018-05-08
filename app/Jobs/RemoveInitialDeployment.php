@@ -29,14 +29,15 @@ class RemoveInitialDeployment implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Forge $forge
      * @return void
      */
-    public function handle()
+    public function handle(Forge $forge)
     {
         $branch = $this->branch;
         $project = $branch->project;
 
-        $forge = new Forge($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token);
         $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $branch->forge_site_id);
         $deploymentScript = preg_replace('\n/^# Begin Initial Deployment:.*# End Initial Deployment$/ms', '', $deploymentScript);
         $forge->updateSiteDeploymentScript($project->forge_server_id, $branch->forge_site_id, $deploymentScript);

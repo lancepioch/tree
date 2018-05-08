@@ -29,13 +29,14 @@ class SetupSql implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Forge $forge
      * @return void
      */
-    public function handle()
+    public function handle(Forge $forge)
     {
         $branch = $this->branch;
         $project = $branch->project;
-        $forge = new Forge($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token);
 
         // MySQL
         $sqlUsername = str_replace('/', '_', $project->github_repo) . '_' . $branch->issue_number;

@@ -29,14 +29,15 @@ class RemoveSite implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Forge $forge
      * @return void
      */
-    public function handle()
+    public function handle(Forge $forge)
     {
         $branch = $this->branch;
         $project = $branch->project;
 
-        $forge = new Forge($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token);
 
         if ($branch->forge_mysql_user_id !== null) {
             $forge->deleteMysqlUser($project->forge_server_id, $branch->forge_mysql_user_id);

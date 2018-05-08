@@ -32,14 +32,15 @@ class SetupSite implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Forge $forge
      * @return void
      */
-    public function handle()
+    public function handle(Forge $forge)
     {
         $project = $this->project;
         $pullRequest = $this->pullRequest;
 
-        $forge = new Forge($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token);
 
         /** @var \App\Branch $branch */
         $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']], [

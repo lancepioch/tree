@@ -29,14 +29,15 @@ class DeploySite implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param Forge $forge
      * @return void
      */
-    public function handle()
+    public function handle(Forge $forge)
     {
         $branch = $this->branch;
         $project = $branch->project;
 
-        $forge = new Forge($project->user->forge_token);
+        $forge->setApiKey($project->user->forge_token);
 
         $branch->githubStatus('pending', 'Deploying your branch.');
         $forge->deploySite($project->forge_server_id, $branch->forge_site_id);
