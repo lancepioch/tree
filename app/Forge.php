@@ -4,8 +4,8 @@ namespace App;
 
 use GuzzleHttp\Client as HttpClient;
 
-class Forge extends \Themsaid\Forge\Forge {
-
+class Forge extends \Themsaid\Forge\Forge
+{
     /**
      * Forge constructor.
      * @param string $apiKey
@@ -28,5 +28,4 @@ class Forge extends \Themsaid\Forge\Forge {
 
         return $this;
     }
-
 }

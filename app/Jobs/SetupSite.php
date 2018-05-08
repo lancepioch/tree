@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Project;
 use App\Forge;
+use App\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

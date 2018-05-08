@@ -2,20 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Branch;
-use App\Forge;
-use App\Jobs\DeploySite;
-use App\Jobs\RemoveInitialDeployment;
-use App\Jobs\RemoveSite;
-use App\Jobs\SetupSite;
-use App\Jobs\SetupSql;
-use App\Project;
 use App\User;
-use Illuminate\Support\Facades\Bus;
+use App\Forge;
+use App\Branch;
+use App\Project;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Jobs\SetupSql;
+use App\Jobs\SetupSite;
+use App\Jobs\DeploySite;
+use App\Jobs\RemoveSite;
 use Themsaid\Forge\Resources\Site;
+use Illuminate\Support\Facades\Bus;
+use App\Jobs\RemoveInitialDeployment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class JobsTest extends TestCase
 {
@@ -46,7 +45,7 @@ class JobsTest extends TestCase
         $forgeMock->shouldReceive('deploySite')->once();
         $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
         $forgeMock->shouldReceive('site')->once()->andReturn($completedSite);
-        $forgeMock->shouldReceive('siteDeploymentLog')->once()->andReturn("successful-deployment-1337");
+        $forgeMock->shouldReceive('siteDeploymentLog')->once()->andReturn('successful-deployment-1337');
         $this->app->instance(Forge::class, $forgeMock);
 
         DeploySite::dispatchNow($branch);
@@ -171,13 +170,13 @@ class JobsTest extends TestCase
         $forgeSite->status = null;
         $forgeSite->repositoryStatus = null;
 
-        $forgeSiteInstalled = \Mockery::mock(Site::class);;
+        $forgeSiteInstalled = \Mockery::mock(Site::class);
         $forgeSiteInstalled->shouldReceive('installGitRepository')->once();
         $forgeSiteInstalled->shouldReceive('getDeploymentScript')->once()->andReturn('');
         $forgeSiteInstalled->shouldReceive('updateDeploymentScript')->once();
         $forgeSiteInstalled->status = 'installed';
 
-        $forgeSiteInstalledRepository = \Mockery::mock(Site::class);;
+        $forgeSiteInstalledRepository = \Mockery::mock(Site::class);
         $forgeSiteInstalledRepository->repositoryStatus = 'installed';
 
         $forgeMock = \Mockery::mock(Forge::class);
