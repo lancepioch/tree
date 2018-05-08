@@ -52,7 +52,8 @@ class DeploySite implements ShouldQueue
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
             $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
         } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
-            $this->release(5);
+            $branch->githubStatus('failure', 'Failed to deployed your branch.');
+            $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\nDeployment Log doesn't exist.");
 
             return;
         }
