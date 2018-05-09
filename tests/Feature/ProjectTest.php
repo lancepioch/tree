@@ -77,8 +77,8 @@ class ProjectTest extends TestCase
         });
 
         $githubMock = \Mockery::mock(Client::class);
-        $githubMock->shouldReceive('authenticate')->once();
-        $githubMock->shouldReceive('api->hooks->create')->once()->andReturn(['id' => 1337]);
+        $githubMock->shouldReceive('authenticate')->twice();
+        $githubMock->shouldReceive('api->hooks->create')->twice()->andReturn(['id' => 1337]);
         $this->app->instance(Client::class, $githubMock);
 
         $response = $this->actingAs($user)->post('/projects/', [
@@ -94,6 +94,26 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($user)->get('/home');
         $response->assertSee('*.test.com');
         $response->assertSee('test/repo');
+
+        $project = $user->projects()->first();
+        $project->delete();
+        $this->assertTrue($project->trashed());
+        $response = $this->actingAs($user)->post('/projects/', [
+            'forge_site_url' => '*.test.com',
+            'forge_server_id' => 1,
+            'github_repo' => 'test/repo',
+            'webhook_secret' => '1234567890',
+            'webhook_id' => 1,
+            'forge_deployment' => 'composer require',
+            'forge_deployment_initial' => 'php artisan key:generate',
+        ]);
+        $response->assertRedirect('/home');
+        $response = $this->actingAs($user)->get('/home');
+        $response->assertSee('*.test.com');
+        $response->assertSee('test/repo');
+        $newProject = $user->projects()->first();
+        $this->assertSame($project->id, $newProject->id);
+        $this->assertFalse($newProject->trashed());
 
         $response = $this->actingAs($anotherUser)->post('/projects/', [
             'forge_site_url' => '*.test.com',
