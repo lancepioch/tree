@@ -36,7 +36,7 @@ class ProjectTest extends TestCase
         $user = factory(User::class)->create();
         $project = factory(Project::class)->create(['user_id' => 1]);
         $response = $this->actingAs($user)->get("/projects/{$project->id}/edit");
-        $response->assertRedirect('/projects/1');
+        $response->assertRedirect("/projects/{$project->id}");
     }
 
     public function testProjectView()
