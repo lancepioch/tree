@@ -13,6 +13,32 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testProjectIndex()
+    {
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get('/projects');
+        $response->assertRedirect('/home');
+    }
+
+    public function testProjectCreate()
+    {
+        Gate::before(function () { return true; });
+
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get('/projects/create');
+        $response->assertRedirect('/projects');
+    }
+
+    public function testProjectEdit()
+    {
+        Gate::before(function () { return true; });
+
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->create(['user_id' => 1]);
+        $response = $this->actingAs($user)->get("/projects/{$project->id}/edit");
+        $response->assertRedirect('/projects/1');
+    }
+
     public function testProjectView()
     {
         $user = factory(User::class)->create();
