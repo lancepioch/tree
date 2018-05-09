@@ -41,7 +41,7 @@ class ProjectTest extends TestCase
         $response->assertDontSee($project->forge_deployment_initial);
     }
 
-    public function testProjectCreate()
+    public function testProjectStore()
     {
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
