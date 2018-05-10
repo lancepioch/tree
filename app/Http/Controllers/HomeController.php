@@ -24,10 +24,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Forge $forge)
     {
         try {
-            $forge = new Forge(auth()->user()->forge_token);
+            $forge = $forge->setApiKey(auth()->user()->forge_token);
             $servers = $forge->servers();
         } catch (Exception $exception) {
             $servers = [];
