@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Github\Client;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -30,5 +31,13 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function githubClient()
+    {
+        $github = new Client();
+        $github->authenticate($this->github_token, null, Client::AUTH_HTTP_PASSWORD);
+
+        return $github;
     }
 }

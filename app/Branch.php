@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Github\Client;
 use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
@@ -20,8 +19,7 @@ class Branch extends Model
     {
         $project = $this->project;
 
-        $github = new Client();
-        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        $github = $project->user->githubClient();
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $status = [
@@ -41,8 +39,7 @@ class Branch extends Model
     {
         $project = $this->project;
 
-        $github = new Client();
-        $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        $github = $project->user->githubClient();
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $github->api('issue')
