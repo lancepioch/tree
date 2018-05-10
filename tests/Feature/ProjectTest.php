@@ -22,7 +22,9 @@ class ProjectTest extends TestCase
 
     public function testProjectCreate()
     {
-        Gate::before(function () { return true; });
+        Gate::before(function () {
+            return true;
+        });
 
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->get('/projects/create');
@@ -31,7 +33,9 @@ class ProjectTest extends TestCase
 
     public function testProjectEdit()
     {
-        Gate::before(function () { return true; });
+        Gate::before(function () {
+            return true;
+        });
 
         $user = factory(User::class)->create();
         $project = factory(Project::class)->create(['user_id' => 1]);
