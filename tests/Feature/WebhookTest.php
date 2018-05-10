@@ -79,7 +79,7 @@ class WebhookTest extends TestCase
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
 
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
 
         $headers = $this->headers(json_encode($pr), 'not a working secret');
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
@@ -141,13 +141,13 @@ class WebhookTest extends TestCase
         $pr['action'] = 'opened';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         Bus::assertDispatched(SetupSite::class);
 
         $pr['action'] = 'reopened';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         Bus::assertDispatched(SetupSite::class);
     }
 
@@ -166,7 +166,7 @@ class WebhookTest extends TestCase
         $pr['action'] = 'closed';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         Bus::assertDispatched(RemoveSite::class);
     }
 
@@ -185,7 +185,7 @@ class WebhookTest extends TestCase
         $pr['action'] = 'synchronize';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         Bus::assertDispatched(DeploySite::class);
     }
 
@@ -204,7 +204,7 @@ class WebhookTest extends TestCase
         $pr['action'] = 'notarealaction';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         Bus::assertNotDispatched(SetupSite::class);
         Bus::assertNotDispatched(RemoveSite::class);
         Bus::assertNotDispatched(DeploySite::class);

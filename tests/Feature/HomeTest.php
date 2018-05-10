@@ -14,7 +14,7 @@ class HomeTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
 
         $response->assertSee(config('app.name'));
     }
@@ -34,12 +34,12 @@ class HomeTest extends TestCase
         $response = $this->actingAs($user)
             ->get('/horizon');
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
 
         $response = $this->actingAs($anotherUser)
             ->get('/horizon');
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function testLoginRedirect()
@@ -48,9 +48,7 @@ class HomeTest extends TestCase
         $response->assertRedirect('/login');
 
         $user = factory(User::class)->create();
-
-        $response = $this->actingAs($user)
-            ->get('/home');
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->get('/home');
+        $response->assertSuccessful();
     }
 }

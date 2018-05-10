@@ -53,7 +53,7 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($user)
             ->get("/projects/{$project->id}");
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertSee($project->forge_site_url);
         $response->assertSee($project->forge_deployment);
         $response->assertSee($project->forge_deployment_initial);
@@ -61,7 +61,7 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($anotherUser)
             ->get("/projects/{$project->id}");
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $response->assertDontSee($project->forge_site_url);
         $response->assertDontSee($project->forge_deployment);
         $response->assertDontSee($project->forge_deployment_initial);
@@ -124,7 +124,7 @@ class ProjectTest extends TestCase
             'forge_deployment' => 'composer require',
             'forge_deployment_initial' => 'php artisan key:generate',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $response = $this->actingAs($anotherUser)->get('/home');
         $response->assertDontSee('*.test.com');
         $response->assertDontSee('test/repo');
@@ -150,7 +150,7 @@ class ProjectTest extends TestCase
             'forge_deployment' => 'composer require',
             'forge_deployment_initial' => 'php artisan key:generate',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $projectLatest = $project->fresh();
         $this->assertSame($project->forge_site_url, $projectLatest->forge_site_url);
@@ -199,7 +199,7 @@ class ProjectTest extends TestCase
         $this->app->instance(Client::class, $githubMock);
 
         $response = $this->actingAs($anotherUser)->delete("/projects/{$project->id}");
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $this->assertNotNull($project->fresh());
 
         $response = $this->actingAs($user)->delete("/projects/{$project->id}");
