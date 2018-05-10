@@ -14,12 +14,10 @@
 Route::get('/', 'HomeController@welcome');
 Route::get('/home', 'HomeController@index');
 
-Route::redirect('/login', '/login/github', 302);
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
-
 Route::post('/user/update', 'ProfileController@update');
 
 Route::resource('projects', 'ProjectController');
 
-Route::get('/login/github', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/github', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('/login/github/callback', 'Auth\LoginController@handleProviderCallback');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');

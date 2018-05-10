@@ -24,6 +24,16 @@ class HomeTest extends TestCase
         $this->markTestIncomplete();
     }
 
+    public function testRedirectIfAuth()
+    {
+        $response = $this->followingRedirects()->get('/login/github');
+        $response->assertNotFound();
+
+        $user = factory(User::class)->create();
+        $response = $this->followingRedirects()->actingAs($user)->get('/login/github');
+        $response->assertSuccessful();
+    }
+
     public function testHorizonAccess()
     {
         $user = factory(User::class)->create();
@@ -45,7 +55,7 @@ class HomeTest extends TestCase
     public function testLoginRedirect()
     {
         $response = $this->get('/home');
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/login/github');
 
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->get('/home');

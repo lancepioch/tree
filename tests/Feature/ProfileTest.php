@@ -13,7 +13,7 @@ class ProfileTest extends TestCase
     public function testProfileUpdate()
     {
         $response = $this->post('/user/update', ['forge_token' => 'ham']);
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/login/github');
 
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->post('/user/update', ['forge_token' => 'ham']);
