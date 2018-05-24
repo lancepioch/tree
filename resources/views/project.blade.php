@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 mt-3">
+            <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">{{ $project->github_repo }}</div>
 
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
+                                <div class="col-md-10 offset-md-4">
                                     <button type="submit" class="btn btn-primary">Save Project</button>
                                     <a href="{{ action('ProjectController@index') }}"><span class="btn btn-default">Cancel</span></a>
                                 </div>
