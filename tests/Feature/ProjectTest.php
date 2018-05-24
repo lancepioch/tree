@@ -170,7 +170,7 @@ class ProjectTest extends TestCase
             'forge_server_id' => -1,
             'github_repo' => 'test/repo',
             'webhook_secret' => '1234567890',
-            'webhook_id' => -1,
+            'webhook_id' => 12345,
             'forge_deployment' => 'composer require',
             'forge_deployment_initial' => 'php artisan key:generate',
         ]);
@@ -180,7 +180,7 @@ class ProjectTest extends TestCase
         $this->assertNotSame(-1, $project->forge_server_id);
         $this->assertNotSame('test/repo', $project->github_repo);
         $this->assertNotSame('1234567890', $project->webhook_secret);
-        $this->assertNotSame(-1, $project->webhook_id);
+        $this->assertSame(12345, $project->webhook_id);
         $this->assertSame('composer require', $project->forge_deployment);
         $this->assertSame('php artisan key:generate', $project->forge_deployment_initial);
     }
