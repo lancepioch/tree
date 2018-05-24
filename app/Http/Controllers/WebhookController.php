@@ -14,6 +14,11 @@ class WebhookController extends Controller
     {
         $input = $request->input();
         $signature = $request->header('X-Hub-Signature');
+        $event = $request->header('X-GitHub-Event');
+
+        if ($event === 'ping') {
+            return response()->json('ping');
+        }
 
         abort_unless(isset($input['pull_request']), 400, 'Not a Pull Request');
         abort_unless(isset($input['repository']), 400, 'Not a Repository');
