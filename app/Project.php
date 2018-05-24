@@ -14,7 +14,7 @@ class Project extends Model
     ];
 
     protected $fillable = [
-        'forge_site_url', 'forge_server_id', 'github_repo', 'webhook_secret', 'forge_deployment', 'forge_deployment_initial',
+        'forge_site_url', 'forge_server_id', 'github_repo', 'webhook_secret', 'forge_deployment', 'forge_deployment_initial', 'webhook_id',
     ];
 
     public function user()
