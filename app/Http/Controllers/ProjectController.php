@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Github\Client;
+use Github\Exception\RuntimeException;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -96,7 +97,11 @@ class ProjectController extends Controller
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $github->api('repo')->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
+        try {
+            $github->api('repo')->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
+        } catch (RuntimeException $exception) {
+            // Hook has already been removed or we don't have access anymore, either way just trek on ahead
+        }
 
         $project->delete();
 
