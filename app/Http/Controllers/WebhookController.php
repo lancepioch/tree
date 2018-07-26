@@ -33,7 +33,9 @@ class WebhookController extends Controller
 
         // Signature Verification
         $hash = hash_hmac($algorithm, $request->getContent(), $project->webhook_secret);
-        abort_unless($hash === $signature, 400,
+        abort_unless(
+            $hash === $signature,
+            400,
             response()->json([
                 'error'     => 'Signature Verification Failed',
                 'hash'      => $hash,
