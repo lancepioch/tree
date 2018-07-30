@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Webhooks;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\AcceptGithubWebhook;
 use App\Jobs\SetupSite;
 use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AcceptGithubWebhook;
 
 class GithubPullRequestController extends Controller
 {

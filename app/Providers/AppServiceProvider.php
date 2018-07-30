@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Schema\Builder as Schema;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Horizon\Horizon;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Schema\Builder as Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
