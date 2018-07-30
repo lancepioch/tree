@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Schema\Builder as Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Horizon\Horizon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Schema::defaultStringLength(191);
-        \Horizon::auth(function ($request) {
+        Schema::defaultStringLength(191);
+        Horizon::auth(function ($request) {
             return auth()->check() && auth()->user()->email === config('app.admin');
         });
     }
