@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Forge;
 use Exception;
 use Github\Client;
+use App\Services\Forge;
 use Github\ResultPager;
 
 class HomeController extends Controller

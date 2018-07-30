@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Services\Forge;
 use App\Branch;
 use App\Project;
 use Tests\TestCase;
 use App\Jobs\SetupSql;
 use App\Jobs\SetupSite;
+use App\Services\Forge;
 use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
 use Themsaid\Forge\Resources\Site;
