@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
+@section('header')
+    <style>
+        ul.pagination {
+            justify-content: center;
+        }
+
+        a.nav-link {
+            padding: 0 1rem;
+        }
+    </style>
+@endsection
+
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 mt-3">
@@ -43,6 +56,68 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-10 mt-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span style="float: left;">Pull Requests</span>
+                        <nav class="nav nav-pills nav-justified" style="float: right;">
+                            <a class="nav-link @if ($state === 'all') active @endif" href="?state=all">All</a>
+                            <a class="nav-link @if ($state === 'open') active @endif" href="?state=open">Open</a>
+                            <a class="nav-link @if ($state === 'closed') active @endif" href="?state=closed">Closed</a>
+                        </nav>
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">State</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($pullRequests as $pr)
+                                @php $branch = $project->branches->firstWhere('issue_number', $pr['number']); @endphp
+                            <tr>
+                                <td><a href="{{ $pr['html_url'] }}">#{{ $pr['number'] }} - {{ $pr['title'] }}</a></td>
+                                <td>@if ($pr['state'] === 'open') <span class="badge badge-success">Open</span>
+                                    @elseif ($pr['merged_at'] === null) <span class="badge badge-danger">Closed</span>
+                                    @else <span class="badge badge-primary">Merged</span>
+                                    @endif</td>
+                                <td>
+                                    <div class="dropdown">
+                                        @if ($branch === null)
+                                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                Undeployed
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Deploy</a>
+                                            </div>
+                                        @else
+                                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                Deployed
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Deploy Latest</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Remove</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                        <div class="text-center">{{ $pullRequests->links() }}</div>
+
                     </div>
                 </div>
             </div>

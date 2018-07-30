@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Github\Client;
+use Github\ResultPager;
 use Illuminate\Http\Request;
 use Github\Exception\RuntimeException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProjectController extends Controller
 {
@@ -74,9 +76,47 @@ class ProjectController extends Controller
         return redirect()->action('HomeController@index');
     }
 
-    public function show(Project $project)
+    public function show(Project $project, Request $request)
     {
-        return view('project')->with(compact('project'));
+        $perPage = 15;
+        $page = $request->get('page') ?? 1;
+        $state = $request->get('state') ?? 'open';
+
+        $project->load('branches');
+
+        [$githubUser, $githubRepo] = explode('/', $project->github_repo);
+        $github = new Client();
+        $github->authenticate(auth()->user()->github_token, null, Client::AUTH_HTTP_PASSWORD);
+
+        $pager = new ResultPager($github);
+        $pullRequests = $pager->fetch($github->api('pull_request'), 'all', [
+            $githubUser,
+            $githubRepo,
+            [
+                'state' => $state,
+                'sort' => 'updated',
+                'direction' => 'desc',
+                'page' => $page,
+                'per_page' => $perPage,
+            ],
+        ]);
+
+        $totalCount = count($pullRequests);
+        $pagerPagination = $pager->getPagination();
+
+        if ($pagerPagination !== null) {
+            $totalCount = $page * $perPage;
+
+            if (isset($pagerPagination['last'])) {
+                preg_match('/page=(\d+).*$/', $pagerPagination['last'], $matches);
+                $totalCount = $matches[1] * $perPage;
+            }
+        }
+
+        $pullRequests = new LengthAwarePaginator($pullRequests, $totalCount, $perPage, $page, []);
+        $pullRequests = $pullRequests->withPath(action('ProjectController@show', [$project]));
+
+        return view('project')->with(compact('project', 'pullRequests', 'state'));
     }
 
     public function edit(Project $project)
