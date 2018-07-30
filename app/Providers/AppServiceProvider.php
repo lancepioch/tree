@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Horizon::auth(function ($request) {
-            return auth()->check() && auth()->user()->email === config('app.admin');
+            return auth()->check() && auth()->user()->email === config('forest.admin');
         });
     }
 

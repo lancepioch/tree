@@ -142,7 +142,7 @@
                 </div>
             </div>
 
-            @if (config('app.survey'))
+            @if (config('forest.survey'))
             <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Optional Survey</div>

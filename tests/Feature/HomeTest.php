@@ -16,7 +16,7 @@ class HomeTest extends TestCase
 
         $response->assertSuccessful();
 
-        $response->assertSee(config('app.name'));
+        $response->assertSee(config('forest.name'));
     }
 
     public function testHomeIndex()
@@ -39,7 +39,7 @@ class HomeTest extends TestCase
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
 
-        config(['app.admin' => $user->email]);
+        config(['forest.admin' => $user->email]);
 
         $response = $this->actingAs($user)
             ->get('/horizon');

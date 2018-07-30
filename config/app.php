@@ -2,9 +2,6 @@
 
 return [
 
-    'admin' => env('APP_ADMIN'),
-    'survey' => env('APP_SURVEY', true),
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
