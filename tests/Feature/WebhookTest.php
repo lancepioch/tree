@@ -46,24 +46,25 @@ class WebhookTest extends TestCase
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function testNoRepository()
     {
         $pr = $this->pr();
+
         unset($pr['repository']);
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function testNoSignature()
     {
         $response = $this->post('/api/webhooks/github/pullrequest', $this->pr(), []);
 
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function testSignatureVerification()
@@ -83,7 +84,7 @@ class WebhookTest extends TestCase
 
         $headers = $this->headers(json_encode($pr), 'not a working secret');
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function testNoProjectFound()
@@ -98,7 +99,7 @@ class WebhookTest extends TestCase
 
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
 
-        $response->assertStatus(400);
+        $response->assertForbidden();
     }
 
     public function testNoBranchFound()
