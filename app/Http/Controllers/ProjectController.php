@@ -58,7 +58,7 @@ class ProjectController extends Controller
         $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
             'name'   => 'web',
             'config' => [
-                'url'          => action('WebhookController@githubPullRequest'),
+                'url'          => action('Webhooks\GithubPullRequestController'),
                 'content_type' => 'json',
                 'secret'       => $project->webhook_secret,
                 'insecure_ssl' => 0,

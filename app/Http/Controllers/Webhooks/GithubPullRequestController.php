@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Webhooks;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AcceptGithubWebhook;
 use App\Jobs\SetupSite;
 use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
 
-class WebhookController extends Controller
+class GithubPullRequestController extends Controller
 {
-    public function githubPullRequest(AcceptGithubWebhook $request)
+    public function __invoke(AcceptGithubWebhook $request)
     {
         $input = $request->validated();
         $event = $request->header('X-GitHub-Event');
