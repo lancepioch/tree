@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@welcome');
+Route::view('/', 'welcome');
 Route::get('/home', 'HomeController@index');
 
 Route::post('/user/update', 'ProfileController@update');

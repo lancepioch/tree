@@ -49,9 +49,4 @@ class HomeController extends Controller
 
         return view('home')->with(compact('servers', 'repositories', 'forgeException', 'githubException'));
     }
-
-    public function welcome()
-    {
-        return view('welcome');
-    }
 }
