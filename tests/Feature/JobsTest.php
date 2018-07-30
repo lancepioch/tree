@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Forge;
+use App\Services\Forge;
 use App\Branch;
 use App\Project;
 use Tests\TestCase;

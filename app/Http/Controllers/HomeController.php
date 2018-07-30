@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Forge;
+use App\Services\Forge;
 use Exception;
 use Github\Client;
 use Github\ResultPager;

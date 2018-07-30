@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Forge;
+use App\Services\Forge;
 use App\Branch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
