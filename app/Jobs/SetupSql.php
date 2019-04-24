@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Branch;
-use App\Services\Forge;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -36,7 +36,7 @@ class SetupSql implements ShouldQueue
     {
         $branch = $this->branch;
         $project = $branch->project;
-        $forge = $forge->setApiKey($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token, null);
 
         // MySQL
         $sqlUsername = str_replace('/', '_', $project->github_repo) . '_' . $branch->issue_number;

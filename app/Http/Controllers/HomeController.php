@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Github\Client;
-use App\Services\Forge;
 use Github\ResultPager;
+use Themsaid\Forge\Forge;
 
 class HomeController extends Controller
 {
@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index(Forge $forge)
     {
         try {
-            $forge = $forge->setApiKey(auth()->user()->forge_token);
+            $forge = $forge->setApiKey(auth()->user()->forge_token, null);
             $servers = $forge->servers();
         } catch (Exception $exception) {
             $servers = [];

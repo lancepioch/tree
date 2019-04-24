@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff5aab1f4526729c9b2ad1bf98db5572",
+    "content-hash": "621a2a3b891115321bb2b4e94e19a2d7",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -3346,16 +3346,16 @@
         },
         {
             "name": "themsaid/forge-sdk",
-            "version": "v1.2.1",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/themsaid/forge-sdk.git",
-                "reference": "382eeddb41344aa463f5d581a0ea33a51cf6ab55"
+                "reference": "2e3331fef40f4ae2155b0e5eaf2d19c2c5c40ded"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/themsaid/forge-sdk/zipball/382eeddb41344aa463f5d581a0ea33a51cf6ab55",
-                "reference": "382eeddb41344aa463f5d581a0ea33a51cf6ab55",
+                "url": "https://api.github.com/repos/themsaid/forge-sdk/zipball/2e3331fef40f4ae2155b0e5eaf2d19c2c5c40ded",
+                "reference": "2e3331fef40f4ae2155b0e5eaf2d19c2c5c40ded",
                 "shasum": ""
             },
             "require": {
@@ -3379,7 +3379,7 @@
             "authors": [
                 {
                     "name": "Mohamed Said",
-                    "email": "themsaid@gmail.com"
+                    "email": "mohamed@laravel.com"
                 }
             ],
             "description": "Laravel Forge PHP SDK (Unofficial)",
@@ -3387,7 +3387,7 @@
                 "forge",
                 "laravel"
             ],
-            "time": "2017-12-07T17:20:55+00:00"
+            "time": "2018-11-09T07:37:09+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

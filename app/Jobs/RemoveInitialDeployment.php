@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Branch;
-use App\Services\Forge;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,7 +37,7 @@ class RemoveInitialDeployment implements ShouldQueue
         $branch = $this->branch;
         $project = $branch->project;
 
-        $forge = $forge->setApiKey($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token, null);
         $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $branch->forge_site_id);
         $deploymentScript = preg_replace('/^\n# Begin Initial Deployment:.*# End Initial Deployment$/ms', '', $deploymentScript);
         $forge->updateSiteDeploymentScript($project->forge_server_id, $branch->forge_site_id, $deploymentScript);

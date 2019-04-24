@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Branch;
-use App\Services\Forge;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,7 +37,7 @@ class DeploySite implements ShouldQueue
         $branch = $this->branch;
         $project = $branch->project;
 
-        $forge->setApiKey($project->user->forge_token);
+        $forge->setApiKey($project->user->forge_token, null);
 
         $branch->githubStatus('pending', 'Deploying your branch.');
         $forge->deploySite($project->forge_server_id, $branch->forge_site_id);

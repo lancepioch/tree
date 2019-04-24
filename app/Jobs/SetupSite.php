@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Project;
-use App\Services\Forge;
+use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -40,7 +40,7 @@ class SetupSite implements ShouldQueue
         $project = $this->project;
         $pullRequest = $this->pullRequest;
 
-        $forge = $forge->setApiKey($project->user->forge_token);
+        $forge = $forge->setApiKey($project->user->forge_token, null);
 
         /** @var \App\Branch $branch */
         $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']], [
