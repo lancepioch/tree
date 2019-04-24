@@ -22,7 +22,8 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @param Forge $forge
+     * @return \Illuminate\View\View
      */
     public function index(Forge $forge)
     {

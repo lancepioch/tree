@@ -34,9 +34,10 @@ class ProjectController extends Controller
      * Creates a new project.
      *
      * @param Request $request
-     * @param Client  $github
+     * @param Client $github
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Github\Exception\MissingArgumentException
      */
     public function store(Request $request, Client $github)
     {
@@ -92,6 +93,12 @@ class ProjectController extends Controller
         return redirect()->action('ProjectController@index', [$project]);
     }
 
+    /**
+     * @param Project $project
+     * @param Client $github
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function destroy(Project $project, Client $github)
     {
         $github->authenticate($project->user->github_token, null, Client::AUTH_HTTP_PASSWORD);
