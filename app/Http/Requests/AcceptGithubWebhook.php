@@ -19,7 +19,7 @@ class AcceptGithubWebhook extends FormRequest
         $input = $this->validated();
         $signature = $this->header('X-Hub-Signature');
 
-        if (is_null($signature)) {
+        if (empty($signature)) {
             return false;
         }
 
