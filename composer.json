@@ -11,7 +11,6 @@
         "laravel/framework": "5.6.*",
         "laravel/horizon": "^1.2",
         "laravel/socialite": "^3.0",
-        "laravel/tinker": "^1.0",
         "php-http/guzzle6-adapter": "^1.1",
         "predis/predis": "^1.1",
         "themsaid/forge-sdk": "2.0"
@@ -19,8 +18,10 @@
     "require-dev": {
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
+        "laravel/tinker": "^1.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
+        "nunomaduro/larastan": "^0.3",
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
