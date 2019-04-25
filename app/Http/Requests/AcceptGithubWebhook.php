@@ -19,7 +19,7 @@ class AcceptGithubWebhook extends FormRequest
         $input = $this->validated();
         $signature = $this->header('X-Hub-Signature');
 
-        if (empty($signature)) {
+        if (!is_string($signature)) {
             return false;
         }
 
@@ -38,8 +38,13 @@ class AcceptGithubWebhook extends FormRequest
             return false;
         }
 
+        $content = $this->getContent();
+        if (!is_string($content)) {
+            return false;
+        }
+
         // Signature Verification
-        $hash = hash_hmac($algorithm, $this->getContent(), $this->project->webhook_secret);
+        $hash = hash_hmac($algorithm, $content, $this->project->webhook_secret);
 
         return $hash === $signature;
     }
