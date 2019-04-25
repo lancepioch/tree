@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Project;
-use Github\Api\Repo;
 use Github\Client;
+use Github\Api\Repo;
 use Illuminate\Http\Request;
 use Github\Exception\RuntimeException;
 
