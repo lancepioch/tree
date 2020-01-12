@@ -8,10 +8,10 @@
         "php": ">=7.2",
         "fideloper/proxy": "^4.0",
         "knplabs/github-api": "^2.8",
-        "laravel/framework": "5.8.*",
+        "laravel/framework": "^6.0",
         "laravel/helpers": "^1.1",
-        "laravel/horizon": "^1.2",
-        "laravel/socialite": "^3.0",
+        "laravel/horizon": "^3.4",
+        "laravel/socialite": "^4.3",
         "php-http/guzzle6-adapter": "^1.1",
         "predis/predis": "^1.1",
         "themsaid/forge-sdk": "2.0"
