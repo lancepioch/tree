@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Project;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class AcceptGithubWebhook extends FormRequest
 {
@@ -23,7 +24,7 @@ class AcceptGithubWebhook extends FormRequest
             return false;
         }
 
-        if (!str_contains($signature, '=')) {
+        if (!Str::contains($signature, '=')) {
             return false;
         }
 

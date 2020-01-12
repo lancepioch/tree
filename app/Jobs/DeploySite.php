@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Str;
 
 class DeploySite implements ShouldQueue
 {
@@ -50,7 +51,7 @@ class DeploySite implements ShouldQueue
 
         try {
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $site->id);
-            $deploymentSuccess = str_contains($deploymentLog, "successful-deployment-{$site->id}");
+            $deploymentSuccess = Str::contains($deploymentLog, "successful-deployment-{$site->id}");
         } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
             $branch->githubStatus('failure', 'Failed to deployed your branch.');
             $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\nDeployment Log doesn't exist.");
