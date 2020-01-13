@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Github\Client;
-use Illuminate\Http\Request;
 use Github\Exception\RuntimeException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
