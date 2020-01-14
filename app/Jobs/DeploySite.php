@@ -38,7 +38,7 @@ class DeploySite implements ShouldQueue
         $branch = $this->branch;
         $project = $branch->project;
 
-        if (! is_null($project->paused_at)) {
+        if (!is_null($project->paused_at)) {
             return;
         }
 
