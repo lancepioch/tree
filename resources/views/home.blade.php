@@ -117,6 +117,14 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="forge_user" class="col-md-4 col-form-label text-md-right">Isolated User:</label>
+
+                                <div class="col-md-6">
+                                    <input id="forge_user" type="text" class="form-control{{ $errors->has('forge_user') ? ' is-invalid' : '' }}" name="forge_user" value="{{ auth()->user()->forge_user }}" placeholder="forge">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">All Deployments:</label>
 
                                 <div class="col-md-6">
