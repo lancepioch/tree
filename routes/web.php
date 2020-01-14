@@ -11,14 +11,19 @@
 |
 */
 
-Route::get('/', 'HomeController@welcome');
-Route::view('/', 'welcome');
-Route::get('/home', 'HomeController@index');
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Route;
 
-Route::post('/user/update', 'ProfileController@update');
+Route::get('/', [HomeController::class, 'welcome']);
+Route::view('/', 'welcome');
+Route::get('/home', [HomeController::class, 'index']);
+
+Route::post('/user/update', [ProfileController::class, 'update']);
 
 Route::resource('projects', 'ProjectController');
 
-Route::get('/login/github', 'Auth\LoginController@redirectToProvider')->name('login');
-Route::get('/login/github/callback', 'Auth\LoginController@handleProviderCallback');
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('login');
+Route::get('/login/github/callback', [LoginController::class, 'handleProviderCallback']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
