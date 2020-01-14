@@ -17,7 +17,7 @@ class AcceptGithubWebhook extends FormRequest
      */
     public function authorize()
     {
-        $input = $this->validated();
+        $input = $this->validate($this->rules());
         $signature = $this->header('X-Hub-Signature');
 
         if (!is_string($signature)) {
