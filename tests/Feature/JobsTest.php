@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Branch;
-use App\Project;
-use Tests\TestCase;
-use App\Jobs\SetupSql;
-use App\Jobs\SetupSite;
 use App\Jobs\DeploySite;
+use App\Jobs\RemoveInitialDeployment;
 use App\Jobs\RemoveSite;
+use App\Jobs\SetupSite;
+use App\Jobs\SetupSql;
+use App\Project;
+use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 use Themsaid\Forge\Forge;
 use Themsaid\Forge\Resources\Site;
-use Illuminate\Support\Facades\Bus;
-use App\Jobs\RemoveInitialDeployment;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class JobsTest extends TestCase
 {
