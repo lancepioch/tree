@@ -11,6 +11,7 @@ class Project extends Model
 
     protected $casts = [
         'deleted_at' => 'datetime',
+        'paused_at' => 'datetime',
     ];
 
     protected $fillable = [

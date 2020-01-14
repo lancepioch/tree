@@ -22,6 +22,7 @@ Route::get('/home', [HomeController::class, 'index']);
 
 Route::post('/user/update', [ProfileController::class, 'update']);
 
+Route::post('/projects/{project}/pause', 'PauseProjectController');
 Route::resource('projects', 'ProjectController');
 
 Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('login');

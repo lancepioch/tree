@@ -38,6 +38,10 @@ class DeploySite implements ShouldQueue
         $branch = $this->branch;
         $project = $branch->project;
 
+        if (! is_null($project->paused_at)) {
+            return;
+        }
+
         $forge->setApiKey($project->user->forge_token, null);
 
         $branch->githubStatus('pending', 'Deploying your branch.');
