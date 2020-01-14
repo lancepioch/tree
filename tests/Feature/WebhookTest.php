@@ -3,15 +3,15 @@
 namespace Tests\Feature;
 
 use App\Branch;
-use App\Project;
-use Tests\TestCase;
-use App\Jobs\SetupSql;
-use App\Jobs\SetupSite;
 use App\Jobs\DeploySite;
-use App\Jobs\RemoveSite;
-use Illuminate\Support\Facades\Bus;
 use App\Jobs\RemoveInitialDeployment;
+use App\Jobs\RemoveSite;
+use App\Jobs\SetupSite;
+use App\Jobs\SetupSql;
+use App\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class WebhookTest extends TestCase
 {
@@ -46,7 +46,7 @@ class WebhookTest extends TestCase
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 
     public function testNoRepository()
@@ -57,14 +57,14 @@ class WebhookTest extends TestCase
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 
     public function testNoSignature()
     {
         $response = $this->post('/api/webhooks/github/pullrequest', $this->pr(), []);
 
-        $response->assertForbidden();
+        $response->assertRedirect();
     }
 
     public function testSignatureVerification()

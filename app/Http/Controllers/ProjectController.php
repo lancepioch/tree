@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Github\Client;
-use Illuminate\Http\Request;
 use Github\Exception\RuntimeException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -41,7 +42,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request, Client $github)
     {
-        $input = $request->all() + ['webhook_secret' => str_random(20)];
+        $input = $request->all() + ['webhook_secret' => Str::random(20)];
 
         $project = Project::onlyTrashed()->where('github_repo', $request->get('github_repo'))->first();
 

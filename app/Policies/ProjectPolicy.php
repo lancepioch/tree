@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Project;
+use App\User;
 use Github\Client;
 use Github\ResultPager;
-use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 
 class ProjectPolicy
 {

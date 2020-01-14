@@ -3,12 +3,13 @@
 namespace App\Jobs;
 
 use App\Branch;
-use Themsaid\Forge\Forge;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
+use Themsaid\Forge\Forge;
 
 class SetupSql implements ShouldQueue
 {
@@ -40,7 +41,7 @@ class SetupSql implements ShouldQueue
 
         // MySQL
         $sqlUsername = str_replace('/', '_', $project->github_repo) . '_' . $branch->issue_number;
-        $sqlPassword = str_random(20);
+        $sqlPassword = Str::random(20);
         $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
         $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
             'name'      => $sqlUsername,

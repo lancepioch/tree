@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Branch;
 use App\Project;
+use App\User;
 use Github\Client;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GithubTest extends TestCase
 {

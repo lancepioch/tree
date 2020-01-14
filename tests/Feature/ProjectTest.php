@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Project;
+use App\User;
 use Github\Client;
-use Tests\TestCase;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Gate;
+use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
@@ -15,6 +15,10 @@ class ProjectTest extends TestCase
 
     public function testProjectIndex()
     {
+        Gate::before(function () {
+            return true;
+        });
+
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->get('/projects');
         $response->assertRedirect('/home');

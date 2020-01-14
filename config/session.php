@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Str;
 return [
 
     /*
@@ -35,7 +35,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Encryption
+    | Session Encryptionstr_
     |--------------------------------------------------------------------------
     |
     | This option allows you to easily specify that all of your session data
@@ -124,7 +124,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        str_slug(env('APP_NAME', 'laravel'), '_') . '_session'
+        Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
     ),
 
     /*

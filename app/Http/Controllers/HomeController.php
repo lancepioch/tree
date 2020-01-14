@@ -27,6 +27,9 @@ class HomeController extends Controller
      */
     public function index(Forge $forge)
     {
+        $githubException = null;
+        $forgeException = null;
+
         try {
             $forge = $forge->setApiKey(auth()->user()->forge_token, null);
             $servers = $forge->servers();
