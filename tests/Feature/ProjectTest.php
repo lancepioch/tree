@@ -15,6 +15,10 @@ class ProjectTest extends TestCase
 
     public function testProjectIndex()
     {
+        Gate::before(function () {
+            return true;
+        });
+
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->get('/projects');
         $response->assertRedirect('/home');
