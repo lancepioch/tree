@@ -69,26 +69,9 @@ class SetupSite implements ShouldQueue
         $branch->forge_site_id = $site->id;
         $branch->save();
 
-        while ($site->status !== 'installed') {
-            sleep(5);
-            $site = $forge->site($project->forge_server_id, $site->id);
-        }
-
-        // Repository
-        $site->installGitRepository([
-            'provider'   => 'github',
-            'repository' => $pullRequest['head']['repo']['full_name'],
-            'branch'     => $pullRequest['head']['ref'],
-        ]);
-
-        $deploymentScript = $site->getDeploymentScript();
-        $deploymentScript .= "\n\n# Begin " . config('app.name') . " Configuration\n";
-        $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
-        $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . ' # End Initial Deployment';
-        $deploymentScript .= "\n\necho 'successful-deployment-{$site->id}'";
-        $site->updateDeploymentScript($deploymentScript);
-
-        WaitForRepositoryInstallation::withChain([
+        WaitForSiteInstallation::withChain([
+            new InstallRepository($branch, $pullRequest),
+            new WaitForRepositoryInstallation($branch),
             new SetupSql($branch),
             new DeploySite($branch),
             new RemoveInitialDeployment($branch)
