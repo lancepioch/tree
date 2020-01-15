@@ -8,13 +8,13 @@
                     <div class="card-header">Tokens</div>
 
                     <div class="card-body">
-                        @if (isset($forgeException)) <div class="alert alert-danger">{{ $forgeException }}</div> @endif
-                        @if (isset($githubException)) <div class="alert alert-danger">{{ $githubException }}</div> @endif
+                        @isset($forgeException) <div class="alert alert-danger">{{ $forgeException }}</div> @endisset
+                        @isset($githubException) <div class="alert alert-danger">{{ $githubException }}</div> @endisset
 
                         <form method="POST" action="{{ action('ProfileController@update') }}">
                             @csrf
 
-                            @if (auth()->user()->forge_token !== null)
+                            @isset (auth()->user()->forge_token)
                             <div class="form-group row">
                                 <label for="forge_token" class="col-sm-4 col-form-label text-md-right">Current Forge Token:</label>
 
@@ -22,7 +22,7 @@
                                     <input type="text" class="form-control" readonly value="{{ substr(auth()->user()->forge_token, 0, 15) }}...{{ substr(auth()->user()->forge_token, -15, 15) }}">
                                 </div>
                             </div>
-                            @endif
+                            @endisset
 
                             <div class="form-group row">
                                 <label for="forge_token" class="col-sm-4 col-form-label text-md-right">New Forge Token:</label>
@@ -76,6 +76,7 @@
             </div>
             @endif
 
+            @isset(auth()->user()->forge_token)
             <div class="col-md-10 mt-3">
                 <div class="card">
                     <div class="card-header">Create New Project</div>
@@ -149,6 +150,7 @@
                     </div>
                 </div>
             </div>
+            @endisset
 
             @if (config('forest.survey'))
             <div class="col-md-10 mt-3">
