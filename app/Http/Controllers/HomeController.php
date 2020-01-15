@@ -29,12 +29,13 @@ class HomeController extends Controller
     {
         $githubException = null;
         $forgeException = null;
+        $servers = [];
+        $repositories = [];
 
         try {
             $forge = $forge->setApiKey(auth()->user()->forge_token, null);
             $servers = $forge->servers();
         } catch (Exception $exception) {
-            $servers = [];
             $forgeException = 'Your Forge API Token is invalid.';
         }
 
@@ -45,7 +46,6 @@ class HomeController extends Controller
             $paginator = new ResultPager($github);
             $repositories = $paginator->fetchAll($github->api('me'), 'repositories', ['all']);
         } catch (Exception $exception) {
-            $repositories = [];
             $githubException = 'Your Github API Token is invalid.';
         }
 
