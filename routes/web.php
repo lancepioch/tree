@@ -16,7 +16,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'welcome']);
 Route::view('/', 'welcome');
 Route::get('/home', [HomeController::class, 'index']);
 
