@@ -26,6 +26,7 @@ class GithubPullRequestController extends Controller
         switch ($input['action'] ?? 'none') {
             case 'opened':
             case 'reopened':
+                abort_unless(is_null($request->project->paused_at), 400, 'Project Paused');
                 SetupSite::dispatch($request->project, $pullRequest);
                 break;
             case 'closed':
@@ -33,6 +34,7 @@ class GithubPullRequestController extends Controller
                 RemoveSite::dispatch($branch);
                 break;
             case 'synchronize':
+                abort_unless(is_null($request->project->paused_at), 400, 'Project Paused');
                 abort_if(is_null($branch), 400, 'Branch Not Found');
                 DeploySite::dispatch($branch);
                 break;
