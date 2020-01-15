@@ -43,7 +43,7 @@ class ProjectController extends Controller
     public function store(Request $request, Client $github)
     {
         $request->validate([
-            'forge_site_url' => 'url|regex:/.*\*.+/', // url must have an asterisk
+            'forge_site_url' => 'regex:/.*\*.+/', // domain must have an asterisk
             'forge_user' => 'nullable|regex:/[a-z][-a-z0-9_]{0,15}/', // optional but valid unix username
         ]);
 
