@@ -88,7 +88,7 @@
                                 <label for="forge_site_url" class="col-sm-4 col-form-label text-md-right">URL:</label>
 
                                 <div class="col-md-6">
-                                    <input id="forge_site_url" type="text" class="form-control{{ $errors->has('forge_site_url') ? ' is-invalid' : '' }}" name="forge_site_url" value="{{ auth()->user()->forge_site_url }}" required placeholder="*.example.com">
+                                    <input id="forge_site_url" type="text" class="form-control{{ $errors->has('forge_site_url') ? ' is-invalid' : '' }}" name="forge_site_url" value="{{ old('forge_site_url') }}" required placeholder="*.example.com">
                                 </div>
                             </div>
 
@@ -120,7 +120,7 @@
                                 <label for="forge_user" class="col-md-4 col-form-label text-md-right">Isolated User:</label>
 
                                 <div class="col-md-6">
-                                    <input id="forge_user" type="text" class="form-control{{ $errors->has('forge_user') ? ' is-invalid' : '' }}" name="forge_user" value="{{ auth()->user()->forge_user }}" placeholder="forge">
+                                    <input id="forge_user" type="text" class="form-control{{ $errors->has('forge_user') ? ' is-invalid' : '' }}" name="forge_user" value="{{ old('forge_user') }}" placeholder="forge">
                                 </div>
                             </div>
 
