@@ -42,14 +42,14 @@ class CheckSiteDeployment implements ShouldQueue
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $branch->forge_site_id);
             $deploymentSuccess = Str::contains($deploymentLog, "successful-deployment-{$branch->forge_site_id}");
         } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
-            $branch->githubStatus('failure', 'Failed to deployed your branch.');
+            $branch->githubStatus('failure', 'Failed to deploy the branch because the deployment log doesn\'t exist.');
             $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\nDeployment Log doesn't exist.");
 
             return;
         }
 
         if (!$deploymentSuccess) {
-            $branch->githubStatus('failure', 'Failed to deployed your branch.');
+            $branch->githubStatus('failure', 'Failed to deploy your branch because of build issues.');
             $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog);
 
             return;
