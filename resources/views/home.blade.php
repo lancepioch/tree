@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 mt-3">
+                <h1 style="text-align: center;">Test!</h1>
                 <div class="card">
                     <div class="card-header">Tokens</div>
 
