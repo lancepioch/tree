@@ -74,7 +74,9 @@ class SetupSite implements ShouldQueue
             new WaitForRepositoryInstallation($branch),
             new SetupSql($branch),
             new DeploySite($branch),
-            new RemoveInitialDeployment($branch)
+            new WaitForSiteDeployment($branch),
+            new CheckSiteDeployment($branch),
+            new RemoveInitialDeployment($branch),
         ])->dispatch($branch);
     }
 }

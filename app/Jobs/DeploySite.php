@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 use Themsaid\Forge\Forge;
 
 class DeploySite implements ShouldQueue
@@ -42,10 +41,5 @@ class DeploySite implements ShouldQueue
 
         $branch->githubStatus('pending', 'Deploying your branch.');
         $forge->deploySite($project->forge_server_id, $branch->forge_site_id);
-        $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
-
-        WaitForSiteDeployment::withChain([
-            new CheckSiteDeployment($branch),
-        ])->dispatch($branch);
     }
 }
