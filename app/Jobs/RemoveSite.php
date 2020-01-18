@@ -48,5 +48,7 @@ class RemoveSite implements ShouldQueue
         }
 
         $forge->deleteSite($project->forge_server_id, $branch->forge_site_id);
+
+        $branch->githubStatus('success', 'Pull request has been closed.');
     }
 }

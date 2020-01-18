@@ -111,9 +111,13 @@ class JobsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
         $user->projects()->save($project);
-        $project->branches()->save($branch);
+
+        $branch = \Mockery::mock(Branch::class)->makePartial();
+        $branch->shouldReceive('githubStatus')->once()->with('success', \Mockery::any());
+        $branch->project = $project;
+        $branch->forge_mysql_user_id = 'not null';
+        $branch->forge_mysql_database_id = 'not null';
 
         $forgeMock = $this->getForgeMock(RemoveSite::class);
         $forgeMock->shouldReceive('deleteMysqlUser')->once();
