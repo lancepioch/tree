@@ -3,13 +3,19 @@
 namespace Tests\Feature;
 
 use App\Branch;
+use App\Jobs\CheckSiteDeployment;
 use App\Jobs\DeploySite;
+use App\Jobs\InstallRepository;
 use App\Jobs\RemoveInitialDeployment;
 use App\Jobs\RemoveSite;
 use App\Jobs\SetupSite;
 use App\Jobs\SetupSql;
+use App\Jobs\WaitForRepositoryInstallation;
+use App\Jobs\WaitForSiteDeployment;
+use App\Jobs\WaitForSiteInstallation;
 use App\Project;
 use App\User;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
@@ -28,27 +34,29 @@ class JobsTest extends TestCase
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
         $branch->shouldReceive('githubStatus')->once()->with('pending', \Mockery::any());
-        $branch->shouldReceive('githubStatus')->once()->with('success', \Mockery::any(), \Mockery::any());
+        $branch->project = $project;
+
+        $forgeMock = $this->getForgeMock(DeploySite::class);
+        $forgeMock->shouldReceive('deploySite')->once();
+
+        DeploySite::dispatchNow($branch);
+    }
+
+    public function testCheckSiteDeployment()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $user->projects()->save($project);
+
+        $branch = \Mockery::mock(Branch::class)->makePartial();
+        $branch->shouldReceive('githubStatus')->once();
         $branch->shouldReceive('githubComment')->once();
         $branch->project = $project;
 
-        $forgeSite = \Mockery::mock(Site::class);
-        $forgeSite->deploymentStatus = 'not null';
-        $forgeSite->id = 1337;
-
-        $completedSite = \Mockery::mock(Site::class);
-        $completedSite->deploymentStatus = null;
-        $completedSite->id = 1337;
-
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
-        $forgeMock->shouldReceive('deploySite')->once();
-        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
-        $forgeMock->shouldReceive('site')->once()->andReturn($completedSite);
+        $forgeMock = $this->getForgeMock(CheckSiteDeployment::class);
         $forgeMock->shouldReceive('siteDeploymentLog')->once()->andReturn('successful-deployment-1337');
-        $this->app->instance(Forge::class, $forgeMock);
 
-        DeploySite::dispatchNow($branch);
+        CheckSiteDeployment::dispatchNow($branch);
     }
 
     public function testDeploySiteFailedLogMissing()
@@ -58,23 +66,14 @@ class JobsTest extends TestCase
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
-        $branch->shouldReceive('githubStatus')->once()->with('pending', \Mockery::any());
         $branch->shouldReceive('githubStatus')->once()->with('failure', \Mockery::any());
         $branch->shouldReceive('githubComment')->once();
         $branch->project = $project;
 
-        $forgeSite = \Mockery::mock(Site::class);
-        $forgeSite->deploymentStatus = null;
-        $forgeSite->id = 1337;
-
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
-        $forgeMock->shouldReceive('deploySite')->once();
-        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
+        $forgeMock = $this->getForgeMock(CheckSiteDeployment::class);
         $forgeMock->shouldReceive('siteDeploymentLog')->once()->andThrow(new \Themsaid\Forge\Exceptions\NotFoundException());
-        $this->app->instance(Forge::class, $forgeMock);
 
-        DeploySite::dispatchNow($branch);
+        CheckSiteDeployment::dispatchNow($branch);
     }
 
     public function testDeploySiteFailedDeploymentErrors()
@@ -84,23 +83,14 @@ class JobsTest extends TestCase
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
-        $branch->shouldReceive('githubStatus')->once()->with('pending', \Mockery::any());
         $branch->shouldReceive('githubStatus')->once()->with('failure', \Mockery::any());
         $branch->shouldReceive('githubComment')->once();
         $branch->project = $project;
 
-        $forgeSite = \Mockery::mock(Site::class);
-        $forgeSite->deploymentStatus = null;
-        $forgeSite->id = 1337;
-
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
-        $forgeMock->shouldReceive('deploySite')->once();
-        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
+        $forgeMock = $this->getForgeMock(CheckSiteDeployment::class);
         $forgeMock->shouldReceive('siteDeploymentLog')->once()->andReturn('errors');
-        $this->app->instance(Forge::class, $forgeMock);
 
-        DeploySite::dispatchNow($branch);
+        CheckSiteDeployment::dispatchNow($branch);
     }
 
     public function testRemoveInitialDeployment()
@@ -111,11 +101,9 @@ class JobsTest extends TestCase
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
+        $forgeMock = $this->getForgeMock(RemoveInitialDeployment::class);
         $forgeMock->shouldReceive('siteDeploymentScript')->once()->andReturn('');
         $forgeMock->shouldReceive('updateSiteDeploymentScript')->once();
-        $this->app->instance(Forge::class, $forgeMock);
 
         RemoveInitialDeployment::dispatchNow($branch);
     }
@@ -128,12 +116,10 @@ class JobsTest extends TestCase
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
+        $forgeMock = $this->getForgeMock(RemoveSite::class);
         $forgeMock->shouldReceive('deleteMysqlUser')->once();
         $forgeMock->shouldReceive('deleteMysqlDatabase')->once();
         $forgeMock->shouldReceive('deleteSite')->once();
-        $this->app->instance(Forge::class, $forgeMock);
 
         RemoveSite::dispatchNow($branch);
     }
@@ -153,16 +139,7 @@ class JobsTest extends TestCase
         $project->user = $user;
         $branch->project = $project;
 
-        $pullRequest = [
-            'number' => 1337,
-            'head' => [
-                'sha' => 'a9993e364706816aba3e25717850c26c9cd0d89d',
-                'ref' => 'branchname',
-                'repo' => [
-                    'full_name' => 'test/repo',
-                ],
-            ],
-        ];
+        $pullRequest = $this->getPullRequest();
 
         $forgeSite = \Mockery::mock(Site::class);
         $forgeSite->deploymentStatus = 'not null';
@@ -170,25 +147,34 @@ class JobsTest extends TestCase
         $forgeSite->status = null;
         $forgeSite->repositoryStatus = null;
 
-        $forgeSiteInstalled = \Mockery::mock(Site::class);
-        $forgeSiteInstalled->shouldReceive('installGitRepository')->once();
-        $forgeSiteInstalled->shouldReceive('getDeploymentScript')->once()->andReturn('');
-        $forgeSiteInstalled->shouldReceive('updateDeploymentScript')->once();
-        $forgeSiteInstalled->status = 'installed';
-
         $forgeSiteInstalledRepository = \Mockery::mock(Site::class);
         $forgeSiteInstalledRepository->repositoryStatus = 'installed';
 
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
+        $forgeMock = $this->getForgeMock(WaitForSiteInstallation::class);
         $forgeMock->shouldReceive('createSite')->once()->andReturn($forgeSite);
-        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSiteInstalled);
-        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSiteInstalledRepository);
 
         $job = new SetupSite($project, $pullRequest);
         $job->handle($forgeMock);
 
-        Bus::assertDispatched(SetupSql::class);
+        Bus::assertDispatched(WaitForSiteInstallation::class);
+    }
+
+    public function testInstallRepository()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $branch = factory(Branch::class)->make();
+        $user->projects()->save($project);
+        $project->branches()->save($branch);
+
+        $forgeMock = $this->getForgeMock(InstallRepository::class);
+        $forgeMock->shouldReceive('installGitRepositoryOnSite')->once();
+        $forgeMock->shouldReceive('siteDeploymentScript')->once();
+        $forgeMock->shouldReceive('updateSiteDeploymentScript')->once();
+
+        $pullRequest = $this->getPullRequest();
+
+        InstallRepository::dispatchNow($branch, $pullRequest);
     }
 
     public function testSetupSql()
@@ -202,14 +188,94 @@ class JobsTest extends TestCase
         $mock = new \Mockery\Mock();
         $mock->id = 1337;
 
-        $forgeMock = \Mockery::mock(Forge::class);
-        $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
+        $forgeMock = $this->getForgeMock(SetupSql::class);
         $forgeMock->shouldReceive('createMysqlDatabase')->once()->andReturn($mock);
         $forgeMock->shouldReceive('createMysqlUser')->once()->andReturn($mock);
         $forgeMock->shouldReceive('siteEnvironmentFile')->once()->andReturn('composer require');
         $forgeMock->shouldReceive('updateSiteEnvironmentFile')->once();
-        $this->app->instance(Forge::class, $forgeMock);
 
         SetupSql::dispatchNow($branch);
+    }
+
+    public function testWaitForSiteInstallation()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $branch = factory(Branch::class)->make();
+        $user->projects()->save($project);
+        $project->branches()->save($branch);
+
+        $forgeSite = \Mockery::mock(Site::class);
+        $forgeSite->status = 'not installed';
+
+        $forgeMock = $this->getForgeMock(WaitForSiteInstallation::class);
+        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
+
+        WaitForSiteInstallation::dispatchNow($branch);
+    }
+
+    public function testWaitForSiteDeployment()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $branch = factory(Branch::class)->make();
+        $user->projects()->save($project);
+        $project->branches()->save($branch);
+
+        $forgeSite = \Mockery::mock(Site::class);
+        $forgeSite->deploymentStatus = 'not null';
+
+        $forgeMock = $this->getForgeMock(WaitForSiteDeployment::class);
+        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
+
+        WaitForSiteDeployment::dispatchNow($branch);
+    }
+
+    public function testWaitRepositoryInstallation()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $branch = factory(Branch::class)->make();
+        $user->projects()->save($project);
+        $project->branches()->save($branch);
+
+        $forgeSite = \Mockery::mock(Site::class);
+        $forgeSite->repositoryStatus = 'not installed';
+
+        $forgeMock = $this->getForgeMock(WaitForRepositoryInstallation::class);
+        $forgeMock->shouldReceive('site')->once()->andReturn($forgeSite);
+
+        WaitForRepositoryInstallation::dispatchNow($branch);
+    }
+
+    private function getForgeMock(string $jobClass)
+    {
+        $forgeMock = \Mockery::mock(Forge::class);
+        $reflectionClass = new \ReflectionClass($jobClass);
+        $parameters = $reflectionClass->getMethod('handle')->getParameters();
+
+        foreach ($parameters as $parameter) {
+            if ($parameter->getType()->getName() == Forge::class) {
+                $forgeMock->shouldReceive('setApiKey')->once()->andReturnSelf();
+            }
+        }
+
+        $this->app->instance(Forge::class, $forgeMock);
+
+        return $forgeMock;
+    }
+
+    private function getPullRequest()
+    {
+        return [
+            'number' => 1337,
+            'head' => [
+                'sha' => 'a9993e364706816aba3e25717850c26c9cd0d89d',
+                'ref' => 'branchname',
+                'repo' => [
+                    'full_name' => 'test/repo',
+                ],
+            ],
+        ];
     }
 }
