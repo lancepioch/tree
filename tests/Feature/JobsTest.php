@@ -15,7 +15,6 @@ use App\Jobs\WaitForSiteDeployment;
 use App\Jobs\WaitForSiteInstallation;
 use App\Project;
 use App\User;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
