@@ -42,20 +42,19 @@ class InstallRepository implements ShouldQueue
         $pullRequest = $this->pullRequest;
 
         $forge->setApiKey($project->user->forge_token, null);
-        $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
 
-        // Repository
-        $site->installGitRepository([
+        $forge->installGitRepositoryOnSite($project->forge_server_id, $branch->forge_site_id, [
             'provider'   => 'github',
             'repository' => $pullRequest['head']['repo']['full_name'],
             'branch'     => $pullRequest['head']['ref'],
         ]);
 
-        $deploymentScript = $site->getDeploymentScript();
+        $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $branch->forge_site_id);
         $deploymentScript .= "\n\n# Begin " . config('app.name') . " Configuration\n";
         $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
         $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . ' # End Initial Deployment';
-        $deploymentScript .= "\n\necho 'successful-deployment-{$site->id}'";
-        $site->updateDeploymentScript($deploymentScript);
+        $deploymentScript .= "\n\necho 'successful-deployment-{$branch->forge_site_id}'";
+
+        $forge->updateSiteDeploymentScript($project->forge_server_id, $branch->forge_site_id, $deploymentScript);
     }
 }
