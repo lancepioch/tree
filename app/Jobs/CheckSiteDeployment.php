@@ -37,6 +37,7 @@ class CheckSiteDeployment implements ShouldQueue
     {
         $branch = $this->branch;
         $project = $branch->project;
+        $forge = $forge->setApiKey($project->user->forge_token, null);
 
         try {
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $branch->forge_site_id);

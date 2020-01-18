@@ -36,6 +36,8 @@ class WaitForSiteDeployment implements ShouldQueue
     {
         $branch = $this->branch;
         $project = $branch->project;
+
+        $forge->setApiKey($project->user->forge_token, null);
         $site = $forge->site($project->forge_server_id, $branch->forge_site_id);
 
         if ($site->deploymentStatus !== null) {
