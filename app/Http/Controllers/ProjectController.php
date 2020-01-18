@@ -96,7 +96,7 @@ class ProjectController extends Controller
         $project->fill($request->except(['forge_server_id', 'github_repo', 'webhook_secret']));
         $project->save();
 
-        return redirect()->action('ProjectController@index', [$project]);
+        return redirect()->action('ProjectController@show', [$project]);
     }
 
     /**

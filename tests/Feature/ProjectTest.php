@@ -187,6 +187,7 @@ class ProjectTest extends TestCase
         $this->assertSame(12345, $project->webhook_id);
         $this->assertSame('composer require', $project->forge_deployment);
         $this->assertSame('php artisan key:generate', $project->forge_deployment_initial);
+        $response->assertRedirect("/projects/{$project->id}");
     }
 
     public function testProjectDelete()
