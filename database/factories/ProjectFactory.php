@@ -11,5 +11,6 @@ $factory->define(App\Project::class, function (Faker $faker) {
         'webhook_id' => $faker->numberBetween(),
         'forge_deployment' => "composer require\nphp artisan migrate",
         'forge_deployment_initial' => 'php artisan key:generate',
+        'paused_at' => null,
     ];
 });
