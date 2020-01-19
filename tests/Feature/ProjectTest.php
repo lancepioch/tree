@@ -212,7 +212,7 @@ class ProjectTest extends TestCase
         $this->assertNotNull($project->fresh());
 
         $response = $this->actingAs($user)->delete("/projects/{$project->id}");
-        $response->assertRedirect('/projects');
+        $response->assertRedirect('/home');
         $this->assertTrue($project->fresh()->trashed());
     }
 }
