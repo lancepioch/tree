@@ -120,6 +120,6 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->action('ProjectController@index');
+        return redirect()->action('HomeController@index');
     }
 }
