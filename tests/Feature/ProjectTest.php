@@ -214,4 +214,28 @@ class ProjectTest extends TestCase
         $response->assertRedirect('/home');
         $this->assertTrue($project->fresh()->trashed());
     }
+
+    public function testProjectPause()
+    {
+        $user = factory(User::class)->create();
+        $project = factory(Project::class)->make();
+        $project->paused_at = null;
+        $user->projects()->save($project);
+
+        Gate::before(function ($policyUser) use ($user) {
+            return $policyUser->id === $user->id;
+        });
+
+        $response = $this->actingAs($user)->post("/projects/{$project->id}/pause");
+        $response->assertRedirect("/projects/{$project->id}");
+
+        $project->refresh();
+        $this->assertInstanceOf(\Datetime::class, $project->paused_at);
+
+        $response = $this->actingAs($user)->post("/projects/{$project->id}/pause");
+        $response->assertRedirect("/projects/{$project->id}");
+
+        $project->refresh();
+        $this->assertNull($project->paused_at);
+    }
 }
