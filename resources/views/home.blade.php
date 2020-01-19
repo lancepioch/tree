@@ -171,7 +171,7 @@
                                     <input type="text" class="form-control" placeholder="valueofenv" x-model="newEnvVal">
                                 </div>
                                 <div>
-                                    <span class="btn btn-primary" @click="vars[newEnvKey] = newEnvVal; newEnvKey = ''; newEnvVal = '';">+</span>
+                                    <span class="btn btn-primary" @click="vars[newEnvKey] = newEnvVal; newEnvKey = ''; newEnvVal = '';">&plus;</span>
                                 </div>
                             </div>
 
