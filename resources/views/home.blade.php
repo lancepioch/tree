@@ -74,6 +74,18 @@
                         </div>
                 </div>
             </div>
+            
+            <script>
+                function projectSelector() {
+                    var select = document.querySelector('#project_id');
+                    var projectId = select.options[select.selectedIndex].value;
+
+                    document.querySelector('#EditProject').href = '{{ action("ProjectController@show", [""]) }}' + '/' + projectId;
+                    document.querySelector('#DeleteProject').action = '{{ action("ProjectController@destroy", [""]) }}' + '/' + projectId;
+                }
+
+                projectSelector();
+            </script>
             @endif
 
             @isset(auth()->user()->forge_token)
@@ -166,16 +178,4 @@
             @endif
         </div>
     </div>
-
-    <script>
-        function projectSelector() {
-            var select = document.querySelector('#project_id');
-            var projectId = select.options[select.selectedIndex].value;
-
-            document.querySelector('#EditProject').href = '{{ action("ProjectController@show", [""]) }}' + '/' + projectId;
-            document.querySelector('#DeleteProject').action = '{{ action("ProjectController@destroy", [""]) }}' + '/' + projectId;
-        }
-
-        projectSelector();
-    </script>
 @endsection
