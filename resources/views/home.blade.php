@@ -148,11 +148,11 @@
                                 <input type="hidden" name="forge_env_vars" :value="JSON.stringify(vars)">
 
                                 <div class="col-md-3">
-                                    <input readonly="readonly" type="text" class="form-control" placeholder="key" :value="key">
+                                    <input readonly="readonly" type="text" class="form-control" :value="key">
                                 </div>
 
                                 <div class="col-md-3">
-                                    <input readonly="readonly" type="text" class="form-control" placeholder="value" :value="vars[key]">
+                                    <input readonly="readonly" type="text" class="form-control" :value="vars[key]">
                                 </div>
 
                                 <div>
