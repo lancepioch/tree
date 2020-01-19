@@ -45,9 +45,13 @@ class ProjectController extends Controller
         $request->validate([
             'forge_site_url' => 'regex:/.*\*.+/', // domain must have an asterisk
             'forge_user' => 'nullable|regex:/[a-z][-a-z0-9_]{0,15}/', // optional but valid unix username
+            'forge_env_vars' => 'nullable|json',
         ]);
 
         $input = $request->all() + ['webhook_secret' => Str::random(20)];
+        if (isset($input['forge_env_vars'])) {
+            $input['forge_env_vars'] = json_decode($input['forge_env_vars'], true);
+        }
 
         $project = Project::onlyTrashed()->where('github_repo', $request->get('github_repo'))->first();
 

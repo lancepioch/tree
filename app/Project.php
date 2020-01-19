@@ -12,10 +12,11 @@ class Project extends Model
     protected $casts = [
         'deleted_at' => 'datetime',
         'paused_at' => 'datetime',
+        'forge_env_vars' => 'array',
     ];
 
     protected $fillable = [
-        'forge_site_url', 'forge_server_id', 'github_repo', 'webhook_secret', 'forge_deployment', 'forge_deployment_initial', 'webhook_id',
+        'forge_site_url', 'forge_server_id', 'github_repo', 'webhook_secret', 'forge_deployment', 'forge_deployment_initial', 'webhook_id', 'forge_env_vars',
     ];
 
     public function user()

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.3/dist/alpine.js" defer></script>
+@endpush
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -89,7 +93,7 @@
             @endif
 
             @isset(auth()->user()->forge_token)
-            <div class="col-md-10 mt-3">
+            <div class="col-md-10 mt-3" x-data="{ url: '', newEnvKey: '', newEnvVal: '', vars: {} }">
                 <div class="card">
                     <div class="card-header">Create New Project</div>
 
@@ -101,7 +105,7 @@
                                 <label for="forge_site_url" class="col-sm-4 col-form-label text-md-right">URL:</label>
 
                                 <div class="col-md-6">
-                                    <input id="forge_site_url" type="text" class="form-control{{ $errors->has('forge_site_url') ? ' is-invalid' : '' }}" name="forge_site_url" value="{{ old('forge_site_url') }}" required placeholder="*.example.com">
+                                    <input id="forge_site_url" type="text" class="form-control{{ $errors->has('forge_site_url') ? ' is-invalid' : '' }}" name="forge_site_url" value="{{ old('forge_site_url') }}" required placeholder="*.example.com" x-model="url" @change="vars['APP_URL'] = 'http://' + url">
                                 </div>
                             </div>
 
@@ -134,6 +138,40 @@
 
                                 <div class="col-md-6">
                                     <input id="forge_user" type="text" class="form-control{{ $errors->has('forge_user') ? ' is-invalid' : '' }}" name="forge_user" value="{{ old('forge_user') }}" placeholder="forge">
+                                </div>
+                            </div>
+
+                            <template x-for="key in Object.keys(vars)">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right">Env Var:</label>
+
+                                <input type="hidden" name="forge_env_vars" :value="JSON.stringify(vars)">
+
+                                <div class="col-md-3">
+                                    <input readonly="readonly" type="text" class="form-control" placeholder="key" :value="key">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <input readonly="readonly" type="text" class="form-control" placeholder="value" :value="vars[key]">
+                                </div>
+
+                                <div>
+                                    <span class="btn btn-danger" @click="var v = vars; delete v[key]; vars = v;">&times;</span>
+                                </div>
+                            </div>
+                            </template>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right">New Env Variable:</label>
+
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="ENV_VAR_KEY" x-model="newEnvKey">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="valueofenv" x-model="newEnvVal">
+                                </div>
+                                <div>
+                                    <span class="btn btn-primary" @click="vars[newEnvKey] = newEnvVal; newEnvKey = ''; newEnvVal = '';">+</span>
                                 </div>
                             </div>
 
