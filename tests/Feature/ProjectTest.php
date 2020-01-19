@@ -194,7 +194,6 @@ class ProjectTest extends TestCase
     {
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
-        /** @var Project $project */
         $project = factory(Project::class)->make();
         $user->projects()->save($project);
 
