@@ -61,7 +61,7 @@ class LoginController extends Controller
         $social = Socialite::driver('github')->user();
 
         /** @var User $user */
-        $user = User::query()->firstOrNew(['github_id' => $social->id]);
+        $user = User::query()->firstOrNew(['github_id' => $social->getId()]);
 
         $user->fill([
             'name'         => $social->getName(),
