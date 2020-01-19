@@ -52,8 +52,10 @@ class ProjectController extends Controller
         $project = Project::onlyTrashed()->where('github_repo', $request->get('github_repo'))->first();
 
         if ($project === null) {
-            $project = new Project($input);
+            $project = new Project();
         }
+
+        $project->fill($input);
 
         if ($project->trashed()) {
             $project->restore();
