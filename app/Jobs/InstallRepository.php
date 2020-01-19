@@ -54,7 +54,7 @@ class InstallRepository implements ShouldQueue
         $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
         $deploymentScript .= "\n# Begin Initial Deployment:\n" . ($project->forge_deployment_initial ?? '') . ' # End Initial Deployment';
 
-        foreach ($project->forge_env_vars as $key => $value) {
+        foreach ($project->forge_env_vars ?? [] as $key => $value) {
             $key = preg_quote($key);
             $value = preg_quote($value);
             $deploymentScript .= "\nsed -i -E 's/$key=.+/$key=$value/' .env";
