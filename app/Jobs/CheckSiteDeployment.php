@@ -20,7 +20,7 @@ class CheckSiteDeployment implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Branch $branch
+     * @param  Branch  $branch
      */
     public function __construct(Branch $branch)
     {
@@ -30,7 +30,7 @@ class CheckSiteDeployment implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param Forge $forge
+     * @param  Forge  $forge
      * @return void
      */
     public function handle(Forge $forge)

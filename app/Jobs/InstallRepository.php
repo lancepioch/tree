@@ -20,8 +20,8 @@ class InstallRepository implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Branch $branch
-     * @param array $pullRequest
+     * @param  Branch  $branch
+     * @param  array  $pullRequest
      */
     public function __construct(Branch $branch, array $pullRequest)
     {
@@ -32,7 +32,7 @@ class InstallRepository implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param Forge $forge
+     * @param  Forge  $forge
      * @return void
      */
     public function handle(Forge $forge)

@@ -20,8 +20,8 @@ class SetupSite implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param Project $project
-     * @param array $pullRequest
+     * @param  Project  $project
+     * @param  array  $pullRequest
      */
     public function __construct(Project $project, array $pullRequest)
     {
@@ -32,7 +32,7 @@ class SetupSite implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param Forge $forge
+     * @param  Forge  $forge
      * @return void
      */
     public function handle(Forge $forge)

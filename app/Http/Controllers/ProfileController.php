@@ -19,8 +19,7 @@ class ProfileController extends Controller
     /**
      * Updates the current user.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
