@@ -13,4 +13,18 @@ services:
             PHP_EXTENSION_PGSQL: 1
             PHP_EXTENSION_PDO_PGSQL: 1
             APACHE_DOCUMENT_ROOT: /workspace/public
-
+    db:
+        image: mysql:5.7.22
+        restart: unless-stopped
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: laravel
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+    redis:
+        image: redis:6-alpine
+        ports:
+            - 6379:6379
