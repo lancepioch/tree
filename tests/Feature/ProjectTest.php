@@ -230,7 +230,7 @@ class ProjectTest extends TestCase
         $response->assertRedirect("/projects/{$project->id}");
 
         $project->refresh();
-        $this->assertInstanceOf(\Datetime::class, $project->paused_at);
+        $this->assertInstanceOf(\DateTime::class, $project->paused_at);
 
         $response = $this->actingAs($user)->post("/projects/{$project->id}/pause");
         $response->assertRedirect("/projects/{$project->id}");
