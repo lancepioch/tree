@@ -14,27 +14,10 @@ class InstallRepository implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $branch;
-    private $pullRequest;
-
-    /**
-     * Create a new job instance.
-     *
-     * @param  Branch  $branch
-     * @param  array  $pullRequest
-     */
-    public function __construct(Branch $branch, array $pullRequest)
+    public function __construct(private readonly Branch $branch, private readonly array $pullRequest)
     {
-        $this->branch = $branch;
-        $this->pullRequest = $pullRequest;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @param  Forge  $forge
-     * @return void
-     */
     public function handle(Forge $forge)
     {
         $branch = $this->branch;

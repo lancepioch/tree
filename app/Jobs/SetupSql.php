@@ -15,24 +15,10 @@ class SetupSql implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $branch;
-
-    /**
-     * Create a new job instance.
-     *
-     * @param  Branch  $branch
-     */
-    public function __construct(Branch $branch)
+    public function __construct(private readonly Branch $branch)
     {
-        $this->branch = $branch;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @param  Forge  $forge
-     * @return void
-     */
     public function handle(Forge $forge)
     {
         $branch = $this->branch;
