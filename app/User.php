@@ -39,7 +39,7 @@ class User extends Authenticatable
     public function githubClient()
     {
         $github = new Client();
-        $github->authenticate($this->github_token, null, Client::AUTH_HTTP_PASSWORD);
+        $github->authenticate($this->github_token, null, Client::AUTH_ACCESS_TOKEN);
 
         return $github;
     }

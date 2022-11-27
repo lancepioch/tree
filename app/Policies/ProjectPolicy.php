@@ -27,7 +27,7 @@ class ProjectPolicy
         $github = $this->github;
 
         try {
-            $github->authenticate($user->github_token, null, Client::AUTH_HTTP_PASSWORD);
+            $github->authenticate($user->github_token, null, Client::AUTH_ACCESS_TOKEN);
 
             $paginator = new ResultPager($github);
             $repositories = $paginator->fetchAll($github->api('me'), 'repositories', ['all']);

@@ -47,7 +47,7 @@ class HomeController extends Controller
 
         try {
             $github = new Client();
-            $github->authenticate(auth()->user()->github_token, null, Client::AUTH_HTTP_PASSWORD);
+            $github->authenticate(auth()->user()->github_token, null, Client::AUTH_ACCESS_TOKEN);
 
             $paginator = new ResultPager($github);
             $repositories = $paginator->fetchAll($github->api('me'), 'repositories', ['all']);
