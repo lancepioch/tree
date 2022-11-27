@@ -11,6 +11,10 @@ Connect your Github Repository to your Laravel Forge Server and Laravel Forest a
 ## Demo Video
 [![Demo Video](https://i.imgur.com/pJnISxo.png)](https://youtu.be/e48QJdcNrUY)
 
+## Requirements
+
+* PHP 8.1
+
 ## Installation
 
 1. Git Clone: `git clone git@github.com:lancepioch/tree.git`
@@ -23,7 +27,7 @@ Connect your Github Repository to your Laravel Forge Server and Laravel Forest a
 ```
 MIT License
 
-Copyright (c) 2018 Lance Pioch
+Copyright (c) 2023 Lance Pioch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
