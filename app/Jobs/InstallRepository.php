@@ -14,6 +14,7 @@ class InstallRepository implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @param array<string, string|array<string, string|array<string, string>>> $pullRequest */
     public function __construct(private readonly Branch $branch, private readonly array $pullRequest)
     {
     }
