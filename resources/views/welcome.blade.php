@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="m-b-md">
-                    <a href="{{ action('Auth\LoginController@redirectToProvider') }}">
+                    <a href="{{ route('login.github') }}">
                         <button class="github-button">Login with GitHub</button>
                     </a>
                 </div>
