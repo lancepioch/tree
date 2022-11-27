@@ -7,10 +7,11 @@ use App\Http\Requests\AcceptGithubWebhook;
 use App\Jobs\DeploySite;
 use App\Jobs\RemoveSite;
 use App\Jobs\SetupSite;
+use Illuminate\Http\JsonResponse;
 
 class GithubPullRequestController extends Controller
 {
-    public function __invoke(AcceptGithubWebhook $request)
+    public function __invoke(AcceptGithubWebhook $request): JsonResponse
     {
         $input = $request->validated();
         $event = $request->header('X-GitHub-Event');

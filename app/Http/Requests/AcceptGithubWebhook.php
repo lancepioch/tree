@@ -8,14 +8,12 @@ use Illuminate\Support\Str;
 
 class AcceptGithubWebhook extends FormRequest
 {
-    public $project;
+    public Project $project;
 
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         $input = $this->validate($this->rules());
         $signature = $this->header('X-Hub-Signature');
@@ -52,10 +50,9 @@ class AcceptGithubWebhook extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
+     *  @return array<string, string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'action' => 'required',

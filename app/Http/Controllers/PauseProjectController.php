@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use Illuminate\Http\RedirectResponse;
 
 class PauseProjectController extends Controller
 {
-    public function __invoke(Project $project)
+    public function __invoke(Project $project): RedirectResponse
     {
         $this->authorize('update', $project);
 

@@ -19,7 +19,7 @@ class Branch extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function githubStatus($state, $description, $url = null)
+    public function githubStatus(string $state, string $description, string $url = null): void
     {
         $project = $this->project;
 
@@ -39,7 +39,7 @@ class Branch extends Model
         $github->api('repo')->statuses()->create($githubUser, $githubRepo, $this->commit_hash, $status);
     }
 
-    public function githubComment($body)
+    public function githubComment(string $body): void
     {
         $project = $this->project;
 

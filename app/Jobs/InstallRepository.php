@@ -18,7 +18,7 @@ class InstallRepository implements ShouldQueue
     {
     }
 
-    public function handle(Forge $forge)
+    public function handle(Forge $forge): void
     {
         $branch = $this->branch;
         $project = $branch->project;

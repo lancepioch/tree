@@ -13,17 +13,12 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
-    private $github;
-
-    private $request;
-
-    public function __construct(Client $github, Request $request)
+    public function __construct(private readonly Client $github, private readonly Request $request)
     {
-        $this->github = $github;
-        $this->request = $request;
+
     }
 
-    private function administrateRepository(User $user, $repository)
+    private function administrateRepository(User $user, string $repository): bool
     {
         $github = $this->github;
 
@@ -45,23 +40,16 @@ class ProjectPolicy
 
     /**
      * Determine whether the user can view the project.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
-     * @return mixed
      */
-    public function view(User $user, Project $project)
+    public function view(User $user, Project $project): bool
     {
         return $this->administrateRepository($user, $project->github_repo);
     }
 
     /**
      * Determine whether the user can create projects.
-     *
-     * @param  \App\User  $user
-     * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         $repository = $this->request->get('github_repo');
 
@@ -70,24 +58,16 @@ class ProjectPolicy
 
     /**
      * Determine whether the user can update the project.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
-     * @return mixed
      */
-    public function update(User $user, Project $project)
+    public function update(User $user, Project $project): bool
     {
         return $this->administrateRepository($user, $project->github_repo);
     }
 
     /**
      * Determine whether the user can delete the project.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Project  $project
-     * @return mixed
      */
-    public function delete(User $user, Project $project)
+    public function delete(User $user, Project $project): bool
     {
         return $this->administrateRepository($user, $project->github_repo);
     }

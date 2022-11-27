@@ -14,11 +14,12 @@ class SetupSite implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @param array<string, string|array<string, string>> $pullRequest */
     public function __construct(private readonly Project $project, private readonly array $pullRequest)
     {
     }
 
-    public function handle(Forge $forge)
+    public function handle(Forge $forge): void
     {
         $project = $this->project;
         $pullRequest = $this->pullRequest;

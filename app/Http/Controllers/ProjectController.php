@@ -6,8 +6,10 @@ use App\Project;
 use Github\Api\Repo;
 use Github\Client;
 use Github\Exception\RuntimeException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
@@ -22,12 +24,12 @@ class ProjectController extends Controller
         $this->authorizeResource(Project::class);
     }
 
-    public function index()
+    public function index(): RedirectResponse
     {
         return redirect()->route('home');
     }
 
-    public function create()
+    public function create(): RedirectResponse
     {
         return redirect()->route('projects.index');
     }
@@ -88,17 +90,17 @@ class ProjectController extends Controller
         return redirect()->route('home');
     }
 
-    public function show(Project $project)
+    public function show(Project $project): View
     {
         return view('project')->with(compact('project'));
     }
 
-    public function edit(Project $project)
+    public function edit(Project $project): RedirectResponse
     {
         return redirect()->route('projects.show', [$project]);
     }
 
-    public function update(Project $project, Request $request)
+    public function update(Project $project, Request $request): RedirectResponse
     {
         $project->fill($request->except(['forge_server_id', 'github_repo', 'webhook_secret']));
         $project->save();
@@ -106,21 +108,14 @@ class ProjectController extends Controller
         return redirect()->route('projects.show', [$project]);
     }
 
-    /**
-     * @param  Project  $project
-     * @param  Client  $github
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Exception
-     */
-    public function destroy(Project $project, Client $github)
+    public function destroy(Project $project, Client $github): RedirectResponse
     {
         $github->authenticate($project->user->github_token, null, Client::AUTH_ACCESS_TOKEN);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         try {
             (new Repo($github))->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
-        } catch (RuntimeException $exception) {
+        } catch (RuntimeException) {
             // Hook has already been removed or we don't have access anymore, either way just trek on ahead
         }
 
