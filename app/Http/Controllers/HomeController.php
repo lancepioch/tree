@@ -33,7 +33,7 @@ class HomeController extends Controller
         $repositories = [];
 
         if (is_null(auth()->user()->forge_token)) {
-            $forgeException = 'Please enter a valid Forge API Token from: Laravel Forge > My Account > API';
+            $forgeException = 'Please enter a valid Forge API Token from: <a href="https://forge.laravel.com/user-profile/api">Laravel Forge > Account > API</a>';
 
             return view('home')->with(compact('servers', 'repositories', 'forgeException', 'githubException'));
         }

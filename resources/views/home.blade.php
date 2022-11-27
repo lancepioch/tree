@@ -12,7 +12,7 @@
                     <div class="card-header">Tokens</div>
 
                     <div class="card-body">
-                        @isset($forgeException) <div class="alert alert-danger">{{ $forgeException }}</div> @endisset
+                        @isset($forgeException) <div class="alert alert-danger">{!! $forgeException !!}</div> @endisset
                         @isset($githubException) <div class="alert alert-danger">{{ $githubException }}</div> @endisset
 
                         <form method="POST" action="{{ action('ProfileController@update') }}">
