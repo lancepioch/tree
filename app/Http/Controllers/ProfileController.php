@@ -26,6 +26,6 @@ class ProfileController extends Controller
     {
         auth()->user()->fill($request->all())->save();
 
-        return redirect()->action('HomeController@index');
+        return redirect()->route('home');
     }
 }

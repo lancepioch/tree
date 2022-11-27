@@ -13,6 +13,6 @@ class PauseProjectController extends Controller
         $project->paused_at = is_null($project->paused_at) ? now() : null;
         $project->save();
 
-        return redirect()->action([ProjectController::class, 'show'], [$project]);
+        return redirect()->route('projects.show', [$project]);
     }
 }

@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PauseProjectController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,19 +18,14 @@
 |
 */
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+Route::view('/', 'welcome')->name('welcome');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::view('/', 'welcome');
-Route::get('/home', [HomeController::class, 'index']);
+Route::post('/user/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::post('/user/update', [ProfileController::class, 'update']);
+Route::post('/projects/{project}/pause', PauseProjectController::class)->name('projects.pause');
+Route::resource('projects', ProjectController::class);
 
-Route::post('/projects/{project}/pause', 'PauseProjectController');
-Route::resource('projects', 'ProjectController');
-
-Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('login');
+Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('login.github');
 Route::get('/login/github/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

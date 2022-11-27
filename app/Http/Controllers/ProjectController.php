@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Webhooks\GithubPullRequestController;
 use App\Project;
 use Github\Client;
 use Github\Exception\RuntimeException;
@@ -23,12 +24,12 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return redirect()->action('HomeController@index');
+        return redirect()->route('home');
     }
 
     public function create()
     {
-        return redirect()->action('ProjectController@index');
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -71,7 +72,7 @@ class ProjectController extends Controller
         $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
             'name'   => 'web',
             'config' => [
-                'url'          => action('Webhooks\GithubPullRequestController'),
+                'url'          => route('webhooks.github.pullrequest'),
                 'content_type' => 'json',
                 'secret'       => $project->webhook_secret,
                 'insecure_ssl' => 0,
@@ -84,7 +85,7 @@ class ProjectController extends Controller
 
         auth()->user()->projects()->save($project);
 
-        return redirect()->action('HomeController@index');
+        return redirect()->route('home');
     }
 
     public function show(Project $project)
@@ -94,7 +95,7 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        return redirect()->action('ProjectController@show', [$project]);
+        return redirect()->route('projects.show', [$project]);
     }
 
     public function update(Project $project, Request $request)
@@ -102,7 +103,7 @@ class ProjectController extends Controller
         $project->fill($request->except(['forge_server_id', 'github_repo', 'webhook_secret']));
         $project->save();
 
-        return redirect()->action('ProjectController@show', [$project]);
+        return redirect()->route('projects.show', [$project]);
     }
 
     /**
@@ -125,6 +126,6 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->action('HomeController@index');
+        return redirect()->route('home');
     }
 }

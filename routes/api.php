@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Webhooks\GithubPullRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/webhooks/github/pullrequest', 'Webhooks\GithubPullRequestController');
+Route::post('/webhooks/github/pullrequest', GithubPullRequestController::class)->name('webhooks.github.pullrequest');

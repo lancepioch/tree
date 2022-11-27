@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
@@ -73,6 +74,6 @@ class LoginController extends Controller
         $user->save();
         auth()->login($user);
 
-        return redirect()->action('HomeController@index');
+        return redirect()->route('home');
     }
 }

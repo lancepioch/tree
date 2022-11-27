@@ -15,7 +15,7 @@
                         @isset($forgeException) <div class="alert alert-danger">{!! $forgeException !!}</div> @endisset
                         @isset($githubException) <div class="alert alert-danger">{{ $githubException }}</div> @endisset
 
-                        <form method="POST" action="{{ action('ProfileController@update') }}">
+                        <form method="POST" action="{{ route('profile.update') }}">
                             @csrf
 
                             @isset (auth()->user()->forge_token)
@@ -78,14 +78,14 @@
                         </div>
                 </div>
             </div>
-            
+
             <script>
                 function projectSelector() {
                     var select = document.querySelector('#project_id');
                     var projectId = select.options[select.selectedIndex].value;
 
-                    document.querySelector('#EditProject').href = '{{ action("ProjectController@show", [""]) }}' + '/' + projectId;
-                    document.querySelector('#DeleteProject').action = '{{ action("ProjectController@destroy", [""]) }}' + '/' + projectId;
+                    document.querySelector('#EditProject').href = '{{ route("projects.show", [""]) }}' + '/' + projectId;
+                    document.querySelector('#DeleteProject').action = '{{ route("projects.destroy", [""]) }}' + '/' + projectId;
                 }
 
                 projectSelector();
@@ -98,7 +98,7 @@
                     <div class="card-header">Create New Project</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ action('ProjectController@store') }}">
+                        <form method="POST" action="{{ route('projects.store') }}">
                             @csrf
 
                             <div class="form-group row">
