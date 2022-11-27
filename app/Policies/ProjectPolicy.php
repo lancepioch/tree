@@ -40,7 +40,7 @@ class ProjectPolicy
             ->where('permissions.admin', true)
             ->where('full_name', $repository);
 
-        return ! empty($repository);
+        return $repository->isNotEmpty();
     }
 
     /**
