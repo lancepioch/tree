@@ -15,7 +15,6 @@ class ProjectPolicy
 
     public function __construct(private readonly Client $github, private readonly Request $request)
     {
-
     }
 
     private function administrateRepository(User $user, string $repository): bool
