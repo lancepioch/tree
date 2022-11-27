@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Github\Api\Issue;
+use Github\Api\Repo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,7 +38,7 @@ class Branch extends Model
             $status['target_url'] = $url;
         }
 
-        $github->api('repo')->statuses()->create($githubUser, $githubRepo, $this->commit_hash, $status);
+        (new Repo($github))->statuses()->create($githubUser, $githubRepo, $this->commit_hash, $status);
     }
 
     public function githubComment(string $body): void
@@ -46,8 +48,7 @@ class Branch extends Model
         $github = $project->user->githubClient();
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $github->api('issue')
-            ->comments()
+        (new Issue\Comments($github))
             ->create($githubUser, $githubRepo, $this->issue_number, [
                 'body' => $body,
             ]);
