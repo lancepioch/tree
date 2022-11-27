@@ -19,11 +19,6 @@ class HomeTest extends TestCase
         $response->assertSee(config('forest.name'));
     }
 
-    public function testHomeIndex()
-    {
-        $this->markTestIncomplete();
-    }
-
     public function testRedirectIfAuth()
     {
         $response = $this->followingRedirects()->get('/login/github');
