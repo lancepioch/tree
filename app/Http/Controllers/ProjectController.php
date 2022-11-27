@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Webhooks\GithubPullRequestController;
 use App\Project;
 use Github\Client;
 use Github\Exception\RuntimeException;
@@ -70,11 +69,11 @@ class ProjectController extends Controller
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
-            'name'   => 'web',
+            'name' => 'web',
             'config' => [
-                'url'          => route('webhooks.github.pullrequest'),
+                'url' => route('webhooks.github.pullrequest'),
                 'content_type' => 'json',
-                'secret'       => $project->webhook_secret,
+                'secret' => $project->webhook_secret,
                 'insecure_ssl' => 0,
             ],
             'events' => ['pull_request'],

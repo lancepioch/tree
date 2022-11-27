@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\HomeController;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
@@ -65,9 +64,9 @@ class LoginController extends Controller
         $user = User::query()->firstOrNew(['github_id' => $social->getId()]);
 
         $user->fill([
-            'name'         => $social->getName(),
-            'email'        => $social->getEmail(),
-            'github_id'    => $social->getId(),
+            'name' => $social->getName(),
+            'email' => $social->getEmail(),
+            'github_id' => $social->getId(),
             'github_token' => $social->token,
         ]);
 

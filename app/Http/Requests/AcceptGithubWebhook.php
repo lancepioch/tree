@@ -20,15 +20,15 @@ class AcceptGithubWebhook extends FormRequest
         $input = $this->validate($this->rules());
         $signature = $this->header('X-Hub-Signature');
 
-        if (!is_string($signature)) {
+        if (! is_string($signature)) {
             return false;
         }
 
-        if (!Str::contains($signature, '=')) {
+        if (! Str::contains($signature, '=')) {
             return false;
         }
 
-        if (!isset($input['repository']['full_name'])) {
+        if (! isset($input['repository']['full_name'])) {
             return false;
         }
 
@@ -40,7 +40,7 @@ class AcceptGithubWebhook extends FormRequest
         }
 
         $content = $this->getContent();
-        if (!is_string($content)) {
+        if (! is_string($content)) {
             return false;
         }
 

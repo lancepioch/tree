@@ -26,12 +26,12 @@ class SetupSql implements ShouldQueue
         $forge = $forge->setApiKey($project->user->forge_token, null);
 
         // MySQL
-        $sqlUsername = str_replace('/', '_', $project->github_repo) . '_' . $branch->issue_number;
+        $sqlUsername = str_replace('/', '_', $project->github_repo).'_'.$branch->issue_number;
         $sqlPassword = Str::random(20);
         $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
         $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
-            'name'      => $sqlUsername,
-            'password'  => $sqlPassword,
+            'name' => $sqlUsername,
+            'password' => $sqlPassword,
             'databases' => [$mysqlDatabase->id],
         ], false);
 
@@ -41,9 +41,9 @@ class SetupSql implements ShouldQueue
 
         // Environment
         $environment = $forge->siteEnvironmentFile($project->forge_server_id, $branch->forge_site_id);
-        $environment = preg_replace('/^DB_DATABASE=.*$/m', 'DB_DATABASE=' . $sqlUsername, $environment);
-        $environment = preg_replace('/^DB_USERNAME=.*$/m', 'DB_USERNAME=' . $sqlUsername, $environment);
-        $environment = preg_replace('/^DB_PASSWORD=.*$/m', 'DB_PASSWORD=' . $sqlPassword, $environment);
+        $environment = preg_replace('/^DB_DATABASE=.*$/m', 'DB_DATABASE='.$sqlUsername, $environment);
+        $environment = preg_replace('/^DB_USERNAME=.*$/m', 'DB_USERNAME='.$sqlUsername, $environment);
+        $environment = preg_replace('/^DB_PASSWORD=.*$/m', 'DB_PASSWORD='.$sqlPassword, $environment);
 
         if (strlen($environment) > 0) {
             $forge->updateSiteEnvironmentFile($project->forge_server_id, $branch->forge_site_id, $environment);

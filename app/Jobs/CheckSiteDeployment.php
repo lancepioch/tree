@@ -30,20 +30,20 @@ class CheckSiteDeployment implements ShouldQueue
             $deploymentSuccess = Str::contains($deploymentLog, "successful-deployment-{$branch->forge_site_id}");
         } catch (\Laravel\Forge\Exceptions\NotFoundException $exception) {
             $branch->githubStatus('failure', 'Failed to deploy the branch because the deployment log doesn\'t exist.');
-            $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\nDeployment Log doesn't exist.");
+            $branch->githubComment(config('app.name').' Build Failure Log:'."\nDeployment Log doesn't exist.");
 
             return;
         }
 
-        if (!$deploymentSuccess) {
+        if (! $deploymentSuccess) {
             $branch->githubStatus('failure', 'Failed to deploy your branch because of build issues.');
-            $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\n\n" . $deploymentLog);
+            $branch->githubComment(config('app.name').' Build Failure Log:'."\n\n".$deploymentLog);
 
             return;
         }
 
         $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
-        $branch->githubStatus('success', 'Deployed your branch.', 'http://' . $url);
-        $branch->githubComment(config('app.name') . ' Build URL: http://' . $url);
+        $branch->githubStatus('success', 'Deployed your branch.', 'http://'.$url);
+        $branch->githubComment(config('app.name').' Build URL: http://'.$url);
     }
 }

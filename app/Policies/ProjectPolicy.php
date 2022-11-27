@@ -14,6 +14,7 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     private $github;
+
     private $request;
 
     public function __construct(Client $github, Request $request)
@@ -39,7 +40,7 @@ class ProjectPolicy
             ->where('permissions.admin', true)
             ->where('full_name', $repository);
 
-        return !empty($repository);
+        return ! empty($repository);
     }
 
     /**

@@ -36,7 +36,7 @@ class SetupSite implements ShouldQueue
         $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
 
         $isolatedUser = [];
-        if (!is_null($project->forge_user)) {
+        if (! is_null($project->forge_user)) {
             $isolatedUser = [
                 'isolated' => true,
                 'username' => $project->forge_user,
@@ -44,9 +44,9 @@ class SetupSite implements ShouldQueue
         }
 
         $site = $forge->createSite($project->forge_server_id, [
-            'domain'       => $url,
+            'domain' => $url,
             'project_type' => 'php',
-            'directory'    => '/public',
+            'directory' => '/public',
         ] + $isolatedUser, false);
 
         $branch->forge_site_id = $site->id;

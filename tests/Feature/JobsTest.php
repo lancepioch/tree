@@ -18,9 +18,9 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Laravel\Forge\Exceptions\NotFoundException;
+use Laravel\Forge\Forge;
 use Laravel\Forge\Resources\Site;
 use Tests\TestCase;
-use Laravel\Forge\Forge;
 
 class JobsTest extends TestCase
 {

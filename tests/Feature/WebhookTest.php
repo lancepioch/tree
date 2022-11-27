@@ -35,7 +35,7 @@ class WebhookTest extends TestCase
         $hash = hash_hmac('sha1', $content, $secret);
 
         return [
-            'X-Hub-Signature' => 'sha1=' . $hash,
+            'X-Hub-Signature' => 'sha1='.$hash,
         ];
     }
 
