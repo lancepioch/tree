@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use Github\Api\Repo;
 use Github\Client;
 use Github\Exception\RuntimeException;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class ProjectController extends Controller
         $github->authenticate(auth()->user()->github_token, null, Client::AUTH_ACCESS_TOKEN);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $hook = $github->api('repo')->hooks()->create($githubUser, $githubRepo, [
+        $hook = (new Repo($github))->hooks()->create($githubUser, $githubRepo, [
             'name' => 'web',
             'config' => [
                 'url' => route('webhooks.github.pullrequest'),
@@ -118,7 +119,7 @@ class ProjectController extends Controller
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
         try {
-            $github->api('repo')->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
+            (new Repo($github))->hooks()->remove($githubUser, $githubRepo, $project->webhook_id);
         } catch (RuntimeException $exception) {
             // Hook has already been removed or we don't have access anymore, either way just trek on ahead
         }
