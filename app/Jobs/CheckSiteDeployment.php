@@ -42,7 +42,7 @@ class CheckSiteDeployment implements ShouldQueue
             return;
         }
 
-        $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
+        $url = str_replace('*', (string) $branch->issue_number, $project->forge_site_url);
         $branch->githubStatus('success', 'Deployed your branch.', 'http://'.$url);
         $branch->githubComment(config('app.name').' Build URL: http://'.$url);
     }
