@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Github\Client;
 use Github\ResultPager;
-use Themsaid\Forge\Forge;
+use Laravel\Forge\Forge;
 
 class HomeController extends Controller
 {

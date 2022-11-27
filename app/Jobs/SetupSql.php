@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
-use Themsaid\Forge\Forge;
+use Laravel\Forge\Forge;
 
 class SetupSql implements ShouldQueue
 {

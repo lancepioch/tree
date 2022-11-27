@@ -18,7 +18,7 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
-use Themsaid\Forge\Forge;
+use Laravel\Forge\Forge;
 use Themsaid\Forge\Resources\Site;
 
 class JobsTest extends TestCase
@@ -70,7 +70,7 @@ class JobsTest extends TestCase
         $branch->project = $project;
 
         $forgeMock = $this->getForgeMock(CheckSiteDeployment::class);
-        $forgeMock->shouldReceive('siteDeploymentLog')->once()->andThrow(new \Themsaid\Forge\Exceptions\NotFoundException());
+        $forgeMock->shouldReceive('siteDeploymentLog')->once()->andThrow(new Laravel\Forge\Exceptions\NotFoundException());
 
         CheckSiteDeployment::dispatchNow($branch);
     }

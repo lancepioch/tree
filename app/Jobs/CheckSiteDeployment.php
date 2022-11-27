@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
-use Themsaid\Forge\Forge;
+use Laravel\Forge\Forge;
 
 class CheckSiteDeployment implements ShouldQueue
 {
@@ -42,7 +42,7 @@ class CheckSiteDeployment implements ShouldQueue
         try {
             $deploymentLog = $forge->siteDeploymentLog($project->forge_server_id, $branch->forge_site_id);
             $deploymentSuccess = Str::contains($deploymentLog, "successful-deployment-{$branch->forge_site_id}");
-        } catch (\Themsaid\Forge\Exceptions\NotFoundException $exception) {
+        } catch (\Laravel\Forge\Exceptions\NotFoundException $exception) {
             $branch->githubStatus('failure', 'Failed to deploy the branch because the deployment log doesn\'t exist.');
             $branch->githubComment(config('app.name') . ' Build Failure Log:' . "\nDeployment Log doesn't exist.");
 
