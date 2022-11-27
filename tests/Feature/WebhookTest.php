@@ -69,8 +69,8 @@ class WebhookTest extends TestCase
 
     public function testSignatureVerification()
     {
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();
@@ -89,7 +89,7 @@ class WebhookTest extends TestCase
 
     public function testNoProjectFound()
     {
-        $project = factory(Project::class)->create(['user_id' => 1]);
+        $project = Project::factory()->create(['user_id' => 1]);
 
         $pr = $this->pr();
         $pr['repository']['full_name'] = 'doesnotexist';
@@ -106,8 +106,8 @@ class WebhookTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();
@@ -131,8 +131,8 @@ class WebhookTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();
@@ -156,8 +156,8 @@ class WebhookTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();
@@ -175,8 +175,8 @@ class WebhookTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();
@@ -194,8 +194,8 @@ class WebhookTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create(['user_id' => 1]);
-        $branch = factory(Branch::class)->make();
+        $project = Project::factory()->create(['user_id' => 1]);
+        $branch = Branch::factory()->make();
         $project->branches()->save($branch);
 
         $pr = $this->pr();

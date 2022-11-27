@@ -29,15 +29,15 @@ class HomeTest extends TestCase
         $response = $this->followingRedirects()->get('/login/github');
         $response->assertNotFound();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->followingRedirects()->actingAs($user)->get('/login/github');
         $response->assertSuccessful();
     }
 
     public function testHorizonAccess()
     {
-        $user = factory(User::class)->create();
-        $anotherUser = factory(User::class)->create();
+        $user = User::factory()->create();
+        $anotherUser = User::factory()->create();
 
         config(['forest.admin' => $user->email]);
 
@@ -57,7 +57,7 @@ class HomeTest extends TestCase
         $response = $this->get('/home');
         $response->assertRedirect('/login/github');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/home');
         $response->assertSuccessful();
     }

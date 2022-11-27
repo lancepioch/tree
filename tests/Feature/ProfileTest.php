@@ -15,7 +15,7 @@ class ProfileTest extends TestCase
         $response = $this->post('/user/update', ['forge_token' => 'ham']);
         $response->assertRedirect('/login/github');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->post('/user/update', ['forge_token' => 'ham']);
         $response->assertRedirect('/home');
         $this->assertSame($user->forge_token, 'ham');

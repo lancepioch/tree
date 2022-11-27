@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'issue_number', 'commit_hash', 'forge_site_id', 'forge_mysql_user_id', 'forge_mysql_database_id',
     ];

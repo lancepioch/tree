@@ -16,10 +16,10 @@ class GithubTest extends TestCase
 
     public function testGithubStatus()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user = \Mockery::mock($user)->makePartial();
-        $project = factory(Project::class)->create(['user_id' => $user->id]);
-        $branch = factory(Branch::class)->create(['project_id' => $project->id]);
+        $project = Project::factory()->create(['user_id' => $user->id]);
+        $branch = Branch::factory()->create(['project_id' => $project->id]);
         $branch->project = $project;
         $project->user = $user;
 
@@ -33,10 +33,10 @@ class GithubTest extends TestCase
 
     public function testGithubComment()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user = \Mockery::mock($user)->makePartial();
-        $project = factory(Project::class)->create(['user_id' => $user->id]);
-        $branch = factory(Branch::class)->create(['project_id' => $project->id]);
+        $project = Project::factory()->create(['user_id' => $user->id]);
+        $branch = Branch::factory()->create(['project_id' => $project->id]);
         $branch->project = $project;
         $project->user = $user;
 

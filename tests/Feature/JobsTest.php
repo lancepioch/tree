@@ -27,8 +27,8 @@ class JobsTest extends TestCase
 
     public function testDeploySiteSuccessful()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
@@ -43,8 +43,8 @@ class JobsTest extends TestCase
 
     public function testCheckSiteDeployment()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
@@ -60,8 +60,8 @@ class JobsTest extends TestCase
 
     public function testDeploySiteFailedLogMissing()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
@@ -77,8 +77,8 @@ class JobsTest extends TestCase
 
     public function testDeploySiteFailedDeploymentErrors()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
@@ -94,9 +94,9 @@ class JobsTest extends TestCase
 
     public function testRemoveInitialDeployment()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
@@ -109,8 +109,8 @@ class JobsTest extends TestCase
 
     public function testRemoveSite()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
         $user->projects()->save($project);
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
@@ -131,7 +131,7 @@ class JobsTest extends TestCase
     {
         Bus::fake();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $branch = \Mockery::mock(Branch::class)->makePartial();
         $branch->shouldReceive('githubStatus')->once()->with('pending', \Mockery::any());
@@ -164,9 +164,9 @@ class JobsTest extends TestCase
 
     public function testInstallRepository()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
@@ -182,9 +182,9 @@ class JobsTest extends TestCase
 
     public function testSetupSql()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
@@ -202,9 +202,9 @@ class JobsTest extends TestCase
 
     public function testWaitForSiteInstallation()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
@@ -219,9 +219,9 @@ class JobsTest extends TestCase
 
     public function testWaitForSiteDeployment()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 
@@ -236,9 +236,9 @@ class JobsTest extends TestCase
 
     public function testWaitRepositoryInstallation()
     {
-        $user = factory(User::class)->create();
-        $project = factory(Project::class)->make();
-        $branch = factory(Branch::class)->make();
+        $user = User::factory()->create();
+        $project = Project::factory()->make();
+        $branch = Branch::factory()->make();
         $user->projects()->save($project);
         $project->branches()->save($branch);
 

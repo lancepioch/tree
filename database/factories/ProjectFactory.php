@@ -1,16 +1,27 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\Project::class, function (Faker $faker) {
-    return [
-        'forge_site_url' => '*.' . $faker->domainWord . '.' . $faker->domainName,
-        'forge_server_id' => $faker->numberBetween(),
-        'github_repo' => $faker->domainWord . '/' . $faker->domainWord,
-        'webhook_secret' => $faker->sha1,
-        'webhook_id' => $faker->numberBetween(),
-        'forge_deployment' => "composer require\nphp artisan migrate",
-        'forge_deployment_initial' => 'php artisan key:generate',
-        'paused_at' => null,
-    ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class ProjectFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'forge_site_url' => '*.' . fake()->domainWord . '.' . fake()->domainName,
+            'forge_server_id' => fake()->numberBetween(),
+            'github_repo' => fake()->domainWord . '/' . fake()->domainWord,
+            'webhook_secret' => fake()->sha1,
+            'webhook_id' => fake()->numberBetween(),
+            'forge_deployment' => "composer require\nphp artisan migrate",
+            'forge_deployment_initial' => 'php artisan key:generate',
+            'paused_at' => null,
+        ];
+    }
+}
