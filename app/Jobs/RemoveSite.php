@@ -26,11 +26,11 @@ class RemoveSite implements ShouldQueue
         $forge = $forge->setApiKey($project->user->forge_token, null);
 
         if ($branch->forge_mysql_user_id !== null) {
-            $forge->deleteMysqlUser($project->forge_server_id, $branch->forge_mysql_user_id);
+            $forge->deleteDatabaseUser($project->forge_server_id, $branch->forge_mysql_user_id);
         }
 
         if ($branch->forge_mysql_database_id !== null) {
-            $forge->deleteMysqlDatabase($project->forge_server_id, $branch->forge_mysql_database_id);
+            $forge->deleteDatabase($project->forge_server_id, $branch->forge_mysql_database_id);
         }
 
         $forge->deleteSite($project->forge_server_id, $branch->forge_site_id);

@@ -121,8 +121,8 @@ class JobsTest extends TestCase
         $branch->forge_mysql_database_id = 'not null';
 
         $forgeMock = $this->getForgeMock(RemoveSite::class);
-        $forgeMock->shouldReceive('deleteMysqlUser')->once();
-        $forgeMock->shouldReceive('deleteMysqlDatabase')->once();
+        $forgeMock->shouldReceive('deleteDatabaseUser')->once();
+        $forgeMock->shouldReceive('deleteDatabase')->once();
         $forgeMock->shouldReceive('deleteSite')->once();
 
         RemoveSite::dispatchNow($branch);
@@ -193,8 +193,8 @@ class JobsTest extends TestCase
         $mock->id = 1337;
 
         $forgeMock = $this->getForgeMock(SetupSql::class);
-        $forgeMock->shouldReceive('createMysqlDatabase')->once()->andReturn($mock);
-        $forgeMock->shouldReceive('createMysqlUser')->once()->andReturn($mock);
+        $forgeMock->shouldReceive('createDatabase')->once()->andReturn($mock);
+        $forgeMock->shouldReceive('createDatabaseUser')->once()->andReturn($mock);
         $forgeMock->shouldReceive('siteEnvironmentFile')->once()->andReturn('composer require');
         $forgeMock->shouldReceive('updateSiteEnvironmentFile')->once();
 

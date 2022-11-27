@@ -28,8 +28,8 @@ class SetupSql implements ShouldQueue
         // MySQL
         $sqlUsername = str_replace('/', '_', $project->github_repo).'_'.$branch->issue_number;
         $sqlPassword = Str::random(20);
-        $mysqlDatabase = $forge->createMysqlDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
-        $mysqlUser = $forge->createMysqlUser($project->forge_server_id, [
+        $mysqlDatabase = $forge->createDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
+        $mysqlUser = $forge->createDatabaseUser($project->forge_server_id, [
             'name' => $sqlUsername,
             'password' => $sqlPassword,
             'databases' => [$mysqlDatabase->id],
