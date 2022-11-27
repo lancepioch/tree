@@ -40,7 +40,7 @@ class HomeController extends Controller
 
         try {
             $forge = $forge->setApiKey(auth()->user()->forge_token, null);
-            $servers = $forge->servers();
+            $servers = array_reverse($forge->servers());
         } catch (Exception $exception) {
             $forgeException = 'Your Forge API Token is invalid.';
         }
