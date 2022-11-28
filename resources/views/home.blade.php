@@ -92,7 +92,7 @@
             </script>
             @endif
 
-            @isset(auth()->user()->forge_token)
+            @if (isset(auth()->user()->forge_token) && count($servers) > 0)
             <div class="col-md-10 mt-3" x-data="{ url: '', newEnvKey: '', newEnvVal: '', vars: {} }">
                 <div class="card">
                     <div class="card-header">Create New Project</div>
@@ -201,6 +201,18 @@
                 </div>
             </div>
             @endisset
+
+            @if (isset(auth()->user()->forge_token) && count($servers) <= 0)
+                <div class="col-md-10 mt-3">
+                    <div class="card">
+                        <div class="card-header">Create New Project</div>
+
+                        <div class="card-body">
+                            You must have at least one server set up on Laravel Forge in order to use this!
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             @if (config('forest.survey'))
             <div class="col-md-10 mt-3">
