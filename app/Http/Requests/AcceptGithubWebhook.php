@@ -31,11 +31,13 @@ class AcceptGithubWebhook extends FormRequest
         }
 
         [$algorithm, $signature] = explode('=', $signature, 2);
-        $this->project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
+        $project = Project::where('github_repo', $input['repository']['full_name'])->with(['branches', 'user'])->first();
 
-        if ($this->project === null) {
+        if ($project === null) {
             return false;
         }
+
+        $this->project = $project;
 
         $content = $this->getContent();
         if (! is_string($content)) {
