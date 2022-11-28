@@ -41,7 +41,7 @@ class HomeController extends Controller
         try {
             $forge = $forge->setApiKey(auth()->user()->forge_token, null);
             $servers = array_reverse($forge->servers());
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $forgeException = 'Your Forge API Token is invalid.';
         }
 
@@ -51,7 +51,7 @@ class HomeController extends Controller
 
             $paginator = new ResultPager($github);
             $repositories = $paginator->fetchAll($github->api('me'), 'repositories', ['all']);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $githubException = 'Your Github API Token is invalid.';
         }
 
