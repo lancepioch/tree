@@ -15,7 +15,7 @@ jobs:
     name: Static Analysis
     runs-on: ubuntu-20.04
     steps:
-      - name: Code checkout
+      - name: Code Checkout
         uses: actions/checkout@v3
 
       - name: Setup PHP
@@ -26,7 +26,7 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
       - name: Analyze
@@ -36,7 +36,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-20.04
     steps:
-      - name: Code checkout
+      - name: Code Checkout
         uses: actions/checkout@v3
 
       - name: Setup PHP
@@ -47,7 +47,7 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
       - name: Run Pint
@@ -62,7 +62,7 @@ jobs:
       matrix:
         php: [8.0, 8.1]
     steps:
-      - name: Code checkout
+      - name: Code Checkout
         uses: actions/checkout@v3
 
       - name: Setup PHP
@@ -73,7 +73,7 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
       - name: Create Database
