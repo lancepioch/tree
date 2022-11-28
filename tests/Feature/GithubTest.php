@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Branch;
 use App\Project;
 use App\User;
-use Github\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Socialite\Facades\Socialite;
 use Tests\TestCase;
