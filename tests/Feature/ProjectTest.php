@@ -84,10 +84,7 @@ class ProjectTest extends TestCase
             return $policyUser->id === $user->id;
         });
 
-        $githubMock = \Mockery::mock(Client::class);
-        $githubMock->shouldReceive('authenticate')->twice();
-        $githubMock->shouldReceive('api->hooks->create')->twice()->andReturn(['id' => 1337]);
-        $this->app->instance(Client::class, $githubMock);
+        $this->app->instance(Client::class, new FakeClient());
 
         $response = $this->actingAs($user)->post('/projects/', [
             'forge_site_url' => '*.test.com',
@@ -201,17 +198,14 @@ class ProjectTest extends TestCase
             return $policyUser->id === $user->id;
         });
 
-        $githubMock = \Mockery::mock(Client::class);
-        $githubMock->shouldReceive('authenticate')->once();
-        $githubMock->shouldReceive('api->hooks->remove')->once();
-        $this->app->instance(Client::class, $githubMock);
+        $this->app->instance(Client::class, new FakeClient());
 
         $response = $this->actingAs($anotherUser)->delete("/projects/{$project->id}");
         $response->assertForbidden();
         $this->assertNotNull($project->fresh());
 
         $response = $this->actingAs($user)->delete("/projects/{$project->id}");
-        // $response->assertRedirect('/home');
+        $response->assertRedirectToRoute('home');
         $this->assertTrue($project->fresh()->trashed());
     }
 
@@ -237,5 +231,35 @@ class ProjectTest extends TestCase
 
         $project->refresh();
         $this->assertNull($project->paused_at);
+    }
+}
+
+class FakeClient extends Client
+{
+    public function repo()
+    {
+        return $this;
+    }
+
+    public function hooks()
+    {
+        return $this;
+    }
+
+    public function statuses()
+    {
+        return $this;
+    }
+
+    public function comments()
+    {
+        return $this;
+    }
+
+    public function create()
+    {
+        return [
+            'id' => 12345,
+        ];
     }
 }

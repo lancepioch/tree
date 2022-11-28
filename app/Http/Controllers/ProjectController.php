@@ -71,7 +71,7 @@ class ProjectController extends Controller
         $github->authenticate(auth()->user()->github_token, null, Client::AUTH_ACCESS_TOKEN);
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $hook = (new Repo($github))->hooks()->create($githubUser, $githubRepo, [
+        $hook = $github->repo()->hooks()->create($githubUser, $githubRepo, [
             'name' => 'web',
             'config' => [
                 'url' => route('webhooks.github.pullrequest'),

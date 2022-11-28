@@ -23,10 +23,7 @@ class GithubTest extends TestCase
         $branch->project = $project;
         $project->user = $user;
 
-        $github = \Mockery::mock(Client::class);
-        $github->shouldReceive('authenticate')->andReturn();
-        $github->shouldReceive('api->statuses->create');
-        $user->shouldReceive('githubClient')->once()->andReturn($github);
+        $user->shouldReceive('githubClient')->once()->andReturn(new FakeClient());
 
         $branch->githubStatus('success', 'my description', '*.test.example.com');
     }
@@ -40,10 +37,7 @@ class GithubTest extends TestCase
         $branch->project = $project;
         $project->user = $user;
 
-        $github = \Mockery::mock(Client::class);
-        $github->shouldReceive('authenticate')->andReturn();
-        $github->shouldReceive('api->comments->create');
-        $user->shouldReceive('githubClient')->once()->andReturn($github);
+        $user->shouldReceive('githubClient')->once()->andReturn(new FakeClient());
 
         $branch->githubComment('comment body');
     }
