@@ -37,13 +37,9 @@ class ProjectController extends Controller
     /**
      * Creates a new project.
      *
-     * @param  Request  $request
-     * @param  Client  $github
-     * @return \Illuminate\Http\RedirectResponse
-     *
      * @throws \Github\Exception\MissingArgumentException
      */
-    public function store(Request $request, Client $github)
+    public function store(Request $request, Client $github): RedirectResponse
     {
         $request->validate([
             'forge_site_url' => 'regex:/.*\*.+/', // domain must have an asterisk
