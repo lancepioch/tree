@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Project;
+use App\Branch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,27 +14,20 @@ class SetupSite implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @param  array<string, string|array<string, string>>  $pullRequest */
-    public function __construct(private readonly Project $project, private readonly array $pullRequest)
+    public function __construct(private readonly Branch $branch)
     {
     }
 
     public function handle(Forge $forge): void
     {
-        $project = $this->project;
-        $pullRequest = $this->pullRequest;
+        $branch = $this->branch;
+        $project = $this->branch->project;
 
-        $forge = $forge->setApiKey($project->user->forge_token, null);
-
-        /** @var \App\Branch $branch */
-        $branch = $project->branches()->firstOrNew(['issue_number' => $pullRequest['number']], [
-            'commit_hash' => $pullRequest['head']['sha'],
-        ]);
+        $forge = $forge->setApiKey($project->user->forge_token);
 
         $branch->githubStatus('pending', 'Setting up your branch to be deployed.');
 
-        // Site
-        $url = str_replace('*', $pullRequest['number'], $project->forge_site_url);
+        $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
 
         $isolatedUser = [];
         if (! is_null($project->forge_user)) {
@@ -54,7 +47,7 @@ class SetupSite implements ShouldQueue
         $branch->save();
 
         WaitForSiteInstallation::withChain([
-            new InstallRepository($branch, $pullRequest),
+            new InstallRepository($branch),
             new WaitForRepositoryInstallation($branch),
             new SetupSql($branch),
             new DeploySite($branch),

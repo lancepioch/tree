@@ -32,4 +32,18 @@ class Project extends Model
     {
         return $this->hasMany(Branch::class);
     }
+
+    public function getBranchFromPullRequest(int $number, string $headHash, string $headRef, string $headRepoFullName): Branch
+    {
+        $branch = $this->branches()
+            ->orderBy('id', 'desc')
+            ->firstOrNew(['issue_number' => $number]);
+
+        $branch->head_repo = $headRepoFullName;
+        $branch->head_ref = $headRef;
+        $branch->commit_hash = $headHash;
+        $branch->save();
+
+        return $branch;
+    }
 }

@@ -19,6 +19,8 @@ class BranchFactory extends Factory
             'forge_site_id' => fake()->numberBetween(1, 1000),
             'forge_mysql_user_id' => fake()->numberBetween(1, 1000),
             'forge_mysql_database_id' => fake()->numberBetween(1, 1000),
+            'head_ref' => fake()->userName(),
+            'head_repo' => strtolower(fake()->userName()).'/'.strtolower(fake()->userName()),
         ];
     }
 }

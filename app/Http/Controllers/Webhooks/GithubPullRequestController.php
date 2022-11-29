@@ -20,24 +20,26 @@ class GithubPullRequestController extends Controller
             return response()->json('ping');
         }
 
-        $pullRequest = $input['pull_request'];
-
-        $branch = $request->project->branches()->where('issue_number', $pullRequest['number'])->orderBy('id', 'desc')->first();
+        $pr = $input['pull_request'];
+        $branch = $request->project->getBranchFromPullRequest($pr['number'], $pr['head']['sha'], $pr['head']['ref'], $pr['head']['repo']['full_name']);
 
         switch ($input['action'] ?? 'none') {
             case 'opened':
             case 'reopened':
                 abort_unless(is_null($request->project->paused_at), 400, 'Project Paused');
-                SetupSite::dispatch($request->project, $pullRequest);
+
+                dispatch(new SetupSite($branch));
+
                 break;
             case 'closed':
-                abort_if(is_null($branch), 400, 'Branch Not Found');
-                RemoveSite::dispatch($branch);
+                dispatch(new RemoveSite($branch));
+
                 break;
             case 'synchronize':
                 abort_unless(is_null($request->project->paused_at), 400, 'Project Paused');
-                abort_if(is_null($branch), 400, 'Branch Not Found');
-                DeploySite::dispatch($branch);
+
+                dispatch(new DeploySite($branch));
+
                 break;
             case 'assigned':
             case 'unassigned':

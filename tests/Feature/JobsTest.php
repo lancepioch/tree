@@ -139,11 +139,8 @@ class JobsTest extends TestCase
         $branch->shouldReceive('save')->once();
 
         $project = \Mockery::mock(Project::class)->makePartial();
-        $project->shouldReceive('branches->firstOrNew')->once()->andReturn($branch);
         $project->user = $user;
         $branch->project = $project;
-
-        $pullRequest = $this->getPullRequest();
 
         $forgeSite = \Mockery::mock(Site::class);
         $forgeSite->deploymentStatus = 'not null';
@@ -157,7 +154,7 @@ class JobsTest extends TestCase
         $forgeMock = $this->getForgeMock(WaitForSiteInstallation::class);
         $forgeMock->shouldReceive('createSite')->once()->andReturn($forgeSite);
 
-        $job = new SetupSite($project, $pullRequest);
+        $job = new SetupSite($branch);
         $job->handle($forgeMock);
 
         Bus::assertDispatched(WaitForSiteInstallation::class);
@@ -176,9 +173,7 @@ class JobsTest extends TestCase
         $forgeMock->shouldReceive('siteDeploymentScript')->once();
         $forgeMock->shouldReceive('updateSiteDeploymentScript')->once();
 
-        $pullRequest = $this->getPullRequest();
-
-        InstallRepository::dispatchNow($branch, $pullRequest);
+        InstallRepository::dispatchNow($branch);
     }
 
     public function testSetupSql()

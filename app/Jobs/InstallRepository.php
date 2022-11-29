@@ -14,8 +14,7 @@ class InstallRepository implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @param  array<string, string|array<string, string|array<string, string>>>  $pullRequest */
-    public function __construct(private readonly Branch $branch, private readonly array $pullRequest)
+    public function __construct(private readonly Branch $branch)
     {
     }
 
@@ -23,14 +22,13 @@ class InstallRepository implements ShouldQueue
     {
         $branch = $this->branch;
         $project = $branch->project;
-        $pullRequest = $this->pullRequest;
 
         $forge->setApiKey($project->user->forge_token, null);
 
         $forge->installGitRepositoryOnSite($project->forge_server_id, $branch->forge_site_id, [
             'provider' => 'github',
-            'repository' => $pullRequest['head']['repo']['full_name'],
-            'branch' => $pullRequest['head']['ref'],
+            'repository' => $branch->head_repo,
+            'branch' => $branch->head_ref,
         ]);
 
         $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $branch->forge_site_id);

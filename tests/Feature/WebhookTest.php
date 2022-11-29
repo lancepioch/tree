@@ -76,6 +76,13 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = $project->github_repo;
         $pr['pull_request']['number'] = $branch->issue_number;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
 
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
 
@@ -94,37 +101,19 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = 'doesnotexist';
         $pr['pull_request']['number'] = 1;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
 
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
 
         $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
 
         $response->assertForbidden();
-    }
-
-    public function testNoBranchFound()
-    {
-        Bus::fake();
-
-        $project = Project::factory()->create(['user_id' => 1]);
-        $branch = Branch::factory()->make();
-        $project->branches()->save($branch);
-
-        $pr = $this->pr();
-        $pr['repository']['full_name'] = $project->github_repo;
-        $pr['pull_request']['number'] = -1;
-
-        $pr['action'] = 'closed';
-        $headers = $this->headers(json_encode($pr), $project->webhook_secret);
-        $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(400);
-        Bus::assertNotDispatched(RemoveSite::class);
-
-        $pr['action'] = 'synchronize';
-        $headers = $this->headers(json_encode($pr), $project->webhook_secret);
-        $response = $this->json('POST', '/api/webhooks/github/pullrequest', $pr, $headers);
-        $response->assertStatus(400);
-        Bus::assertNotDispatched(DeploySite::class);
     }
 
     public function testOpenedOrReopened()
@@ -138,6 +127,13 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = $project->github_repo;
         $pr['pull_request']['number'] = $branch->issue_number;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
 
         $pr['action'] = 'opened';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
@@ -163,6 +159,13 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = $project->github_repo;
         $pr['pull_request']['number'] = $branch->issue_number;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
 
         $pr['action'] = 'closed';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
@@ -182,6 +185,13 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = $project->github_repo;
         $pr['pull_request']['number'] = $branch->issue_number;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
 
         $pr['action'] = 'synchronize';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
@@ -201,6 +211,14 @@ class WebhookTest extends TestCase
         $pr = $this->pr();
         $pr['repository']['full_name'] = $project->github_repo;
         $pr['pull_request']['number'] = $branch->issue_number;
+        $pr['pull_request']['head'] = [
+            'sha' => '3161cdc7bf197e4c3a35b9cbe358c79910f27e90',
+            'ref' => 'cool-branch',
+            'repo' => [
+                'full_name' => $project->github_repo,
+            ],
+        ];
+        // $pr['head']['sha'], $pr['head']['ref'], $pr['head']['repo']['full_name']
 
         $pr['action'] = 'notarealaction';
         $headers = $this->headers(json_encode($pr), $project->webhook_secret);
