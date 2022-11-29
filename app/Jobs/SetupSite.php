@@ -27,7 +27,7 @@ class SetupSite implements ShouldQueue
 
         $branch->githubStatus('pending', 'Setting up your branch to be deployed.');
 
-        $url = str_replace('*', $branch->issue_number, $project->forge_site_url);
+        $url = str_replace('*', (string) $branch->issue_number, $project->forge_site_url);
 
         $isolatedUser = [];
         if (! is_null($project->forge_user)) {
