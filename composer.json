@@ -14,7 +14,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^4.1"
+        "laravel/ui": "^4.1",
+        "livewire/livewire": "^2.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
