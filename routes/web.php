@@ -19,12 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'welcome')->name('welcome');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/user/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::post('/projects/{project}/pause', PauseProjectController::class)->name('projects.pause');
-Route::resource('projects', ProjectController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    Route::post('/user/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('/projects/{project}/pause', PauseProjectController::class)->name('projects.pause');
+    Route::resource('projects', ProjectController::class);
+});
 
 Route::get('/login/github', [LoginController::class, 'redirectToProvider'])->name('login.github');
 Route::get('/login/github/callback', [LoginController::class, 'handleProviderCallback']);

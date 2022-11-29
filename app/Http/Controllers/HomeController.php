@@ -5,27 +5,15 @@ namespace App\Http\Controllers;
 use Exception;
 use Github\Client;
 use Github\ResultPager;
+use Illuminate\View\View;
 use Laravel\Forge\Forge;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth')->except('welcome');
-    }
-
-    /**
      * Show the application dashboard.
-     *
-     * @param  Forge  $forge
-     * @return \Illuminate\View\View
      */
-    public function index(Forge $forge)
+    public function index(Forge $forge): View
     {
         $githubException = null;
         $forgeException = null;
