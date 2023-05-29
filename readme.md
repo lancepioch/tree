@@ -8,9 +8,6 @@
 ## Description
 Connect your Github Repository to your Laravel Forge Server and Laravel Forest automatically deploys any new pull requests for you.
 
-## Demo Video
-[![Demo Video](https://i.imgur.com/pJnISxo.png)](https://youtu.be/e48QJdcNrUY)
-
 ## Requirements
 
 * PHP 8.1
@@ -22,6 +19,9 @@ Connect your Github Repository to your Laravel Forge Server and Laravel Forest a
 3. Environment Setup: `cp .env.example .env`
 4. Artisan Migrate: `php artisan migrate`
 5. Daemonize Horizon: `php artisan horizon`
+
+## Demo Video
+[![Demo Video](https://i.imgur.com/pJnISxo.png)](https://youtu.be/e48QJdcNrUY)
 
 ## License
 ```
