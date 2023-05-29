@@ -1,6 +1,7 @@
-[![codecov](https://codecov.io/gh/lancepioch/tree/branch/master/graph/badge.svg)](https://codecov.io/gh/lancepioch/tree)
+# 🌲 Laravel Forest
 
-# Laravel Forest
+[![codecov](https://codecov.io/gh/lancepioch/tree/branch/master/graph/badge.svg)](https://codecov.io/gh/lancepioch/tree)
+[![tests](https://github.com/lancepioch/tree/actions/workflows/laravel.yaml/badge.svg)](https://github.com/lancepioch/tree/actions/workflows/laravel.yaml)
 
 ![Trees](public/img/trees.png)
 
