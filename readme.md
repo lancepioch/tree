@@ -6,11 +6,11 @@
 ![Trees](public/img/trees.png)
 
 ## Description
-Connect your Github Repository to your Laravel Forge Server and Laravel Forest automatically deploys any new pull requests for you.
+Connect your GitHub Repository to your Laravel Forge Server and Laravel Forest automatically deploys any new pull requests for you.
 
 ## Requirements
 
-* PHP 8.1
+* PHP 8.2+
 
 ## Installation
 
