@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function githubClient(): Client
     {
-        $github = new Client();
+        $github = resolve(Client::class);
         $github->authenticate($this->github_token, null, Client::AUTH_ACCESS_TOKEN);
 
         return $github;
