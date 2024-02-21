@@ -19,7 +19,7 @@ class Branch extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function githubStatus(string $state, string $description, string $url = null): void
+    public function githubStatus(string $state, string $description, ?string $url = null): void
     {
         $project = $this->project;
 

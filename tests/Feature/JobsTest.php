@@ -119,7 +119,7 @@ class JobsTest extends TestCase
     public function testRemoveSite()
     {
         $this->mockGithubStatus();
-        
+
         $user = User::factory()->create();
         $project = Project::factory()->make();
         $user->projects()->save($project);

@@ -10,8 +10,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'name', 'email', 'forge_token', 'github_token', 'github_id',

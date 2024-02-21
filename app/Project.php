@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
 
     protected $casts = [
         'deleted_at' => 'datetime',
