@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -22,45 +23,26 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    protected string $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
 
-    /**
-     * Redirect the user to the GitHub authentication page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function redirectToProvider()
+    public function redirectToProvider(): RedirectResponse
     {
-        return Socialite::driver('github')
-            ->setScopes(['user:email', 'repo'])
-            ->redirect();
+        /** @var \Laravel\Socialite\Two\GithubProvider $driver */
+        $driver = Socialite::driver('github');
+
+        return $driver->setScopes(['user:email', 'repo'])->redirect();
     }
 
-    /**
-     * Obtain the user information from GitHub.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function handleProviderCallback()
+    public function handleProviderCallback(): RedirectResponse
     {
+        /** @var \Laravel\Socialite\Two\User $social */
         $social = Socialite::driver('github')->user();
 
-        /** @var User $user */
         $user = User::query()->firstOrNew(['github_id' => $social->getId()]);
 
         $user->fill([
