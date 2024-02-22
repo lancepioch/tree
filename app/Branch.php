@@ -46,7 +46,7 @@ class Branch extends Model
         $github = $project->user->githubClient();
         [$githubUser, $githubRepo] = explode('/', $project->github_repo);
 
-        $github->repo()->comments()->create($githubUser, $githubRepo, $this->issue_number, [
+        $github->repo()->comments()->create($githubUser, $githubRepo, $this->commit_hash, [
             'body' => $body,
         ]);
     }
