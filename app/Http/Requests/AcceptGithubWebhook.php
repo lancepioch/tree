@@ -55,8 +55,8 @@ class AcceptGithubWebhook extends FormRequest
     public function rules(): array
     {
         return [
-            'action' => 'required',
-            'pull_request' => 'required',
+            'action' => 'nullable',
+            'pull_request' => 'nullable',
             'repository.full_name' => 'required',
         ];
     }
