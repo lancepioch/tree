@@ -31,8 +31,7 @@ class InstallRepository implements ShouldQueue
             'branch' => $branch->head_ref,
         ]);
 
-        $deploymentScript = $forge->siteDeploymentScript($project->forge_server_id, $branch->forge_site_id);
-        $deploymentScript .= "\n\n# Begin ".config('app.name')." Configuration\n";
+        $deploymentScript = "\n\n# Begin ".config('app.name')." Configuration\n";
         $deploymentScript .= $project->forge_deployment ?? '# No Custom Deployment';
         $deploymentScript .= "\n# Begin Initial Deployment:\n".($project->forge_deployment_initial ?? '').' # End Initial Deployment';
 

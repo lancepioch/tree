@@ -179,7 +179,18 @@
                                 <label for="forge_deployment" class="col-md-4 col-form-label text-md-right">All Deployments:</label>
 
                                 <div class="col-md-6">
-                                    <textarea style="white-space: nowrap;" name="forge_deployment" class="form-control" rows="5" placeholder="php artisan migrate --force">{{ "composer install --no-interaction --prefer-dist\nphp artisan migrate --force\n" }}</textarea>
+                                    <textarea style="white-space: nowrap;" name="forge_deployment" class="form-control" rows="5" placeholder="php artisan migrate --force">{{
+"cd \$FORGE_SITE_PATH
+git pull origin \$FORGE_SITE_BRANCH
+composer install --no-interaction --prefer-dist
+
+( flock -w 10 9 || exit 1
+    echo 'Restarting FPM...'; sudo -S service \$FORGE_PHP_FPM reload ) 9>/tmp/fpmlock
+
+if [ -f artisan ]; then
+    \$FORGE_PHP artisan migrate --force
+fi"
+                                    }}</textarea>
                                 </div>
                             </div>
 
