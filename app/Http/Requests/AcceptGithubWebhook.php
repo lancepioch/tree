@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class AcceptGithubWebhook extends FormRequest
 {
     public Project $project;
-    
+
     public function authorize(): bool
     {
         $input = $this->all();
