@@ -17,7 +17,7 @@ class GithubPullRequestController extends Controller
         $event = $request->header('X-GitHub-Event');
 
         if ($event === 'ping') {
-            return response()->json('ping');
+            return response()->json('pong');
         }
 
         $pr = $input['pull_request'];
