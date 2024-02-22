@@ -9,13 +9,10 @@ use Illuminate\Support\Str;
 class AcceptGithubWebhook extends FormRequest
 {
     public Project $project;
-
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    
     public function authorize(): bool
     {
-        $input = $this->validate($this->rules());
+        $input = $this->all();
         $signature = $this->header('X-Hub-Signature');
 
         if (! is_string($signature)) {

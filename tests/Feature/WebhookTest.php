@@ -46,7 +46,7 @@ class WebhookTest extends TestCase
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertRedirect();
+        $response->assertForbidden();
     }
 
     public function testNoRepository()
@@ -57,14 +57,14 @@ class WebhookTest extends TestCase
 
         $response = $this->post('/api/webhooks/github/pullrequest', $pr, $this->headers());
 
-        $response->assertRedirect();
+        $response->assertForbidden();
     }
 
     public function testNoSignature()
     {
         $response = $this->post('/api/webhooks/github/pullrequest', $this->pr(), []);
 
-        $response->assertRedirect();
+        $response->assertForbidden();
     }
 
     public function testSignatureVerification()
