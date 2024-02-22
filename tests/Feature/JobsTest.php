@@ -179,7 +179,6 @@ class JobsTest extends TestCase
 
         $forgeMock = $this->getForgeMock(InstallRepository::class);
         $forgeMock->shouldReceive('installGitRepositoryOnSite')->once();
-        $forgeMock->shouldReceive('siteDeploymentScript')->once();
         $forgeMock->shouldReceive('updateSiteDeploymentScript')->once();
 
         InstallRepository::dispatchSync($branch);
