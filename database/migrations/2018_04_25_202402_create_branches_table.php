@@ -20,7 +20,7 @@ class CreateBranchesTable extends Migration
             $table->string('commit_hash');
             $table->string('head_repo');
             $table->string('head_ref');
-            $table->integer('forge_site_id');
+            $table->integer('forge_site_id')->nullable();
             $table->integer('forge_mysql_user_id')->nullable();
             $table->integer('forge_mysql_database_id')->nullable();
             $table->timestamps();
