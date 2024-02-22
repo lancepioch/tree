@@ -50,4 +50,9 @@ class Branch extends Model
             'body' => $body,
         ]);
     }
+
+    public function databaseName(): string
+    {
+        return str_replace('/', '_', $this->project->github_repo).'_'.$this->issue_number;
+    }
 }

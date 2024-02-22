@@ -26,7 +26,7 @@ class SetupSql implements ShouldQueue
         $forge = $forge->setApiKey($project->user->forge_token, null);
 
         // MySQL
-        $sqlUsername = str_replace('/', '_', $project->github_repo).'_'.$branch->issue_number;
+        $sqlUsername = $branch->databaseName();
         $sqlPassword = Str::random(20);
         $mysqlDatabase = $forge->createDatabase($project->forge_server_id, ['name' => $sqlUsername], false);
         $mysqlUser = $forge->createDatabaseUser($project->forge_server_id, [
