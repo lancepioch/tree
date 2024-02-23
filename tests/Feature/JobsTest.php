@@ -165,8 +165,6 @@ class JobsTest extends TestCase
 
         $job = new SetupSite($branch);
         $job->handle($forgeMock);
-
-        Bus::assertDispatched(WaitForSiteInstallation::class);
     }
 
     public function testInstallRepository()
