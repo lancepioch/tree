@@ -6,7 +6,7 @@ use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rector): void {
     $rector->paths([
-        __DIR__ . '/app',
+        __DIR__.'/app',
     ]);
 
     $rector->skip([

@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Schema::defaultStringLength(191);
-        Horizon::auth(fn($request) => auth()->check() && auth()->user()->email === config('forest.admin'));
+        Horizon::auth(fn ($request) => auth()->check() && auth()->user()->email === config('forest.admin'));
     }
 
     /**
