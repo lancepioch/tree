@@ -26,7 +26,7 @@ class ProjectPolicy
 
             $paginator = new ResultPager($github);
             $repositories = $paginator->fetchAll($github->api('me'), 'repositories', ['all']);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return false;
         }
 
