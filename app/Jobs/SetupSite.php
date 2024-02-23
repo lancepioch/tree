@@ -45,15 +45,5 @@ class SetupSite implements ShouldQueue
 
         $branch->forge_site_id = $site->id;
         $branch->save();
-
-        WaitForSiteInstallation::withChain([
-            new InstallRepository($branch),
-            new WaitForRepositoryInstallation($branch),
-            new SetupSql($branch),
-            new DeploySite($branch),
-            new WaitForSiteDeployment($branch),
-            new CheckSiteDeployment($branch),
-            new RemoveInitialDeployment($branch),
-        ])->dispatch($branch);
     }
 }

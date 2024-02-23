@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Webhooks;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AcceptGithubWebhook;
+use App\Jobs\CheckSiteDeployment;
 use App\Jobs\DeploySite;
+use App\Jobs\InstallRepository;
+use App\Jobs\RemoveInitialDeployment;
 use App\Jobs\RemoveSite;
 use App\Jobs\SetupSite;
+use App\Jobs\SetupSql;
+use App\Jobs\WaitForRepositoryInstallation;
+use App\Jobs\WaitForSiteDeployment;
+use App\Jobs\WaitForSiteInstallation;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Bus;
 
 class GithubPullRequestController extends Controller
 {
@@ -28,7 +36,17 @@ class GithubPullRequestController extends Controller
             case 'reopened':
                 abort_unless(is_null($request->project->paused_at), 400, 'Project Paused');
 
-                dispatch(new SetupSite($branch));
+                Bus::chain([
+                    new SetupSite($branch),
+                    new WaitForSiteInstallation($branch),
+                    new InstallRepository($branch),
+                    new WaitForRepositoryInstallation($branch),
+                    new SetupSql($branch),
+                    new DeploySite($branch),
+                    new WaitForSiteDeployment($branch),
+                    new CheckSiteDeployment($branch),
+                    new RemoveInitialDeployment($branch),
+                ])->dispatch();
 
                 break;
             case 'closed':
