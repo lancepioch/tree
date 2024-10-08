@@ -14,7 +14,7 @@
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.1",
-        "livewire/livewire": "^2.10"
+        "livewire/livewire": "^3.5"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
